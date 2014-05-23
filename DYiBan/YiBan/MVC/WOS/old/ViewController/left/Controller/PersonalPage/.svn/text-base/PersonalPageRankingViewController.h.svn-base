@@ -1,0 +1,17 @@
+//
+//  PersonalPageRankingViewController.h
+//  Yiban
+//
+//  Created by NewM on 12-12-2.
+//
+//
+
+#import <UIKit/UIKit.h>
+#import "HttpHelp.h"
+#import "YiBanTableView.h"
+@interface PersonalPageRankingViewController : UIViewController<UITableViewDataSource, UITableViewDelegate, HttpCon_delegate>
+{
+    YiBanTableView *_tableView;
+}
+- (id)init:(NSInteger)_tag titleString:(NSString *)titleString;
+@end

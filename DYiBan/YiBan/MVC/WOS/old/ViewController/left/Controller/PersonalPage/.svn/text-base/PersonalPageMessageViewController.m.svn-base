@@ -1,0 +1,1341 @@
+//
+//  PersonalPageMessageViewController.m
+//  Yiban
+//
+//  Created by NewM on 12-11-27.
+//
+//
+
+#import "PersonalPageMessageViewController.h"
+#import "YiBanHeadBarView.h"
+#import "UIView+Table.h"
+#import "user.h"
+#import "college_list_all.h"
+#import "Static.h"
+#import "Rrequest_Data.h"
+#import "PagePickerView.h"
+#import "PagePickerModel.h"
+#import "NSDate+Helpers.h"
+#import "PersonalPageChangePhoneViewController.h"
+#import "PersonalPageContributionViewController.h"
+#import "MessageTextFiledClickView.h"
+#import "RegexKitLite.h"
+#import "NSDictionary+JSON.h"
+#import "Debug.h"
+
+//个人资料页
+@interface PersonalPageMessageViewController ()<PagePickDelegate>
+{
+    UITextField *nickTextField;//昵称
+    UITextField *mobileTextField;//手机
+    
+    NSInteger btTag;//按钮的tag
+    
+    PagePickerView *pickerView;//pickerview
+    
+    MessageTextFiledClickView *textFieldHidden;//隐藏键盘
+    
+    YiBanHeadBarView *header;//头
+}
+@end
+
+@implementation PersonalPageMessageViewController
+@synthesize messageUser,ifOtherPeople,_tableView;
+@synthesize pickerModel = _pickerModel;
+
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+//    [_pickerModel release];
+  
+//    [self releaseHttpHelps];
+
+    [super dealloc];
+}
+
+//初始化
+- (id)init:(user *)_userModel ifOtherPeople:(BOOL)_ifOtherPeople
+{
+    self = [super init];
+    if (self) {
+        if (_userModel) {
+            self.messageUser = _userModel;
+            
+        }else{
+            self.messageUser = [[YiBanLocalDataManager sharedInstance] currentUser];
+        }
+        self.ifOtherPeople = _ifOtherPeople;
+    }
+    return self;
+}
+
+//返回
+- (void)back{
+    [[CommonHelper shareInstance]playSound:5];
+
+//    [self releaseHttpHelps];
+    
+//    [self observeValueForKeyPath:@"" ofObject:Nil change:nil context:self];
+
+    [self.navigationController popViewControllerAnimated:YES];
+}
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    
+    //背景颜色
+    [[self view] setBackgroundColor:YIALLVIEWBGCOLOR];
+
+    
+    //添加头
+    header = [[YiBanHeadBarView alloc] initWithFrame:CGRectMake(0, 0, 320, 44) titleLabel:@"个人资料"];
+    [header normalHeadView];
+    [[header leftButton] addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:header];
+    [header release];
+    
+    //创建tableview
+    _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 44, 320, self.view.frame.size.height-44) style:UITableViewStylePlain];
+    [_tableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
+    [_tableView setBackgroundColor:[UIColor clearColor]];
+//    [_tableView sle]
+    [_tableView setDataSource:self];
+    [_tableView setDelegate:self];
+    
+    UIView *zeroView = [[UIView alloc] initWithFrame:CGRectZero];
+    [_tableView setTableFooterView:zeroView];
+    [_tableView setTableHeaderView:zeroView];
+    [zeroView release];
+    
+    [self.view addSubview:_tableView];
+    [_tableView release];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadPageTableView) name:NOTIFICATIONRELOADPAGETABLEVIEW object:nil];
+    
+//    ifOtherPeople = YES;
+    /**测试代码
+    NSString *dateString=@"1988-02-12";
+    NSDateFormatter *dateFormatter=[[NSDateFormatter alloc]init];
+    [dateFormatter setDateFormat:@"yyyy-MM-dd"];
+    NSDate *date=[dateFormatter dateFromString:dateString];
+    [dateFormatter release];
+    [date numberOfDaysInMonth];
+    */
+}
+
+//tableview重新读取数据
+- (void)reloadPageTableView{
+    [_tableView reloadData];
+}
+
+
+#pragma mark - tableviewdelegate
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
+    NSInteger num = 0;
+    if (ifOtherPeople) {//他人资料
+        if (section == 0) {
+            num = 7;
+        }else if(section == 1){
+            num = 4;
+        }else if(section == 2){
+//            num = 4;
+//            messageUser.points=@"0";
+            if ([messageUser.points intValue]==0) {
+                num=3;
+            }else{
+                num=4;
+            }
+        }
+    }else{
+        if (section == 0) {
+            num =7;
+        }else if(section == 1){
+            num = 4;
+        }else if(section == 2){
+            num = 4;
+        }else if (section == 3){
+//            num = 4;
+//            messageUser.points=@"0";
+            if ([messageUser.points intValue]==0) {
+                num=3;
+            }else{
+                num=4;
+            }
+        }
+    }
+    
+    return num;
+}
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    if (ifOtherPeople) {//他人资料
+        return 3;
+    }else{
+        return 4;
+    }
+    
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    return 45;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
+    return 25;
+    
+}
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+    UIView *headView = [[[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 25)] autorelease];
+    UIImageView *bgImgView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 320, 25)];
+    [bgImgView setImage:[UIImage imageNamed:@"msg_input_bg.png"]];
+    [headView addSubview:bgImgView];
+    [bgImgView release];
+    UIImageView *imgView = [[UIImageView alloc] initWithFrame:CGRectMake(10, (headView.frame.size.height-12)/2, 48, 12)];
+    if (section == 0) {
+        [imgView setImage:[UIImage imageNamed:@"txt_basicinfo.png"]];
+    }else if(section == 1){
+        [imgView setImage:[UIImage imageNamed:@"txt_eduinfo.png"]];
+    }else if (section == 2){
+        if ([tableView numberOfSections] == 3) {
+            [imgView setImage:[UIImage imageNamed:@"txt_communityinfo.png"]];
+        }else{
+            [imgView setImage:[UIImage imageNamed:@"txt_privateinfo.png"]];
+        }
+    
+    }else if (section == 3){
+        [imgView setImage:[UIImage imageNamed:@"txt_communityinfo.png"]];
+    }
+    [headView setBackgroundColor:[UIColor clearColor]];
+    [bgImgView addSubview:imgView];
+    [imgView release];
+    return headView;
+}
+
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    static NSString *identifer = @"messageTable";
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identifer];
+    if (!cell) {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifer];
+    }
+    [cell removeAllSubviews];
+    
+    UIView *cellView = nil;
+    
+    NSInteger row = indexPath.row;
+    
+    if (indexPath.section == 0) {//基本资料
+//        row += 1;
+        if (indexPath.row == 0) {//用户名
+            cellView = [self cellView:CGRectMake(0, 0, 320, 45) tag:row messageLable:messageUser.username];
+        }else if (indexPath.row == 1){//邮箱
+            cellView = [self cellView:CGRectMake(0, 0, 320, 45) tag:row messageLable:messageUser.email];
+        }
+        else if (indexPath.row == 2) {//昵称
+//            YBLogInfo(@"fullname == %@", messageUser.fullname);
+            cellView = [self cellView:CGRectMake(0, 0, 320, 45) tag:row messageLable:/*messageUser*/messageUser.name];
+        }else if(indexPath.row == 3){//性别
+            NSString *sex = @"男";
+            if ([messageUser.sex isEqualToString:@"1"]) {
+                sex = @"女";
+            }else{
+                sex = @"男";
+            }
+            cellView = [self cellView:CGRectMake(0, 0, 320, 45) tag:row messageLable:sex];
+        }else if ((indexPath.row == 4)){
+            //生日
+            NSString *b = [NSString stringWithFormat:@"%@(%@)",messageUser.birthday,messageUser.sx];
+            if ((!messageUser.birthday || messageUser.birthday.length == 0) && (!messageUser.sx || messageUser.sx.length == 0)) {
+                b = messageUser.userInfoPirvateString;
+                
+            }else if(!messageUser.birthday || messageUser.birthday.length == 0){
+                b = messageUser.sx;
+            }else if (!messageUser.sx || messageUser.sx.length == 0){
+                b = messageUser.birthday;
+            }
+            
+            cellView = [self cellView:CGRectMake(0, 0, 320, 45) tag:row messageLable:b];
+        }else if (indexPath.row == 5){//家乡
+            NSString *hometown = messageUser.hometown;
+            if (ifOtherPeople && [hometown stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] == 0) {
+                hometown = @"未填写";
+            }
+            
+            cellView = [self cellView:CGRectMake(0, 0, 320, 45) tag:row messageLable:hometown];
+        }else if (indexPath.row == 6){//电话
+            cellView = [self cellView:CGRectMake(0, 0, 320, 45) tag:row messageLable:messageUser.phone];
+        
+        }
+    }else if (indexPath.section == 1){//教育信息
+        row += 7;
+        if (row == 7) {//校方认证信息
+            NSString *type = @"未通过";
+            if ([/*messageUser*/[[YiBanLocalDataManager sharedInstance] currentUser].verify isEqualToString:@"2"]) {
+                type = @"学校认证";
+            }else if ([/*messageUser*/[[YiBanLocalDataManager sharedInstance] currentUser].verify isEqualToString:@"1"]){
+                type = @"实名认证";
+            }
+            cellView = [self cellView:CGRectMake(0, 0, 320, 45) tag:row messageLable:type];
+        }else if(row == 8){//学校名称
+            cellView = [self cellView:CGRectMake(0, 0, 320, 45) tag:row messageLable:messageUser.user_schoolname];
+        }else if (row == 9){//学院名称
+            cellView = [self cellView:CGRectMake(0, 0, 320, 45) tag:row messageLable:messageUser.college];
+        }else if (row == 10){//入学年份
+            cellView = [self cellView:CGRectMake(0, 0, 320, 45) tag:row messageLable:messageUser.joinyear];
+        }
+    }else if (!ifOtherPeople && indexPath.section == 2){//个人隐私
+        row += 11;
+        if (row == 11) {//主页对谁可见
+            NSString *type = PICKERPRIVATEAP;
+            if ([/*messageUser*/[[YiBanLocalDataManager sharedInstance] currentUser].visit_private isEqualToString:@"0"]) {
+                type = PICKERPRIVATEAP;
+            }else if ([/*messageUser*/[[YiBanLocalDataManager sharedInstance] currentUser].visit_private isEqualToString:@"1"]){
+                type = PICKERPRIVATEOF;
+            }else if ([/*messageUser*/[[YiBanLocalDataManager sharedInstance] currentUser].visit_private isEqualToString:@"2"]){
+                type = PICKERPRIVATEOM;
+            }else if ([/*messageUser*/[[YiBanLocalDataManager sharedInstance] currentUser].visit_private isEqualToString:@"3"]){
+                type = PICKERPRIVATEFSS;
+            }
+            cellView = [self cellView:CGRectMake(0, 0, 320, 45) tag:row messageLable:type];
+        }else if(row == 12){//生日对谁可见
+            
+            NSString *type = PICKERPRIVATEOM;
+            if ([/*messageUser*/[[YiBanLocalDataManager sharedInstance] currentUser].birthday_private isEqualToString:@"0"]) {
+                type = PICKERPRIVATEOM;
+            }else if ([/*messageUser*/[[YiBanLocalDataManager sharedInstance] currentUser].birthday_private isEqualToString:@"1"]){
+                type = PICKERPRIVATEAP;
+            }else if ([/*messageUser*/[[YiBanLocalDataManager sharedInstance] currentUser].birthday_private isEqualToString:@"2"]){
+                type = PICKERPRIVATESM;
+            }else if ([/*messageUser*/[[YiBanLocalDataManager sharedInstance] currentUser].birthday_private isEqualToString:@"3"]){
+                type = PICKERPRIVATESD;
+            }
+            
+            cellView = [self cellView:CGRectMake(0, 0, 320, 45) tag:row messageLable:type];
+        }else if (row == 13){//家乡对谁可见
+            NSString *type = PICKERPRIVATEOM;
+            if ([/*messageUser*/[[YiBanLocalDataManager sharedInstance] currentUser].hometown_private isEqualToString:@"0"]) {
+                type = PICKERPRIVATEOM;
+            }else if ([/*messageUser*/[[YiBanLocalDataManager sharedInstance] currentUser].hometown_private isEqualToString:@"1"]){
+                type = PICKERPRIVATEAP;
+            }else if ([/*messageUser*/[[YiBanLocalDataManager sharedInstance] currentUser].hometown_private isEqualToString:@"2"]){
+                type = PICKERPRIVATEFSS;
+            }else if ([/*messageUser*/[[YiBanLocalDataManager sharedInstance] currentUser].hometown_private isEqualToString:@"3"]){
+                type = PICKERPRIVATEOF;
+            }
+            cellView = [self cellView:CGRectMake(0, 0, 320, 45) tag:row messageLable:type];
+        }else if (row == 14){//手机对谁可见
+            
+            NSString *type = PICKERPRIVATEOM;
+            if ([/*messageUser*/[[YiBanLocalDataManager sharedInstance] currentUser].phone_private isEqualToString:@"0"]) {
+                type = PICKERPRIVATEOM;
+            }else if ([/*messageUser*/[[YiBanLocalDataManager sharedInstance] currentUser].phone_private isEqualToString:@"1"]){
+                type = PICKERPRIVATEAP;
+            }else if ([/*messageUser*/[[YiBanLocalDataManager sharedInstance] currentUser].phone_private isEqualToString:@"2"]){
+                type = PICKERPRIVATEFSS;
+            }else if ([/*messageUser*/[[YiBanLocalDataManager sharedInstance] currentUser].phone_private isEqualToString:@"3"]){
+                type = PICKERPRIVATEOF;
+            }
+            
+            cellView = [self cellView:CGRectMake(0, 0, 320, 45) tag:row messageLable:type];
+        }
+    }else if (indexPath.section == 3 || (ifOtherPeople && indexPath.section == 2)){//社区信息
+        row += 15;
+        
+        if ([messageUser.points intValue]==0) {//贡献值=0时不显示贡献值cell
+            if(row == 15){//社区排名
+//                YBLogInfo(@"messageUser.community === %@", messageUser.community_up);
+                cellView = [self cellView:CGRectMake(0, 0, 320, 45) tag:row messageLable:messageUser.community_sort];
+            }else if (row == 16){//综合实力
+                cellView = [self cellView:CGRectMake(0, 0, 320, 45) tag:row messageLable:messageUser.total_up];
+            }else if (row == 17){//注册时间
+                cellView = [self cellView:CGRectMake(0, 0, 320, 45) tag:row messageLable:messageUser.register_time];
+            }
+        }else{
+            if (row == 15) {//贡献值
+//                YBLogInfo(@"messageUser.points === %@", messageUser.points);
+                cellView = [self cellView:CGRectMake(0, 0, 320, 45) tag:row messageLable:messageUser.points];
+            }else if(row == 16){//社区排名
+//                YBLogInfo(@"messageUser.community === %@", messageUser.community_up);
+                cellView = [self cellView:CGRectMake(0, 0, 320, 45) tag:row messageLable:messageUser.community_sort];
+            }else if (row == 17){//综合实力
+                cellView = [self cellView:CGRectMake(0, 0, 320, 45) tag:row messageLable:messageUser.total_up];
+            }else if (row == 18){//注册时间
+                cellView = [self cellView:CGRectMake(0, 0, 320, 45) tag:row messageLable:messageUser.register_time];
+            }
+        }
+        
+    }
+    [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
+    
+    [cell addSubview:cellView];
+    
+    return cell;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    if (indexPath.section == 0 && indexPath.row == 4) {
+        if (!ifOtherPeople) {
+            [self forChangePhone];
+        }
+    
+    }else if (indexPath.section == 3 && indexPath.row == 0 && [messageUser.points intValue]>0){
+        [self forContribution];
+    }
+}
+
+//tableview cell nick or mobile view
+- (UIView *)cellView:(CGRect)frame tag:(NSInteger)tag messageLable:(NSString *)messageLableString{
+    UIView *textFildView = [[UIView alloc] initWithFrame:frame];
+    
+    UILabel *keyTitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, 38, 45)];
+    [keyTitleLabel setFont:YIFOURVIEWNAMESIZE];
+    [keyTitleLabel setBackgroundColor:[UIColor grayColor]];
+    CGRect messageFrame = CGRectMake(keyTitleLabel.frame.origin.x, keyTitleLabel.frame.origin.y, 60, keyTitleLabel.frame.size.height);
+    CGRect privateFrame = CGRectMake(keyTitleLabel.frame.origin.x, keyTitleLabel.frame.origin.y, 60+25, keyTitleLabel.frame.size.height);
+    CGRect countFrame = CGRectMake(keyTitleLabel.frame.origin.x, keyTitleLabel.frame.origin.y, 60-12, keyTitleLabel.frame.size.height);
+    if (tag == 0) {
+        [keyTitleLabel setText:@"用户名："];
+    }else if (tag == 1){
+        [keyTitleLabel setText:@"邮箱："];
+    }if (tag == 2) {
+        [keyTitleLabel setText:@"昵称："];
+    }else if (tag == 3){
+        [keyTitleLabel setText:@"性别："];
+    }else if (tag == 4){
+        [keyTitleLabel setText:@"生日："];
+    }else if (tag == 5){
+        [keyTitleLabel setText:@"家乡："];
+    }else if(tag == 6){
+        [keyTitleLabel setText:@"手机："];
+    }else if(tag == 7){
+        [keyTitleLabel setText:@"认证信息："];
+        [keyTitleLabel setFrame:messageFrame];
+    }else if (tag == 8){
+        [keyTitleLabel setText:@"所在学校："];
+        [keyTitleLabel setFrame:messageFrame];
+    }else if (tag == 9){
+        [keyTitleLabel setText:@"所在学院："];
+        [keyTitleLabel setFrame:messageFrame];
+    }else if (tag == 10){
+        [keyTitleLabel setText:@"入学年份："];
+        [keyTitleLabel setFrame:messageFrame];
+    }else if (tag == 11){
+        [keyTitleLabel setText:@"主页对谁可见："];
+        [keyTitleLabel setFrame:privateFrame];
+    }else if (tag == 12){
+        [keyTitleLabel setText:@"生日对谁可见："];
+        [keyTitleLabel setFrame:privateFrame];
+    }else if (tag == 13){
+        [keyTitleLabel setText:@"家乡对谁可见："];
+        [keyTitleLabel setFrame:privateFrame];
+    }else if (tag == 14){
+        [keyTitleLabel setText:@"手机对谁可见："];
+        [keyTitleLabel setFrame:privateFrame];
+    }else if ([messageUser.points intValue]>0){
+        if (tag == 15){
+            [keyTitleLabel setText:@"贡献值："];
+            [keyTitleLabel setFrame:countFrame];
+        }else if (tag == 16){
+            [keyTitleLabel setText:@"社区排名："];
+            [keyTitleLabel setFrame:messageFrame];
+        }else if (tag == 17){
+            [keyTitleLabel setText:@"综合实力："];
+            [keyTitleLabel setFrame:messageFrame];
+        }else if (tag == 18){
+            [keyTitleLabel setText:@"注册时间："];
+            [keyTitleLabel setFrame:messageFrame];
+        }else if (tag == 19){
+            [keyTitleLabel setText:@"性别："];
+        }
+    }else{
+         if (tag == 15){
+            [keyTitleLabel setText:@"社区排名："];
+            [keyTitleLabel setFrame:messageFrame];
+        }else if (tag == 16){
+            [keyTitleLabel setText:@"综合实力："];
+            [keyTitleLabel setFrame:messageFrame];
+        }else if (tag == 17){
+            [keyTitleLabel setText:@"注册时间："];
+            [keyTitleLabel setFrame:messageFrame];
+        }else if (tag == 18){
+            [keyTitleLabel setText:@"性别："];
+        }
+    }
+    CGSize textSize = [[keyTitleLabel text] sizeWithFont:YIFOURVIEWNAMESIZE];
+    [keyTitleLabel setFrame:CGRectMake(keyTitleLabel.frame.origin.x, (45-textSize.height)/2, textSize.width, textSize.height)];
+    [keyTitleLabel setBackgroundColor:[UIColor clearColor]];
+    [textFildView addSubview:keyTitleLabel];
+    [keyTitleLabel release];
+    
+    
+    textSize = [messageLableString sizeWithFont:YIFOURVIEWNAMESIZE];
+    if (textSize.width > 190) {
+        textSize = CGSizeMake(190, textSize.height);
+    }
+    
+    CGRect middleFrame = CGRectMake(keyTitleLabel.frame.size.width+keyTitleLabel.frame.origin.x, (45-textSize.height)/2, textSize.width, textSize.height);
+//    CGRect middleSecTwoFrame = CGRectMake(keyTitleLabel.frame.size.width+keyTitleLabel.frame.origin.x, (45-15)/2, 220-22, 15);
+//    CGRect middleSecThiFrame = CGRectMake(keyTitleLabel.frame.size.width+keyTitleLabel.frame.origin.x, (45-15)/2, 220-22-25, 15);
+//    CGRect middleFouThiFrame = CGRectMake(keyTitleLabel.frame.size.width+keyTitleLabel.frame.origin.x, (45-15)/2, 220-12, 15);
+    
+    if(tag == 2)//昵称
+    {
+//        [nickTextField setBackgroundColor:[UIColor redColor]];
+        nickTextField = [[UITextField alloc] initWithFrame:CGRectMake(middleFrame.origin.x, middleFrame.origin.y, 210, middleFrame.size.height)];
+        [nickTextField setText:messageLableString];
+        [nickTextField setTag:tag];
+        [nickTextField setBackgroundColor:[UIColor clearColor]];
+        [nickTextField setDelegate:self];
+        [nickTextField setBackgroundColor:[UIColor clearColor]];
+        nickTextField.userInteractionEnabled = NO;
+        [nickTextField setFont:YIFOURVIEWNAMESIZE];
+        [textFildView addSubview:nickTextField];
+        [nickTextField release];
+    }else if (tag == 6)
+    {//手机
+        mobileTextField = [[UITextField alloc] initWithFrame:middleFrame];
+        [mobileTextField setText:messageLableString];
+        [mobileTextField setTag:tag];
+        [mobileTextField setBackgroundColor:[UIColor clearColor]];
+        [mobileTextField setDelegate:self];
+        [mobileTextField setBackgroundColor:[UIColor clearColor]];
+        mobileTextField.userInteractionEnabled = NO;
+        [mobileTextField setFont:YIFOURVIEWNAMESIZE];
+        [textFildView addSubview:mobileTextField];
+        [mobileTextField release];
+    }else if(tag == 5+2 || tag == 6 +2|| tag == 7+2 || tag == 8+2 || tag == 16+2)
+    {//教育信息和社区信息
+//        middleFrame = middleSecTwoFrame;
+        
+        UILabel *messageLable = [[UILabel alloc] initWithFrame:middleFrame];
+        [messageLable setTag:tag];
+        [messageLable setText:messageLableString];
+        [messageLable setFont:YIFOURVIEWNAMESIZE];
+        
+        [messageLable setBackgroundColor:[UIColor clearColor]];
+        if (tag == 5 || tag == 6 || tag == 16) {
+            [messageLable setTextColor:YIPAGEMESSAGELOCKCOLOR];
+        }
+        [textFildView addSubview:messageLable];
+        [messageLable release];
+        
+    }else if (tag == 9 || tag == 10 || tag == 11 || tag == 12)
+    {//个人隐私
+//        middleFrame = middleSecThiFrame;
+        
+        UILabel *messageLable = [[UILabel alloc] initWithFrame:middleFrame];
+        [messageLable setTag:tag];
+        [messageLable setText:messageLableString];
+        [messageLable setFont:YIFOURVIEWNAMESIZE];
+        [messageLable setBackgroundColor:[UIColor clearColor]];
+        [textFildView addSubview:messageLable];
+        [messageLable release];
+        
+    }else if ( (tag == 16 || tag == 17 ) && [messageUser.points intValue]>0)
+    {//社区排名和综合实力
+        CGSize messageSize = [messageLableString sizeWithFont:YIFOURVIEWNAMESIZE];
+        
+        UILabel *messageLable = [[UILabel alloc] initWithFrame:CGRectMake(middleFrame.origin.x, middleFrame.origin.y, messageSize.width, middleFrame.size.height)];
+        [messageLable setTag:tag];
+        [messageLable setText:messageLableString];
+        [messageLable setFont:YIFOURVIEWNAMESIZE];
+        [messageLable setTextColor:YIPAGEMESSAGELOCKCOLOR];
+        [messageLable setBackgroundColor:[UIColor clearColor]];
+//        [messageLable setTextColor:[CommonHelper colorWithHex:@"333333"]];
+        [textFildView addSubview:messageLable];
+        [messageLable release];
+        
+        
+        float jian = 0;
+        if (tag == 16) {
+            jian = ([messageUser.community_sort integerValue]-[messageUser.community_up integerValue]);
+        }else if (tag == 17){
+            jian = ([messageUser.total_up floatValue]-[messageUser.total_sort floatValue]);
+        }
+        
+        int type = 0;
+        if (jian > 0) {
+            type = 1;
+        }else if(jian == 0){
+            type = 2;
+        }else{
+            type = 0;
+        }
+        
+//        jian = 100;
+        
+        UIImageView *imgView = [[UIImageView alloc] initWithFrame:CGRectMake(messageLable.frame.origin.x+messageLable.frame.size.width, (45-14)/2, 12, 14)];
+        if (type == 1) {
+            [imgView setImage:[UIImage imageNamed:@"redarrow_up.png"]];
+        }else if (type == 2){
+//            jian = @"";
+//            [imgView setImage:[UIImage imageNamed:@"nochange.png"]];
+        }else if (type == 0){
+            [imgView setImage:[UIImage imageNamed:@"greenarrow_down.png"]];
+        }
+        
+        [textFildView addSubview:imgView];
+        [imgView release];
+        
+        
+        NSString *resultString = [NSString stringWithFormat:@"%.4f",jian];
+        if (tag == 16) {
+            resultString = [NSString stringWithFormat:@"%.f",jian];
+        }
+        if (jian == 0) {
+            resultString = @"";
+        }
+        
+        messageSize = [resultString sizeWithFont:YIFOURVIEWNAMESIZE];
+        
+        UILabel *result = [[UILabel alloc] initWithFrame:CGRectMake(imgView.frame.origin.x+imgView.frame.size.width, messageLable.frame.origin.y, messageSize.width, messageLable.frame.size.height)];
+        [result setBackgroundColor:[UIColor clearColor]];
+        [result setFont:YIFOURVIEWNAMESIZE];
+        [result setText:resultString];
+        
+        if (type == 1) {
+            [result setTextColor:[CommonHelper color:223 green:48 blue:0 alpha:1]];
+        }else if (type == 2){
+            [result setTextColor:[CommonHelper color:170 green:170 blue:170 alpha:1]];
+        }else if (type == 0){
+            [result setTextColor:[CommonHelper color:51 green:155 blue:18 alpha:1]];
+        }
+        
+        
+        [textFildView addSubview:result];
+        [result release];
+        
+        int miX = 268-(result.frame.origin.x+result.frame.size.width);
+        
+        
+        UIView *mi = [[UIView alloc] initWithFrame:CGRectMake(result.frame.origin.x+result.frame.size.width, 0, miX, 45)];
+        [mi setBackgroundColor:[UIColor clearColor]];
+        [textFildView addSubview:mi];
+        [mi release];
+        middleFrame = CGRectMake(mi.frame.origin.x, 0, mi.frame.size.width, 45);
+    
+    }else if ( (tag == 15 || tag == 16 ) && [messageUser.points intValue]==0){//没贡献值时社区排名和综合实力的tag都-1
+        {
+            CGSize messageSize = [messageLableString sizeWithFont:YIFOURVIEWNAMESIZE];
+            
+            UILabel *messageLable = [[UILabel alloc] initWithFrame:CGRectMake(middleFrame.origin.x, middleFrame.origin.y, messageSize.width, middleFrame.size.height)];
+            [messageLable setTag:tag];
+            [messageLable setText:messageLableString];
+            [messageLable setFont:YIFOURVIEWNAMESIZE];
+            [messageLable setTextColor:YIPAGEMESSAGELOCKCOLOR];
+            [messageLable setBackgroundColor:[UIColor clearColor]];
+            //        [messageLable setTextColor:[CommonHelper colorWithHex:@"333333"]];
+            [textFildView addSubview:messageLable];
+            [messageLable release];
+            
+            
+            float jian = 0;
+            if (tag == 15) {
+                jian = ([messageUser.community_sort integerValue]-[messageUser.community_up integerValue]);
+            }else if (tag == 16){
+                jian = ([messageUser.total_up floatValue]-[messageUser.total_sort floatValue]);
+            }
+            
+            int type = 0;
+            if (jian > 0) {
+                type = 1;
+            }else if(jian == 0){
+                type = 2;
+            }else{
+                type = 0;
+            }
+            
+            //        jian = 100;
+            
+            UIImageView *imgView = [[UIImageView alloc] initWithFrame:CGRectMake(messageLable.frame.origin.x+messageLable.frame.size.width, (45-14)/2, 12, 14)];
+            if (type == 1) {
+                [imgView setImage:[UIImage imageNamed:@"redarrow_up.png"]];
+            }else if (type == 2){
+                //            jian = @"";
+                //            [imgView setImage:[UIImage imageNamed:@"nochange.png"]];
+            }else if (type == 0){
+                [imgView setImage:[UIImage imageNamed:@"greenarrow_down.png"]];
+            }
+            
+            [textFildView addSubview:imgView];
+            [imgView release];
+            
+            
+            NSString *resultString = [NSString stringWithFormat:@"%.4f",jian];
+            if (tag == 15) {
+                resultString = [NSString stringWithFormat:@"%.f",jian];
+            }
+            if (jian == 0) {
+                resultString = @"";
+            }
+            
+            messageSize = [resultString sizeWithFont:YIFOURVIEWNAMESIZE];
+            
+            UILabel *result = [[UILabel alloc] initWithFrame:CGRectMake(imgView.frame.origin.x+imgView.frame.size.width, messageLable.frame.origin.y, messageSize.width, messageLable.frame.size.height)];
+            [result setBackgroundColor:[UIColor clearColor]];
+            [result setFont:YIFOURVIEWNAMESIZE];
+            [result setText:resultString];
+            
+            if (type == 1) {
+                [result setTextColor:[CommonHelper color:223 green:48 blue:0 alpha:1]];
+            }else if (type == 2){
+                [result setTextColor:[CommonHelper color:170 green:170 blue:170 alpha:1]];
+            }else if (type == 0){
+                [result setTextColor:[CommonHelper color:51 green:155 blue:18 alpha:1]];
+            }
+            
+            
+            [textFildView addSubview:result];
+            [result release];
+            
+            int miX = 268-(result.frame.origin.x+result.frame.size.width);
+            
+            
+            UIView *mi = [[UIView alloc] initWithFrame:CGRectMake(result.frame.origin.x+result.frame.size.width, 0, miX, 45)];
+            [mi setBackgroundColor:[UIColor clearColor]];
+            [textFildView addSubview:mi];
+            [mi release];
+            middleFrame = CGRectMake(mi.frame.origin.x, 0, mi.frame.size.width, 45);
+            
+        }
+    }
+    else if (tag == 13)
+    {//社区信息
+//        middleFrame = middleFouThiFrame;
+        
+        UILabel *messageLable = [[UILabel alloc] initWithFrame:middleFrame];
+        [messageLable setTag:tag];
+        [messageLable setText:messageLableString];
+        [messageLable setFont:YIFOURVIEWNAMESIZE];
+        [messageLable setBackgroundColor:[UIColor clearColor]];
+        [textFildView addSubview:messageLable];
+        [messageLable release];
+    
+    }else{
+        UILabel *messageLable = [[UILabel alloc] initWithFrame:middleFrame];
+        [messageLable setTag:tag];
+        [messageLable setText:messageLableString];
+        [messageLable setFont:YIFOURVIEWNAMESIZE];
+        if (tag == 0||tag == 1||tag == 3||tag == 7||tag == 8||tag == 16||tag == 17||tag == 18) {
+            [messageLable setTextColor:YIPAGEMESSAGELOCKCOLOR];
+        }
+        [messageLable setBackgroundColor:[UIColor clearColor]];
+        [textFildView addSubview:messageLable];
+        [messageLable release];
+    }
+    
+    if (!ifOtherPeople) {
+        UIButton *editImg = [[UIButton alloc] initWithFrame:CGRectMake(320-(50)-10, (45-48)/2, 50, 48)];
+        [editImg addTarget:self action:@selector(buttonAction:) forControlEvents:UIControlEventTouchUpInside];
+        [editImg setTag:tag];
+        if ((tag == 0 ||tag == 1 ||tag == 3 || tag == 7 || tag == 8  || tag == 16 || tag == 17|| tag == 18) && [messageUser.points intValue]>0 )
+        {
+            [editImg setImage:[UIImage imageNamed:@"info_lock.png"] forState:UIControlStateNormal];
+            [editImg setUserInteractionEnabled:NO];
+        }else if ((tag == 0 ||tag == 1 ||tag == 3 || tag == 7 || tag == 8  || tag == 15 || tag == 16|| tag == 17) && [messageUser.points intValue]==0 ){//贡献值==0时 >=16的tag都-1
+            [editImg setImage:[UIImage imageNamed:@"info_lock.png"] forState:UIControlStateNormal];
+            [editImg setUserInteractionEnabled:NO];
+        }
+        else if (tag == 6 || tag == 15){
+            [editImg setImage:[UIImage imageNamed:@"info_enter_a.png"] forState:UIControlStateNormal];
+        }
+        else
+        {
+            [editImg setBackgroundImage:[UIImage imageNamed:@"info_edit_a.png"] forState:UIControlStateNormal];
+            [editImg setBackgroundImage:[UIImage imageNamed:@"info_edit_b"] forState:UIControlStateHighlighted];
+        }
+        
+        [textFildView addSubview:editImg];
+        [editImg release];
+    }
+    
+
+    //线的img
+    UIImageView *line = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"dotline1.png"]];
+    [line setFrame:CGRectMake(0, 44, 320, 2)];
+    [textFildView addSubview:line];
+    [line release];
+//    CGSize textSize = [[nickTextField text] sizeWithFont:[UIFont systemFontOfSize:12.f]];
+    if (tag == 1) {
+        textFieldHidden = [[MessageTextFiledClickView alloc] initWithFrame:CGRectMake(0, 0, 320, 400)];
+        [textFieldHidden setTag:tag];
+        [textFieldHidden setHidden:YES];
+        [self.view addSubview:textFieldHidden];
+        [textFieldHidden release];
+    }
+    return textFildView;
+}
+
+//改手机号码的跳转
+- (void)forChangePhone{
+    PersonalPageChangePhoneViewController *p = [[PersonalPageChangePhoneViewController alloc] init];
+//    UINavigationController *controllerr = [[UINavigationController alloc] initWithRootViewController:p];
+//    [controllerr setNavigationBarHidden:YES];
+//    [self presentModalViewController:controllerr animated:YES];
+    [self.navigationController pushViewController:p animated:YES];
+    [p release];
+    
+    [header rightButton].hidden=YES;
+
+//    [controllerr release];
+}
+
+//贡献值跳转
+- (void)forContribution{
+    PersonalPageContributionViewController *contribution = [[PersonalPageContributionViewController alloc] init:messageUser.points];
+//    UINavigationController *controller = [[UINavigationController alloc] initWithRootViewController:contribution];
+//    [controller setNavigationBarHidden:YES];
+//    [self presentModalViewController:controller animated:YES];
+//    [controller release];
+    
+    [self.navigationController pushViewController:contribution animated:YES];
+//    [self.navigationController setNavigationBarHidden:]
+    [contribution release];
+    
+    [header rightButton].hidden=YES;
+}
+
+
+//改昵称和电话的方法
+- (void)buttonAction:(id)sender{
+    [[CommonHelper shareInstance]playSound:5];
+    UIButton *send = (UIButton *)sender;
+    YBLogInfo(@"sendTag = %d", send.tag);
+    
+    btTag = send.tag;//付值操作Textfiled。tag
+    [[header rightButton] setHidden:NO];
+    [[header rightButton] setTitle:@"保存" forState:UIControlStateNormal];
+    [[header rightButton] addTarget:self action:@selector(cancelPagePicker) forControlEvents:UIControlEventTouchUpInside];
+    if (btTag == 2) {//昵称
+        mobileTextField.userInteractionEnabled = NO;
+        [textFieldHidden setHidden:NO];
+        nickTextField.userInteractionEnabled = YES;
+        [nickTextField becomeFirstResponder];
+        
+    }else if (btTag == 4){//生日
+        pickerView = [[PagePickerView alloc] initWithdelegate:CGRectMake(0, 50, 320, 200) style:PagePickerViewWithDate delegate:self];
+        [_tableView setUserInteractionEnabled:NO];
+        [pickerView showInView:self.view initString:/*messageUser*/[[YiBanLocalDataManager sharedInstance] currentUser].birthday];
+    
+    }else if (btTag == 5){//家乡
+        pickerView = [[PagePickerView alloc] initWithdelegate:CGRectMake(0, 50, 320, 200) style:PagePickerViewWithAreas delegate:self];
+        [_tableView setUserInteractionEnabled:NO];
+        [pickerView showInView:self.view initString:/*messageUser*/[[YiBanLocalDataManager sharedInstance] currentUser].hometown];
+    
+    }else if(btTag == 6){//手机
+        [self forChangePhone];
+        
+    }else if (btTag == 9){//所在学院
+        [self returnCollege:/*messageUser*/[[YiBanLocalDataManager sharedInstance] currentUser].user_schoolid];
+        
+    }else if (btTag == 10){//入学年份
+        pickerView = [[PagePickerView alloc] initWithdelegate:CGRectMake(0, 50, 320, 200) style:PagePickerViewWithGetInSchool delegate:self];
+        [_tableView setUserInteractionEnabled:NO];
+        [pickerView showInView:self.view initString:/*messageUser*/[[YiBanLocalDataManager sharedInstance] currentUser].joinyear];
+    }else if (btTag == 11){//个人主页
+        
+        NSString *type = PICKERPRIVATEAP;
+        if ([/*messageUser*/[[YiBanLocalDataManager sharedInstance] currentUser].visit_private isEqualToString:@"0"]) {
+            type = PICKERPRIVATEAP;
+        }else if ([/*messageUser*/[[YiBanLocalDataManager sharedInstance] currentUser].visit_private isEqualToString:@"1"]){
+            type = PICKERPRIVATEOF;
+        }else if ([/*messageUser*/[[YiBanLocalDataManager sharedInstance] currentUser].visit_private isEqualToString:@"2"]){
+            type = PICKERPRIVATEOM;
+        }else if ([/*messageUser*/[[YiBanLocalDataManager sharedInstance] currentUser].visit_private isEqualToString:@"3"]){
+            type = PICKERPRIVATEFSS;
+        }
+        
+        pickerView = [[PagePickerView alloc] initWithdelegate:CGRectMake(0, 50, 320, 200) style:PagePickerViewWithPageWhoCanSee delegate:self];
+        [_tableView setUserInteractionEnabled:NO];
+        [pickerView showInView:self.view initString:type];
+    }else if (btTag == 12){//生日对谁
+        
+        NSString *type = PICKERPRIVATEOM;
+        if ([/*messageUser*/[[YiBanLocalDataManager sharedInstance] currentUser].birthday_private isEqualToString:@"0"]) {
+            type = PICKERPRIVATEOM;
+        }else if ([/*messageUser*/[[YiBanLocalDataManager sharedInstance] currentUser].birthday_private isEqualToString:@"1"]){
+            type = PICKERPRIVATEAP;
+        }else if ([/*messageUser*/[[YiBanLocalDataManager sharedInstance] currentUser].birthday_private isEqualToString:@"2"]){
+            type = PICKERPRIVATESM;
+        }else if ([/*messageUser*/[[YiBanLocalDataManager sharedInstance] currentUser].birthday_private isEqualToString:@"3"]){
+            type = PICKERPRIVATESD;
+        }
+        
+        pickerView = [[PagePickerView alloc] initWithdelegate:CGRectMake(0, 50, 320, 200) style:PagePickerViewWithBirthdayWhoCanSee delegate:self];
+        [_tableView setUserInteractionEnabled:NO];
+        [pickerView showInView:self.view initString:type];
+    }else if (btTag == 13){//家乡对谁
+        
+        NSString *type = PICKERPRIVATEOM;
+        if ([/*messageUser*/[[YiBanLocalDataManager sharedInstance] currentUser].hometown_private isEqualToString:@"0"]) {
+            type = PICKERPRIVATEOM;
+        }else if ([/*messageUser*/[[YiBanLocalDataManager sharedInstance] currentUser].hometown_private isEqualToString:@"1"]){
+            type = PICKERPRIVATEAP;
+        }else if ([/*messageUser*/[[YiBanLocalDataManager sharedInstance] currentUser].hometown_private isEqualToString:@"2"]){
+            type = PICKERPRIVATEFSS;
+        }else if ([/*messageUser*/[[YiBanLocalDataManager sharedInstance] currentUser].hometown_private isEqualToString:@"3"]){
+            type = PICKERPRIVATEOF;
+        }
+        
+        pickerView = [[PagePickerView alloc] initWithdelegate:CGRectMake(0, 50, 320, 200) style:PagePickerViewWithHometownWhoCanSee delegate:self];
+        [_tableView setUserInteractionEnabled:NO];
+        [pickerView showInView:self.view initString:type];
+    }else if (btTag == 14){//手机对谁
+        
+        NSString *type = PICKERPRIVATEOM;
+        if ([/*messageUser*/[[YiBanLocalDataManager sharedInstance] currentUser].phone_private isEqualToString:@"0"]) {
+            type = PICKERPRIVATEOM;
+        }else if ([/*messageUser*/[[YiBanLocalDataManager sharedInstance] currentUser].phone_private isEqualToString:@"1"]){
+            type = PICKERPRIVATEAP;
+        }else if ([/*messageUser*/[[YiBanLocalDataManager sharedInstance] currentUser].phone_private isEqualToString:@"2"]){
+            type = PICKERPRIVATEFSS;
+        }else if ([/*messageUser*/[[YiBanLocalDataManager sharedInstance] currentUser].phone_private isEqualToString:@"3"]){
+            type = PICKERPRIVATEOF;
+        }
+        
+        pickerView = [[PagePickerView alloc] initWithdelegate:CGRectMake(0, 50, 320, 200) style:PagePickerViewWithMobileWhoCansee delegate:self];
+        [_tableView setUserInteractionEnabled:NO];
+        [pickerView showInView:self.view initString:type];
+    }else if (btTag == 15){//贡献值
+        [self forContribution];
+    }
+    
+}
+
+#pragma mark - yibanalertViewdelegate
+- (void)YibanAlertViewCancelButton:(YIBanAlertView *)alertView
+{
+    [alertView setHidden:YES];
+}
+- (void)YibanAlertViewConfirmButton:(YIBanAlertView *)alertView
+{
+
+    [alertView setHidden:YES];
+}
+
+#pragma mark - textfileddelegate
+
+
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string{
+//    YBLogInfo(@"[textField.text dataUsingEncoding:NSUTF8StringEncoding].length === %d", [textField.text dataUsingEncoding:NSUTF8StringEncoding].length);
+    
+//    [textField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]]
+//    NSInteger length = [CommonHelper convertToInt:[textField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]]];
+//    if (btTag == 1) {
+//        if (length > TEXTLENGTHMAX && string.length > 0) {
+//            return NO;
+//        }
+//    }
+
+    if ([string isEqualToString:@"\n"]) {
+        if (btTag == 1) {
+            [nickTextField resignFirstResponder];
+            [nickTextField setUserInteractionEnabled:NO];
+        
+        }else if(btTag == 4){
+            [mobileTextField resignFirstResponder];
+            [mobileTextField setUserInteractionEnabled:NO];
+            if (![messageUser.name isEqualToString:[textField text]]) {
+                [self changeUserNick:[textField text]];
+            }
+        }
+        
+    }
+    
+    
+    return YES;
+}
+
+- (void)textFieldDidEndEditing:(UITextField *)textField
+{
+    YBLogInfo(@"textField == %@", textField.text);
+    YBLogInfo(@"textField.tag == %d", textField.tag);
+    
+    NSString *rex = @"[ ,，\\`,\\｀,\\~,\\～,\\!,\\！,\\@,\\@,\\#,\\＃,\\$,\\¥,\\%,\\％,\\^,\\⋯⋯,\\+,\\＋,\\*,\\＊,\\&,\\—,\\\\,\\、,\\/,\\／,\\?,\\？,\\|,\\｜,\\:,\\：,\\.,\\。,\\<,\\《,\\>,\\》,\\{,\\｛,\\},\\｝,\\(,\\（,\\),\\）,\\',\\‘,\\;,\\；,\\=,\\＝,\"]";
+    BOOL isHaveSomg = [[nickTextField text] isMatchedByRegex:rex];
+    if (isHaveSomg)
+    {
+        [CommonHelper alertView:@"昵称不能含有特殊字符" tag:1 warning:YES view:self.view alertdelegate:self];
+        [nickTextField setText:[[[YiBanLocalDataManager sharedInstance] currentUser] name]];
+    }else
+    {
+        NSInteger length = [CommonHelper convertToInt:[textField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]]];
+        
+        if (length > 16) {
+            [CommonHelper alertView:@"帐户字符长度超过16个字符" tag:1 warning:YES view:self.view alertdelegate:self];
+            [nickTextField setText:[[[YiBanLocalDataManager sharedInstance] currentUser] name]];
+        }else if(length < 4){
+            [nickTextField setText:[[[YiBanLocalDataManager sharedInstance] currentUser] name]];
+        }else{
+            if (![/*messageUser*/[[YiBanLocalDataManager sharedInstance] currentUser].name isEqualToString:[textField text]]) {
+                [self changeUserNick:[textField text]];
+            }
+            
+        }
+    }
+    
+    
+    
+    /*
+    for (int i = [textField.text length]; i > 0; i--) {
+        NSInteger length = [CommonHelper convertToInt:[textField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]]];
+        
+        if (length <= 16) {
+//            break;
+        }
+//        textField.text = [textField.text substringToIndex:i];
+    }*/
+
+    
+}
+
+NSString *changeNick = @"";
+//改昵称
+- (void)changeUserNick:(NSString *)submitString{
+    //请求网络  改用户名
+    changeNick = submitString;
+    if (![changeNick isEqualToString:[[[YiBanLocalDataManager sharedInstance] currentUser] name]]) {
+        NSMutableDictionary *params = [Rrequest_Data user_setnick:submitString];
+        HttpHelp * help = [[HttpHelp alloc]init:self progress_show:TRUE page:1];
+        [help startHttpEX_For_Tag:USERSETNICK :params isForTag:YES];
+        [help setTag:@"1"];
+        
+        [self addHttpHelpObjToArray:help];
+    }
+}
+
+//获得所在院校
+-  (void)returnCollege:(NSString *)collegeId{
+    if (![collegeId isEqualToString:@"0"])
+    {
+        NSMutableDictionary *params = [Rrequest_Data school_collegelist:collegeId];
+        HttpHelp *help = [[HttpHelp alloc] init:self progress_show:YES page:1];
+        [help startHttpEX_For_Tag:SCHOOLCOLLEGELIST :params isForTag:YES];
+        [help setTag:@"2"];
+        
+        [self addHttpHelpObjToArray:help];
+    }else
+    {
+        [CommonHelper alertView:@"请核对您的学校信息" tag:200 warning:YES view:self.view alertdelegate:self];
+    }
+    
+
+}
+
+//修改个人资料
+- (void)changeMyMessage:(NSString *)value type:(NSInteger)type tag:(NSString *)tag{
+    NSMutableDictionary *params = [Rrequest_Data user_setbase:value type:type];
+    HttpHelp *help = [[HttpHelp alloc] init:self progress_show:YES page:1];
+    [help startHttpEX_For_Tag:USERSETBASE :params isForTag:YES];
+    [help setTag:tag];
+    
+    [self addHttpHelpObjToArray:help];
+
+}
+//修改个人隐私
+- (void)changePrivate:(NSString *)value type:(NSInteger)type tag:(NSString *)tag{
+    NSMutableDictionary *params = [Rrequest_Data user_setdesc:value type:type];
+    HttpHelp *help = [[HttpHelp alloc] init:self progress_show:YES page:1];
+    [help startHttpEX_For_Tag:USERSETPRIVATE :params isForTag:YES];
+    [help setTag:tag];
+    
+    [self addHttpHelpObjToArray:help];
+
+}
+
+#pragma mark - httpDelegate
+-(void)Http_resultFor_tag:(NSDictionary *)data :(NSString *)message :(HttpHelp *)help{
+//    [[header rightButton] setHidden:YES];
+    if ([[help tag] isEqualToString:@"1"])
+    {//改昵称
+        NSString *result = [data objectForKey:@"result"];
+        if ([result isEqualToString:@"1"]) {
+            [[[YiBanLocalDataManager sharedInstance] currentUser] setName:changeNick];
+            messageUser=[[YiBanLocalDataManager sharedInstance] currentUser];
+            [[NSNotificationCenter defaultCenter]postNotificationName:@"setUseName" object:nickTextField.text];
+            [Static alertView:self.view msg:@"保存成功"];
+//            [CommonHelper alertView:@"修改昵称成功" tag:20 warning:YES view:self.view alertdelegate:self];
+        }else{
+            [CommonHelper alertView:@"修改昵称失败" tag:20 warning:YES view:self.view alertdelegate:self];
+        }
+    }
+    else if ([[help tag] isEqualToString:@"2"])
+    {//获得院校列表
+        [[header rightButton] setHidden:NO];
+        
+        college_list_all *collegeList = (college_list_all *)[data initDictionaryTo:[college_list_all class]];
+        pickerView = [[PagePickerView alloc] initWithdelegate:CGRectMake(0, 50, 320, 200) style:PagePickerViewWithCollege delegate:self];
+        [pickerView setCollegeList:collegeList];
+        [_tableView setUserInteractionEnabled:NO];
+        [pickerView showInView:self.view initString:/*messageUser*/[[YiBanLocalDataManager sharedInstance] currentUser].college];
+        [collegeList release];
+    }
+    else if ([[help tag] isEqualToString:@"3"])
+    {//修改家乡
+        NSString *result = [data objectForKey:@"result"];
+        if ([result isEqualToString:@"1"]) {
+            [Static alertView:self.view msg:@"保存成功"];
+            [[[YiBanLocalDataManager sharedInstance] currentUser] setHometown:_pickerModel.allCity];
+            messageUser=[[YiBanLocalDataManager sharedInstance] currentUser];
+
+            [_tableView reloadData];
+        }
+    }
+    else if ([[help tag] isEqualToString:@"4"])
+    {//修改生日
+        NSString *result = [data objectForKey:@"result"];
+        if ([result isEqualToString:@"1"]) {
+            [Static alertView:self.view msg:@"保存成功"];
+            YBLogInfo(@"_pickerModel.yyyymmdd === %@",_pickerModel.yyyymmdd);
+            [[[YiBanLocalDataManager sharedInstance] currentUser] setBirthday:_pickerModel.yyyymmdd];
+            [[[YiBanLocalDataManager sharedInstance] currentUser] setSx:_pickerModel.monthValue];
+            messageUser=[[YiBanLocalDataManager sharedInstance] currentUser];
+
+            [_tableView reloadData];
+        }
+    }
+    else if ([[help tag] isEqualToString:@"5"])
+    {//修改学院
+        NSString *result = [data objectForKey:@"result"];
+        if ([result isEqualToString:@"1"]) {
+            [Static alertView:self.view msg:@"保存成功"];
+            [[[YiBanLocalDataManager sharedInstance] currentUser] setCollege:_pickerModel.college];
+            messageUser=[[YiBanLocalDataManager sharedInstance] currentUser];
+
+            [_tableView reloadData];
+        }
+    }
+    else if ([[help tag] isEqualToString:@"6"])
+    {//修改入学时间
+        NSString *result = [data objectForKey:@"result"];
+        if ([result isEqualToString:@"1"]) {
+            [Static alertView:self.view msg:@"保存成功"];
+            [[[YiBanLocalDataManager sharedInstance] currentUser] setJoinyear:_pickerModel.getInYear];
+            messageUser=[[YiBanLocalDataManager sharedInstance] currentUser];
+
+            [_tableView reloadData];
+        }
+    }
+    else if ([[help tag] isEqualToString:@"7"])
+    {//修改主页权限
+        NSString *result = [data objectForKey:@"result"];
+        if ([result isEqualToString:@"1"]) {
+            [Static alertView:self.view msg:@"保存成功"];
+   
+            [[[YiBanLocalDataManager sharedInstance] currentUser] setVisit_private:_pickerModel.privateType];
+            messageUser=[[YiBanLocalDataManager sharedInstance] currentUser];
+
+            [_tableView reloadData];
+        }
+    }
+    else if ([[help tag] isEqualToString:@"8"])
+    {//修改生日权限
+        NSString *result = [data objectForKey:@"result"];
+        if ([result isEqualToString:@"1"]) {
+            [Static alertView:self.view msg:@"保存成功"];
+            [[[YiBanLocalDataManager sharedInstance] currentUser] setBirthday_private:_pickerModel.privateType];
+            messageUser=[[YiBanLocalDataManager sharedInstance] currentUser];
+
+            [_tableView reloadData];
+        }
+    }
+    else if ([[help tag] isEqualToString:@"9"])
+    {//修改家乡权限
+        NSString *result = [data objectForKey:@"result"];
+        if ([result isEqualToString:@"1"]) {
+            [Static alertView:self.view msg:@"保存成功"];
+            [[[YiBanLocalDataManager sharedInstance] currentUser] setHometown_private:_pickerModel.privateType];
+            messageUser=[[YiBanLocalDataManager sharedInstance] currentUser];
+
+            [_tableView reloadData];
+        }
+    }
+    else if ([[help tag] isEqualToString:@"10"])
+    {//修改手机权限
+        NSString *result = [data objectForKey:@"result"];
+        if ([result isEqualToString:@"1"]) {
+            [Static alertView:self.view msg:@"保存成功"];
+            [[[YiBanLocalDataManager sharedInstance] currentUser] setPhone_private:_pickerModel.privateType];
+            messageUser=[[YiBanLocalDataManager sharedInstance] currentUser];
+
+            [_tableView reloadData];
+        }
+    }
+    
+    
+    [help release];
+}
+
+- (void)requestFail:(NSDictionary *)data message:(NSString *)message http:(HttpHelp *)help{
+//    [[header rightButton] setHidden:YES];
+    [Static alertView:self.view msg:message];
+    if ([[help tag] isEqualToString:@"1"]) {
+        [[[YiBanLocalDataManager sharedInstance] currentUser] setName:[[YiBanLocalDataManager sharedInstance] currentUser].name];//为了回调KVO
+
+        [nickTextField setText:[[[YiBanLocalDataManager sharedInstance] currentUser] name]];
+    }
+    
+    [help release];
+}
+
+#pragma mark - pagepickerDelegate
+- (void)pickerDidEnd:(PagePickerView *)picker pagePickertype:(PagePickerViewStyle)type{
+    YBLogInfo(@"picker === %@", picker.pageModel);
+    YBLogInfo(@"picker.pageModel.privateType === %@", picker.pageModel.privateType);
+    /*self.pickerModel*/  _pickerModel=picker.pageModel;
+    [_pickerModel retain];//因为picker被removeFromSuperView了
+    NSString *stringType = @"0";
+    switch (type) {
+        case 0:
+            [self changeMyMessage:picker.pageModel.allCity type:1 tag:@"3"];
+            break;
+        case 1:
+            [self changeMyMessage:picker.pageModel.yyyymmdd type:0 tag:@"4"];
+            break;
+        case 2:
+            [self changeMyMessage:picker.pageModel.college type:2 tag:@"5"];
+            break;
+        case 3:
+            [self changeMyMessage:picker.pageModel.getInYear type:3 tag:@"6"];
+            break;
+        case 4:
+            
+            if ([picker.pageModel.privateType isEqualToString:PICKERPRIVATEAP]) {
+                stringType = @"0";
+            }else if ([picker.pageModel.privateType isEqualToString:PICKERPRIVATEFSS]){
+                stringType = @"3";
+            }else if ([picker.pageModel.privateType isEqualToString:PICKERPRIVATEOF]){
+                stringType = @"1";
+            }else if ([picker.pageModel.privateType isEqualToString:PICKERPRIVATEOM]){
+                stringType = @"2";
+            }//个人主页
+            /*picker.pageModel*/_pickerModel.privateType = stringType;
+            [self changePrivate:stringType type:0 tag:@"7"];
+            break;
+        case 5:
+            if ([picker.pageModel.privateType isEqualToString:PICKERPRIVATEAP]) {
+                stringType = @"1";
+            }else if ([picker.pageModel.privateType isEqualToString:PICKERPRIVATESM]){
+                stringType = @"2";
+            }else if ([picker.pageModel.privateType isEqualToString:PICKERPRIVATESD]){
+                stringType = @"3";
+            }else if ([picker.pageModel.privateType isEqualToString:PICKERPRIVATEOM]){
+                stringType = @"0";
+            }//生日
+            /*picker.pageModel*/_pickerModel.privateType = stringType;
+            [self changePrivate:stringType type:1 tag:@"8"];
+            break;
+        case 6:
+            if ([picker.pageModel.privateType isEqualToString:PICKERPRIVATEAP]) {
+                stringType = @"1";
+            }else if ([picker.pageModel.privateType isEqualToString:PICKERPRIVATEFSS]){
+                stringType = @"2";
+            }else if ([picker.pageModel.privateType isEqualToString:PICKERPRIVATEOF]){
+                stringType = @"3";
+            }else if ([picker.pageModel.privateType isEqualToString:PICKERPRIVATEOM]){
+                stringType = @"0";
+            }//家乡
+           /*picker.pageModel*/_pickerModel.privateType = stringType;
+            [self changePrivate:stringType type:2 tag:@"9"];
+            break;
+        case 7:
+            if ([picker.pageModel.privateType isEqualToString:PICKERPRIVATEAP]) {
+                stringType = @"1";
+            }else if ([picker.pageModel.privateType isEqualToString:PICKERPRIVATEFSS]){
+                stringType = @"2";
+            }else if ([picker.pageModel.privateType isEqualToString:PICKERPRIVATEOF]){
+                stringType = @"3";
+            }else if ([picker.pageModel.privateType isEqualToString:PICKERPRIVATEOM]){
+                stringType = @"0";
+            }//手机
+            /*picker.pageModel*/_pickerModel.privateType = stringType;
+            [self changePrivate:stringType type:3 tag:@"10"];
+            break;
+            
+        default:
+            break;
+    }
+    
+}
+
+//取消pickerview
+- (void)cancelPagePicker
+{
+//    if (pickerView.isShowView)
+    {
+        [_tableView setUserInteractionEnabled:YES];
+        [pickerView cancelPicker];
+        [pickerView setDelegate:nil];
+        [pickerView release];
+        pickerView = nil;
+        
+        [[header rightButton] setHidden:YES];
+    }
+    
+}
+
+
+#pragma mark - uitouchdelegate
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event{
+    [super touchesBegan:touches withEvent:event];
+    [self cancelPagePicker];
+    UITouch *touch = [[touches allObjects] objectAtIndex:0];
+    if ([touch.view isKindOfClass:[MessageTextFiledClickView class]]) {
+        [nickTextField resignFirstResponder];
+        [nickTextField setUserInteractionEnabled:NO];
+        [textFieldHidden setHidden:YES];
+    }
+}
+
+-(void)addHttpHelpObjToArray:(HttpHelp *)http
+{
+//    if (!_muA_HttpHelps) {
+//        _muA_HttpHelps=[[NSMutableArray alloc]initWithCapacity:10];
+//    }
+//    [_muA_HttpHelps addObject:http];
+}
+
+-(void)releaseHttpHelps
+{
+//    if (_muA_HttpHelps) {
+//        for (HttpHelp *http in _muA_HttpHelps) {
+//            YBLogInfo(@"%d",[http retainCount]);
+//            http.delagate=nil;
+//        }
+//        _muA_HttpHelps=nil;
+//    }
+}
+
+#pragma mark- KVO
+//观察者观察到某属性后回调的操作
+- (void) observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
+{
+//    YBLogInfo(@"%@",((PersonalPageMessageViewController *)context));
+//    YBLogInfo(@"%@",self);
+    if([keyPath isEqualToString:@"name"] /*&& (self==((PersonalPageMessageViewController *)context))*/){
+        
+        [_tableView setUserInteractionEnabled:YES];
+        [[header rightButton] setHidden:YES];
+        changeNick=[change objectForKey:@"new"];
+        
+        [nickTextField setText:changeNick];
+//        nickTextField.userInteractionEnabled=NO;
+//        [nickTextField resignFirstResponder];
+
+//        [((PersonalPageMessageViewController *)context)._tableView reloadData];
+
+        [DeBug removeObserver:self fromTarget:[[YiBanLocalDataManager sharedInstance] currentUser] forKeyPath:@"name"];
+    } else{//将不能处理的 key 转发给 super 的 observeValueForKeyPath 来处理
+        [super observeValueForKeyPath:keyPath
+                             ofObject:object
+                               change:change
+                              context:context];
+    }
+    
+}
+
+@end

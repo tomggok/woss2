@@ -1,0 +1,39 @@
+//
+//  leftViewController.h
+//  splitViewTest
+//
+//  Created by zeng tom on 12-10-8
+//  Copyright 2012 __MyCompanyName__. All rights reserved.
+//
+
+#import <UIKit/UIKit.h>
+#import "HttpCon_delegate.h"
+#import "YIBanAlertView.h"
+#import "YiBanHeadBarView.h"
+
+//左视图(动态,主页等列表页)
+@interface leftViewController : UIViewController<UITableViewDelegate, UITableViewDataSource,HttpCon_delegate,YIBanAlertViewDelegate, UIWebViewDelegate>
+{
+    UILabel *labelName;
+    UIImageView* imageViewUser;
+    UITableView *leftList;
+    UIButton *btnLogout;
+    UIButton *viewCover;
+    NSMutableArray *arrAppList;
+    UIWebView *webview;
+    YiBanHeadBarView *bar;
+}
+@property(retain,nonatomic)UILabel *labelName;
+@property(retain,nonatomic)UIImageView* imageViewUser;
+@property(retain,nonatomic)UIButton *btnLogout;
+@property(retain,nonatomic)NSMutableArray *arrAppList;
+
++(leftViewController *)share;
+- (void)releaseShare;
+- (void)unVerifyUser;
+- (void)removeVerifyWarning;
+
+//注销操作
+- (void)loginOutAction:(BOOL)ifSessID;
+
+@end

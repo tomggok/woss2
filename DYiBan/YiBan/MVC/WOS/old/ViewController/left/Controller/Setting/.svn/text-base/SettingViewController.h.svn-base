@@ -1,0 +1,16 @@
+//
+//  SettingViewController.h
+//  Yiban
+//
+//  Created by NewM on 12-12-25.
+//
+//
+
+#import <UIKit/UIKit.h>
+#import "HttpHelp.h"
+#import "YIBanAlertView.h"
+@interface SettingViewController : UIViewController<UITableViewDataSource, UITableViewDelegate, HttpCon_delegate, YIBanAlertViewDelegate>{
+    UITableView *settingTableView;
+}
+
+@end

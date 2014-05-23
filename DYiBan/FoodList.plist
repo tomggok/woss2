@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>New item</key>
+	<dict>
+		<key>川菜</key>
+		<string>101</string>
+		<key>北京菜</key>
+		<string>102</string>
+		<key>鲁菜</key>
+		<string>103</string>
+		<key>湘菜</key>
+		<string>104</string>
+		<key>江浙菜</key>
+		<string>105</string>
+		<key>粤菜</key>
+		<string>106</string>
+		<key>湖北菜</key>
+		<string>107</string>
+		<key>西北菜</key>
+		<string>108</string>
+		<key>云南菜</key>
+		<string>109</string>
+		<key>贵州菜</key>
+		<string>110</string>
+		<key>其他中餐</key>
+		<string>111</string>
+		<key>中餐</key>
+		<string>100</string>
+		<key>西餐</key>
+		<string>200</string>
+		<key>牛排</key>
+		<string>201</string>
+		<key>比萨</key>
+		<string>202</string>
+		<key>日本料理</key>
+		<string>203</string>
+		<key>韩国料理</key>
+		<string>204</string>
+		<key>拉美烧烤</key>
+		<string>205</string>
+		<key>其他西餐</key>
+		<string>206</string>
+		<key>小吃快餐</key>
+		<string>300</string>
+		<key>快餐/简餐</key>
+		<string>301</string>
+		<key>麻辣烫</key>
+		<string>302</string>
+		<key>饺子</key>
+		<string>303</string>
+		<key>粥店</key>
+		<string>304</string>
+		<key>包子</key>
+		<string>305</string>
+		<key>其他小吃</key>
+		<string>306</string>
+		<key>火锅海鲜</key>
+		<string>400</string>
+		<key>火锅</key>
+		<string>401</string>
+		<key>羊蝎子</key>
+		<string>402</string>
+		<key>海鲜</key>
+		<string>403</string>
+		<key>甜点饮料</key>
+		<string>500</string>
+		<key>面包西点</key>
+		<string>501</string>
+		<key>冰淇淋</key>
+		<string>502</string>
+		<key>甜品饮料</key>
+		<string>503</string>
+	</dict>
+</dict>
+</plist>

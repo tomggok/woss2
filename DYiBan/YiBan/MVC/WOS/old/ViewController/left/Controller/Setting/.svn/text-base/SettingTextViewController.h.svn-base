@@ -1,0 +1,17 @@
+//
+//  SettingTextViewController.h
+//  Yiban
+//
+//  Created by NewM on 12-11-20.
+//
+//
+
+#import <UIKit/UIKit.h>
+
+@interface SettingTextViewController : UIViewController
+{
+    NSInteger textTag;
+}
+@property (nonatomic, assign)NSInteger textTag;
+
+@end

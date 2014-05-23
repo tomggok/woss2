@@ -1,0 +1,68 @@
+//
+//  PersonalPageViewController.m
+//  Yiban
+//
+//  Created by NewM on 12-11-21.
+//
+//
+
+#import "PersonalPageViewController.h"
+
+@implementation PersonalPageViewController
+
+- (void)dealloc{
+    [super dealloc];
+}
+
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+{
+    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    if (self) {
+        // Custom initialization
+    }
+    return self;
+}
+
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+	// Do any additional setup after loading the view.
+}
+
+-(void)setParameter:(NSString *)userid bOtherPeople:(BOOL)bOtherPeople bPush:(BOOL)bPush bPresent:(BOOL)bPresent bRight:(BOOL)bRight{
+    personalView = [[PersonalPageView alloc] initWithFrame:self.view.bounds Userid:userid bOtherPeople:bOtherPeople bPush:bPush bPresent:bPresent bRight:bRight];
+    personalView.delegate = self;
+    [self.view addSubview:personalView];
+    [personalView release];
+}
+
+
+- (void)doleft{
+    [[CommonHelper shareInstance] playSound:5];
+    
+    [[LLSplitViewController getmainController].navigationController popViewControllerAnimated:true];
+}
+
+-(void)dodimiss{
+    [[CommonHelper shareInstance] playSound:5];
+    
+    [[LLSplitViewController getmainController].navigationController popViewControllerAnimated:YES];
+}
+
+- (void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    //    [send setUserInteractionEnabled:YES];
+}
+
+- (void)viewDidAppear:(BOOL)animated{
+    [super viewDidAppear:animated];
+}
+
+- (void)didReceiveMemoryWarning
+{
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
+@end

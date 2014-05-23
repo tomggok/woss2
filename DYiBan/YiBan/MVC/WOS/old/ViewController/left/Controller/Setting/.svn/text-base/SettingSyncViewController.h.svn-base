@@ -1,0 +1,16 @@
+//
+//  SettingSyncViewController.h
+//  Yiban
+//
+//  Created by NewM on 12-12-5.
+//
+//
+
+#import <UIKit/UIKit.h>
+#import "HttpHelp.h"
+@interface SettingSyncViewController : UIViewController<UITableViewDataSource, UITableViewDelegate,HttpCon_delegate>
+{
+    UITableView *_tableView;
+
+}
+@end

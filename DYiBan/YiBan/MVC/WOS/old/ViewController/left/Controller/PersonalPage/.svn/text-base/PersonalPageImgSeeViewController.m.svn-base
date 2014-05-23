@@ -1,0 +1,200 @@
+//
+//  PersonalPageImgSeeViewController.m
+//  Yiban
+//
+//  Created by NewM on 12-11-23.
+//
+//
+
+#import "PersonalPageImgSeeViewController.h"
+#import "UIImageView+WebCache.h"
+#import "YiBanHeadBarView.h"
+#import "IMGListScrollView.h"
+#import "UiImgListScrollView.h"
+#import "YiBanDefinite.h"
+#import "Debug.h"
+#import "CustomUIButton.h"
+
+@interface PersonalPageImgSeeViewController ()
+{
+    //    UiImgListScrollView *scrollView;
+}
+@end
+
+@implementation PersonalPageImgSeeViewController
+@synthesize imgArray = _imgArray;
+@synthesize getInObjectl = _getInObjectl;
+@synthesize albumId,ifHaveImg,ifReadOne,userId,allImgCount=_allImgCount;
+- (void)dealloc
+{
+    //    [scrollView release],scrollView = nil;
+    [_getInObjectl release];
+    [_imgArray release];_imgArray = nil;
+    [super dealloc];
+}
+
+//返回
+- (void)back{
+    [self dismissModalViewControllerAnimated:YES];
+}
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    
+    //背景颜色
+    [[self view] setBackgroundColor:[UIColor blackColor]];
+    
+    headBar = [[UINavigationBar alloc] initWithFrame:CGRectMake(0, 0, 320, 44)];
+    headBar.barStyle = UIBarStyleBlack;
+    [headBar setHidden:NO];
+    UINavigationItem *headItem = [[UINavigationItem alloc] initWithTitle:@""];
+    
+//    UIBarButtonItem  *rightItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"保存", @"title") style:UIBarButtonItemStylePlain target:self action:@selector(didPressSaveButton:)];
+//    UIBarButtonItem  *rightItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"btn_save_a.png"] style:UIBarButtonItemStylePlain target:self action:@selector(didPressSaveButton:)];
+
+//    if (ifReadOne) {
+//        [rightItem release];
+//        rightItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"使用", title) style:UIBarButtonItemStylePlain target:self action:@selector(useThisPhoto)];
+//    }
+
+    {
+        UIImage *img=[UIImage imageNamed:@"bigpic_down_a.png"];
+        CustomUIButton *btBack=[[CustomUIButton alloc]initWithFrame:CGRectMake(0, 0,img.size.width/2,img.size.height/2) BackgroundImageForNormalState:nil BackgroundImageForSelectState:nil NormalImage:img tag:0 target:self selector:@selector(didPressSaveButton:) Title:nil selectImg:[UIImage imageNamed:@"bigpic_down_b.png"] showsTouchWhenHighlighted:NO masksToBounds:NO cornerRadius:0 borderWidth:0 borderColor:nil font:[UIFont systemFontOfSize:15] NormalStateTitleColor:[UIColor clearColor] selectStateTitleColor:[UIColor clearColor] isAdjustSizeByTitleLabel:NO superView:nil Alignment:-1 paramdelegate:nil];
+        UIView *leftV=[[UIView alloc]initWithFrame:CGRectMake(0, 0, btBack.frame.size.width, btBack.frame.size.height)];
+        [leftV addSubview:btBack];
+        leftV.backgroundColor=[UIColor clearColor];
+        headItem.rightBarButtonItem = /*rightItem*/ [[UIBarButtonItem alloc]initWithCustomView:leftV];
+        //    [rightItem release];
+        [btBack release];
+        [leftV release];
+    }
+  
+    
+//    UIBarButtonItem  *backItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"返回", @"title") style:UIBarButtonItemStylePlain target:self action:@selector(back)];
+//    UIBarButtonItem  *backItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"bigpic_back_a.png"] style:UIBarButtonItemStylePlain target:self action:@selector(back)];
+//    headItem.leftBarButtonItem = backItem;
+//    [backItem release];
+    
+    {
+        UIImage *img=[UIImage imageNamed:@"bigpic_back_a.png"];
+        CustomUIButton *btBack=[[CustomUIButton alloc]initWithFrame:CGRectMake(0, 0,img.size.width/2,img.size.height/2) BackgroundImageForNormalState:nil BackgroundImageForSelectState:nil NormalImage:img tag:0 target:self selector:@selector(back) Title:nil selectImg:[UIImage imageNamed:@"bigpic_back_b.png"] showsTouchWhenHighlighted:NO masksToBounds:NO cornerRadius:0 borderWidth:0 borderColor:nil font:[UIFont systemFontOfSize:15] NormalStateTitleColor:[UIColor clearColor] selectStateTitleColor:[UIColor clearColor] isAdjustSizeByTitleLabel:NO superView:nil Alignment:-1 paramdelegate:nil];
+        UIView *leftV=[[UIView alloc]initWithFrame:CGRectMake(0, 0, btBack.frame.size.width, btBack.frame.size.height)];
+        [leftV addSubview:btBack];
+        leftV.backgroundColor=[UIColor clearColor];
+        headItem.leftBarButtonItem =  [[UIBarButtonItem alloc]initWithCustomView:leftV];
+        //    [rightItem release];
+        [btBack release];
+        [leftV release];
+    }
+    
+    [headBar pushNavigationItem:headItem animated:NO];
+    
+//Add by Hyde 20130221 #memoryleaks    
+    [headItem release];
+    
+    /*//放弃
+     scrollView = [[UiImgListScrollView alloc] initWithFrame:CGRectMake(0, 0, 320, 460) pageNum:[_imgArray count] pageEnabled:YES];
+     [scrollView setCurrentPage:[_imgArray indexOfObject:_getInObjectl]];
+     [scrollView setListDelegate:self];
+     [scrollView setAlbumId:albumId];
+     [scrollView setIfReadOne:ifReadOne];
+     [scrollView setImageArray:_imgArray];
+     [scrollView setIfHaveImg:ifHaveImg];
+     
+     if (!ifReadOne) {
+     //
+     [[scrollView scrollView] setContentOffset:CGPointMake(320*[_imgArray indexOfObject:_getInObjectl], 0)];
+     }
+     
+     [self.view addSubview:scrollView];*/
+    
+    scrollView = [[IMGListScrollView alloc] initWithFrame:CGRectMake(0, 0, 320, self.view.frame.size.height+kH_StateBar) headerBar:headBar];
+    scrollView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+    [scrollView setIfHaveImg:ifHaveImg];
+    [scrollView setUserId:userId];
+    [scrollView setAlbumId:albumId];
+    scrollView.contentSize = CGSizeMake(([_imgArray count])*scrollView.frame.size.width, scrollView.frame.size.height);
+    scrollView.listScrollViewdelegate = self;
+    [scrollView setAllImgCount:_allImgCount];
+    scrollView.delegate = scrollView;
+    [scrollView setImgArray:_imgArray];
+    [scrollView setContentOffset:CGPointMake(320*[_imgArray indexOfObject:_getInObjectl], 0)];
+    if (ifReadOne) {
+        [scrollView addOneImgView:[_imgArray objectAtIndex:0]];
+    }else{
+        [scrollView refreshPageViewAfterPaged:[NSNumber numberWithInt:[_imgArray indexOfObject:_getInObjectl]] isFirst:NO];
+    }
+    
+    scrollView.pagingEnabled = YES;
+    scrollView.showsHorizontalScrollIndicator = NO;
+    scrollView.scrollsToTop = NO;
+    [self.view addSubview:scrollView];
+    [scrollView release];
+    
+    
+    //header
+//    [headBar addSubview:imgNumLabel];
+//    [imgNumLabel release];
+    [self.view addSubview:headBar];
+    [headBar release];
+    
+}
+
+//使用这张图片
+- (void)useThisPhoto{
+    //    _imgArray
+    [[NSNotificationCenter defaultCenter] postNotificationName:NOTIFICATIONIMGOBJECTFORUSE object:[_imgArray objectAtIndex:0]];
+    [self back];
+}
+//保存图片
+- (void)didPressSaveButton:(id)sender
+{
+    //	UIImage *pic = [self.picArray objectAtIndex:self.lastPage];
+    UIImage *pic = [scrollView currentImg];
+	if (pic!=nil)
+	{
+        @try
+        {
+            UIImageWriteToSavedPhotosAlbum(pic, nil, nil, nil);
+        }
+        @catch (NSException *exception) {
+            YBLogInfo(@"SavedPhotosAlbum Error!!!");
+        }
+		
+		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil
+														message:NSLocalizedString(@"照片已保存", @"")
+													   delegate:nil
+											  cancelButtonTitle:NSLocalizedString(@"确定", @"title")
+											  otherButtonTitles:nil];
+		[alert show];
+		[alert release];
+	}
+}
+
+- (void)hiden:(id)sender{
+    
+    
+    [headBar setHidden:YES];
+}
+- (void)show{
+    [headBar setHidden:NO];
+}
+#pragma mark - UiImgListScrollView delegate
+- (void)IMGListScrollViewTouchEnd:(IMGListScrollView *)scrollView touch:(UITouch *)touch{
+    YBLogInfo(@"pageImgSee === %d", [touch tapCount]);
+    
+    if ([touch tapCount] == 1) {
+        if ([headBar isHidden]) {
+            
+            [self show];
+        }else{
+            
+            [self hiden:nil];
+        }
+        
+    }
+}
+
+
+@end

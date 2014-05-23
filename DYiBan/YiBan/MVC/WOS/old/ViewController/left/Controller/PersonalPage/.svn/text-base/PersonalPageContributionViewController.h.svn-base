@@ -1,0 +1,19 @@
+//
+//  PersonalPageContributionViewController.h
+//  Yiban
+//
+//  Created by NewM on 12-12-1.
+//
+//
+
+#import <UIKit/UIKit.h>
+#import "HttpHelp.h"
+
+//贡献值页
+@interface PersonalPageContributionViewController : UIViewController<UITableViewDataSource, UITableViewDelegate, HttpCon_delegate>
+{
+    UITableView *_tableView;
+}
+
+- (id)init:(NSString *)_value;
+@end

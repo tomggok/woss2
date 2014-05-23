@@ -1,0 +1,32 @@
+//
+//  PersonalPageImgDetailViewController.h
+//  Yiban
+//
+//  Created by NewM on 12-11-22.
+//
+//
+
+#import <UIKit/UIKit.h>
+@class DownLoadScrollView;
+#import "HttpCon_delegate.h"
+#import "YiBanTableView.h"
+
+//Modify By Hyde.Xu 12.12(从UIScrollView换成YiBanTableView)
+//@interface PersonalPageImgDetailViewController : UIViewController<HttpCon_delegate, UIScrollViewDelegate>
+
+//个人详细相册页
+@interface PersonalPageImgDetailViewController : UIViewController<UITableViewDataSource, UITableViewDelegate, HttpCon_delegate>
+{
+    NSString *albumId;//相册id
+    NSString *albumName;//相册名字
+    DownLoadScrollView *_scrollView;
+    
+    NSString *albumUserId;//要查相册人的id
+    
+    YiBanTableView*_tableView;
+}
+@property (nonatomic, retain)NSString *albumId;
+@property (nonatomic, retain)NSString *albumName;//相册名字
+@property (nonatomic, retain)NSString *albumUserId;//要查相册人的id
+@property (nonatomic, assign)NSInteger allImgCount;//相册图片总数
+@end

@@ -1,0 +1,35 @@
+//
+//  PersonalPageImgSeeViewController.h
+//  Yiban
+//
+//  Created by NewM on 12-11-23.
+//
+//
+
+#import <UIKit/UIKit.h>
+#import "albums.h"
+#import "IMGListScrollView.h"
+
+//个人相册图片单张展示页
+@interface PersonalPageImgSeeViewController : UIViewController<IMGListScrollViewDelegate>
+{
+    NSMutableArray *_imgArray;//要加载的array
+    albums *_getInObjectl;//传进来的对象
+    UINavigationBar *headBar;//上面的bar
+    UIButton *createrAndTime;//显示由谁上传
+    
+    NSString *albumId;//相册id
+    NSString *userId;//查看相册用户的id
+    BOOL ifHaveImg;//相册时候还有图片
+    IMGListScrollView *scrollView;
+    
+    BOOL ifReadOne;//是否读取一张
+}
+@property (nonatomic, retain)NSMutableArray *imgArray;
+@property (nonatomic, retain)albums *getInObjectl;
+@property (nonatomic, retain)NSString *albumId;//相册id
+@property (nonatomic, assign)BOOL ifHaveImg;//相册时候还有图片
+@property (nonatomic, assign)BOOL ifReadOne;//是否读取一张
+@property (nonatomic, retain)NSString *userId;//查看相册用户的id
+@property (nonatomic, assign)NSInteger allImgCount;//相册总数
+@end

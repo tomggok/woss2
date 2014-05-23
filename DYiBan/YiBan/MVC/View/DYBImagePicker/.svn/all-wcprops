@@ -1,0 +1,83 @@
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/svn/eclass-mobile/!svn/ver/9305/iphone/trunk/DYiBan/DYiBan/YiBan/MVC/View/DYBImagePicker
+END
+DYBImagePickerFooterView.h
+K 25
+svn:wc:ra_dav:version-url
+V 116
+/svn/eclass-mobile/!svn/ver/8717/iphone/trunk/DYiBan/DYiBan/YiBan/MVC/View/DYBImagePicker/DYBImagePickerFooterView.h
+END
+DYBImagePickerAssetCellDelegate.h
+K 25
+svn:wc:ra_dav:version-url
+V 123
+/svn/eclass-mobile/!svn/ver/8717/iphone/trunk/DYiBan/DYiBan/YiBan/MVC/View/DYBImagePicker/DYBImagePickerAssetCellDelegate.h
+END
+DYBImagePickerAssetView.h
+K 25
+svn:wc:ra_dav:version-url
+V 115
+/svn/eclass-mobile/!svn/ver/8717/iphone/trunk/DYiBan/DYiBan/YiBan/MVC/View/DYBImagePicker/DYBImagePickerAssetView.h
+END
+DYBImagePickerGroupCell.h
+K 25
+svn:wc:ra_dav:version-url
+V 115
+/svn/eclass-mobile/!svn/ver/8717/iphone/trunk/DYiBan/DYiBan/YiBan/MVC/View/DYBImagePicker/DYBImagePickerGroupCell.h
+END
+DYBImagePickerVideoInfoView.h
+K 25
+svn:wc:ra_dav:version-url
+V 119
+/svn/eclass-mobile/!svn/ver/8717/iphone/trunk/DYiBan/DYiBan/YiBan/MVC/View/DYBImagePicker/DYBImagePickerVideoInfoView.h
+END
+DYBImagePickerFooterView.m
+K 25
+svn:wc:ra_dav:version-url
+V 116
+/svn/eclass-mobile/!svn/ver/8717/iphone/trunk/DYiBan/DYiBan/YiBan/MVC/View/DYBImagePicker/DYBImagePickerFooterView.m
+END
+DYBImagePickerAssetCell.h
+K 25
+svn:wc:ra_dav:version-url
+V 115
+/svn/eclass-mobile/!svn/ver/8717/iphone/trunk/DYiBan/DYiBan/YiBan/MVC/View/DYBImagePicker/DYBImagePickerAssetCell.h
+END
+DYBImagePickerAssetView.m
+K 25
+svn:wc:ra_dav:version-url
+V 115
+/svn/eclass-mobile/!svn/ver/8717/iphone/trunk/DYiBan/DYiBan/YiBan/MVC/View/DYBImagePicker/DYBImagePickerAssetView.m
+END
+DYBImagePickerGroupCell.m
+K 25
+svn:wc:ra_dav:version-url
+V 115
+/svn/eclass-mobile/!svn/ver/9305/iphone/trunk/DYiBan/DYiBan/YiBan/MVC/View/DYBImagePicker/DYBImagePickerGroupCell.m
+END
+DYBImagePickerVideoInfoView.m
+K 25
+svn:wc:ra_dav:version-url
+V 119
+/svn/eclass-mobile/!svn/ver/8717/iphone/trunk/DYiBan/DYiBan/YiBan/MVC/View/DYBImagePicker/DYBImagePickerVideoInfoView.m
+END
+DYBAssetCollectionViewControllerDelegate.h
+K 25
+svn:wc:ra_dav:version-url
+V 132
+/svn/eclass-mobile/!svn/ver/8717/iphone/trunk/DYiBan/DYiBan/YiBan/MVC/View/DYBImagePicker/DYBAssetCollectionViewControllerDelegate.h
+END
+DYBImagePickerAssetCell.m
+K 25
+svn:wc:ra_dav:version-url
+V 115
+/svn/eclass-mobile/!svn/ver/8717/iphone/trunk/DYiBan/DYiBan/YiBan/MVC/View/DYBImagePicker/DYBImagePickerAssetCell.m
+END
+DYBImagePickerAssetViewDelegate.h
+K 25
+svn:wc:ra_dav:version-url
+V 123
+/svn/eclass-mobile/!svn/ver/8717/iphone/trunk/DYiBan/DYiBan/YiBan/MVC/View/DYBImagePicker/DYBImagePickerAssetViewDelegate.h
+END

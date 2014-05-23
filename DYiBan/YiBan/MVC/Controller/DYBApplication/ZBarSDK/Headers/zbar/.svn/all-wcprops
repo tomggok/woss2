@@ -1,0 +1,59 @@
+K 25
+svn:wc:ra_dav:version-url
+V 116
+/svn/eclass-mobile/!svn/ver/8857/iphone/trunk/DYiBan/DYiBan/YiBan/MVC/Controller/DYBApplication/ZBarSDK/Headers/zbar
+END
+Scanner.h
+K 25
+svn:wc:ra_dav:version-url
+V 126
+/svn/eclass-mobile/!svn/ver/8857/iphone/trunk/DYiBan/DYiBan/YiBan/MVC/Controller/DYBApplication/ZBarSDK/Headers/zbar/Scanner.h
+END
+ImageScanner.h
+K 25
+svn:wc:ra_dav:version-url
+V 131
+/svn/eclass-mobile/!svn/ver/8857/iphone/trunk/DYiBan/DYiBan/YiBan/MVC/Controller/DYBApplication/ZBarSDK/Headers/zbar/ImageScanner.h
+END
+Exception.h
+K 25
+svn:wc:ra_dav:version-url
+V 128
+/svn/eclass-mobile/!svn/ver/8857/iphone/trunk/DYiBan/DYiBan/YiBan/MVC/Controller/DYBApplication/ZBarSDK/Headers/zbar/Exception.h
+END
+Processor.h
+K 25
+svn:wc:ra_dav:version-url
+V 128
+/svn/eclass-mobile/!svn/ver/8857/iphone/trunk/DYiBan/DYiBan/YiBan/MVC/Controller/DYBApplication/ZBarSDK/Headers/zbar/Processor.h
+END
+Image.h
+K 25
+svn:wc:ra_dav:version-url
+V 124
+/svn/eclass-mobile/!svn/ver/8857/iphone/trunk/DYiBan/DYiBan/YiBan/MVC/Controller/DYBApplication/ZBarSDK/Headers/zbar/Image.h
+END
+Decoder.h
+K 25
+svn:wc:ra_dav:version-url
+V 126
+/svn/eclass-mobile/!svn/ver/8857/iphone/trunk/DYiBan/DYiBan/YiBan/MVC/Controller/DYBApplication/ZBarSDK/Headers/zbar/Decoder.h
+END
+Symbol.h
+K 25
+svn:wc:ra_dav:version-url
+V 125
+/svn/eclass-mobile/!svn/ver/8857/iphone/trunk/DYiBan/DYiBan/YiBan/MVC/Controller/DYBApplication/ZBarSDK/Headers/zbar/Symbol.h
+END
+Video.h
+K 25
+svn:wc:ra_dav:version-url
+V 124
+/svn/eclass-mobile/!svn/ver/8857/iphone/trunk/DYiBan/DYiBan/YiBan/MVC/Controller/DYBApplication/ZBarSDK/Headers/zbar/Video.h
+END
+Window.h
+K 25
+svn:wc:ra_dav:version-url
+V 125
+/svn/eclass-mobile/!svn/ver/8857/iphone/trunk/DYiBan/DYiBan/YiBan/MVC/Controller/DYBApplication/ZBarSDK/Headers/zbar/Window.h
+END

@@ -1,0 +1,21 @@
+//
+//  SettingSendMessageViewController.h
+//  Yiban
+//
+//  Created by NewM on 12-11-20.
+//
+//
+
+#import <UIKit/UIKit.h>
+#import "HttpCon_delegate.h"
+#import "HttpHelp.h"
+
+//意见反馈
+#import "YIBanAlertView.h"
+@interface SettingSendMessageViewController : UIViewController<UITextViewDelegate, HttpCon_delegate, YIBanAlertViewDelegate>
+{
+    UITextView *_textView;
+    HttpHelp *_help;
+}
+
+@end

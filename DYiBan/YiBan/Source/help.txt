@@ -1,0 +1,132 @@
+﻿
+<!DOCTYPE HTML>
+
+<html>
+
+<head>
+
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+
+<meta name="viewport"content="width=device-width, initial-scale=1"/>
+
+<title>易班小助手</title>
+
+<link href="html5/css/HTML5Css.css" rel="stylesheet" type="text/css">
+
+</head>
+
+
+
+<body>
+
+<section class="content">
+
+<article class="article">
+
+<h1 class="article_title_c">易班FAQ</h1>
+
+<p><strong>1. </strong><strong>易班是什么？ </strong></p>
+
+<p>易班是通过权威的“校方认证”进行实名制认证的在校大学生社区平台。在这里，你可以：<br>
+<p>&bull;与易友（好友、同学、校友）进行实时的交流互动；<br></p>
+<p>&bull;实时获取辅导员发布的相关通知，与辅导员保持亲密的沟通。<br></p>
+<p>&bull;随时查看班级动态，了解同学们的最新动向。<br></p>
+<p>&bull;向通过“校方认证”的老师实时的请教学习，获取他们分享的资讯。<br></p>
+<p>&bull;通过应用广场，不断丰富与大学生活相关的APP应用。<br></p>
+
+<p><strong>2. </strong><strong>为什么我无法通过校方认证？ </strong></p>
+
+<p>如果你无法通过校方认证，请检查你填入的信息（所在学校、学号、工号、高考号、真实姓名等）与学校档案的信息是否相符，如有疑问，请及时与你的班级辅导员进行核对。 <br>
+
+</p>
+
+<p><strong>3. </strong><strong>校方认证有什么用？ </strong></p>
+
+<p>校方认证，是通过各个高校提供的信息来验证用户真实性的实名认证方式。在易班，只有通过校方认证后，才能享有与好友、老师等交流互动的权限。 <br>
+
+</p>
+
+<p> <strong>4. </strong><strong>什么是验证码注册？ </strong></p>
+
+<p>如因为学校档案资料与自己真实情况不符导致无法通过校方认证，还可以选择验证码注册，请及时向你的辅导员索取验证码。<br>
+
+</p>
+
+<p> <strong>5. </strong><strong>什么是易友动态？</strong></p>
+
+<p>易友动态包括你关注人的动态、你的好友的动态以及你自己发布的信息 <br>
+
+</p>
+
+<p> <strong>6. </strong><strong>为什么有些用户只能关注，不能加为好友呢？</strong></p>
+
+<p>在易班，可以通过直接加关注的方式，无须老师确认，即可获取你所喜欢的老师发布的信息。 <br>
+
+</p>
+
+<p> <strong>7. </strong><strong>设置最活跃班级有什么用？ </strong></p>
+
+<p>登录易班后，你设置了最活跃班级后，默认将推送本班成员的最新动态到你的班级动态中。  <br>
+
+</p>
+
+<p> <strong>8. </strong><strong>为什么我收到消息时没有推送提醒？  </strong></p>
+
+<p>请你到【设置】->【消息提醒】中进行设置，选择打开或关闭消息提醒功能。 <br>
+
+</p>
+
+<p> <strong>9. </strong><strong>我不想让别人看到我的个人主页的任何内容？ </strong></p>
+
+<p>请将【个人主页】->【个人资料】->【个人隐私】的【个人主页访问】设为【仅自己可见】 <br>
+
+</p>
+
+<p> <strong>10. </strong><strong>如果关注了一个人，我的信息他能看到吗？ </strong></p>
+
+<p>如果你成功关注了TA，TA的信息将在我的“易友动态”中展示。但如果TA没有关注你，你们也不是同班同学或好友关系时，TA将看不到你的信息。 <br>
+
+</p>
+
+<p> <strong>11. </strong><strong>同步设置是指什么？有什么作用呢？</strong></p>
+
+<p>在【设置】->【同步设置】中，当绑定同步的网站后，你在易班发布的信息将同时分享到这些网站上，在这些网站的朋友能即时看到你的信息。 <br>
+
+</p>
+
+<p> <strong>12. </strong><strong>什么是贡献值？  </strong></p>
+
+<p>贡献值，是你使用客户端为易班社区贡献内容形成的数值。你登录易班的频次，发表内容的质量，获得其他用户评论以及赞的数量等各种行为共同决定了你的贡献值高低。贡献值高的用户将在排行榜中显著展示，后续将有更多虚拟、实物奖励开放兑换。 <br>
+
+</p>
+
+<p> <strong>13. </strong><strong>七天排行榜是什么？</strong></p>
+
+<p>排行榜是以你最近7天累计的贡献值高低进行的排名。包括好友排名、班级排名、老师排名、学校排名。 <br>
+
+</p>
+
+<p> <strong>14. </strong><strong>如何获取贡献值？</strong></p>
+
+<p>目前，你获取贡献值的方法包括但不限于以下方式： 
+发布信息； 
+发表的信息被其他用户评论、赞；
+评论其他用户的信息，并得到对方的回复 ；
+自然天内登录易班；
+自然天内申请加好友并通过申请； 
+查看其他用户的主页； 
+同步信息到第三方网站。
+ <br>
+</p>
+<p class="article_tl"><br>
+
+</p>
+
+</article>
+
+</section>
+
+</body>
+
+</html>
+

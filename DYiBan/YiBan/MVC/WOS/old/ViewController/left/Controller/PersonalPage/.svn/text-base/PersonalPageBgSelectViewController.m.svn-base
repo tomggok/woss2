@@ -1,0 +1,203 @@
+//
+//  PersonalPageBgSelectViewController.m
+//  Yiban
+//
+//  Created by NewM on 12-12-4.
+//
+//
+
+#define imgBgWidth       68
+#define imgBgHeight      68
+
+#define imgWidth        64
+#define imgHeight       64
+#define imgSpaceBetT    13
+#define imgSpeceBetL    10
+
+#import "PersonalPageBgSelectViewController.h"
+#import "YiBanHeadBarView.h"
+#import "UserSettingMode.h"
+#import "JSON.h"
+#import "user.h"
+@interface PersonalPageBgSelectViewController ()
+{
+    NSMutableArray *_imgArray;
+    
+    NSInteger selectedTag;//当前选中的tag
+    
+    NSInteger imgX;//加载到列
+    NSInteger imgY;//加载到行
+    NSInteger btTag;//加载的button的tag
+    
+    YiBanHeadBarView *header;//
+    
+    NSMutableArray *_btImgArray;
+}
+@end
+
+@implementation PersonalPageBgSelectViewController
+
+- (void)dealloc
+{
+    [_btImgArray release];
+    _btImgArray = nil;
+    [super dealloc];
+}
+//返回
+- (void)back{
+    [self.navigationController popViewControllerAnimated:YES];
+    if (!_isUse) {
+        [[CommonHelper shareInstance]playSound:5];
+    }
+    _isUse=NO;
+}
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    
+    _btImgArray = [[NSMutableArray alloc] initWithCapacity:4];
+    
+    selectedTag = 0;
+    imgX = 0;
+    imgY = 0;
+    btTag = 1;
+    
+    _imgArray = [[NSMutableArray alloc] initWithObjects:@"homebg_s1.jpg",@"homebg_s2.jpg",@"homebg_s3.jpg",@"homebg_s4.jpg",@"homebg_s5.jpg",@"homebg_s6.jpg",@"homebg_s7.jpg",@"homebg_s8.jpg",@"homebg_s9.jpg",@"homebg_s10.jpg",@"homebg_s11.jpg",@"homebg_s12.jpg",@"homebg_s13.jpg",@"homebg_s14.jpg",@"homebg_s15.jpg",@"homebg_s16.jpg",@"homebg_s17.jpg",@"homebg_s18.jpg",@"homebg_s19.jpg",@"homebg_s20.jpg", nil];
+    
+    //headerview
+    header = [[YiBanHeadBarView alloc] initWithFrame:CGRectMake(0, 0, 320, 44) titleLabel:@"更改主页背景"];
+    [header normalHeadView];
+    [[header rightButton] setTitle:@"应用" forState:UIControlStateNormal];
+    [[header rightButton] addTarget:self action:@selector(leftAction) forControlEvents:UIControlEventTouchUpInside];
+    [header setUnClickRight];
+    [[header leftButton] addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:header];
+    [header release];
+    
+    //背景颜色
+    [[self view] setBackgroundColor:YIALLVIEWBGCOLOR];
+    
+    _scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 44, 320, (self.view.bounds.size.height)-44)];
+    [_scrollView setBackgroundColor:[UIColor clearColor]];
+    [self.view addSubview:_scrollView];
+    [_scrollView release];
+    
+    UIView *imgView = [self imgListView:CGRectMake(0, 0, 320, self.view.frame.size.height-20)];
+    [_scrollView addSubview:imgView];
+    [imgView release];
+}
+
+//图片流图片
+- (UIView *)imgListView:(CGRect)frame{
+    
+    user *userMode = [[YiBanLocalDataManager sharedInstance] currentUser];
+    
+    int selectId = 0;
+    if (userMode.background_tag && userMode.background_tag.length > 0) {//设置背景图片
+        selectId = [userMode.background_tag intValue];
+    }
+
+    YBLogInfo(@"selectId === %d",selectId);
+    
+    UIView *allView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, frame.size.width, frame.size.height)];
+    
+    [allView setBackgroundColor:[UIColor clearColor]];
+    
+    if (imgX == 4) {
+        imgY++;
+        imgX = 0;
+    }
+    
+    for (int i = 0; i < [_imgArray count]; i++) {
+        
+        if (i !=0 && i%4 == 0) {
+            imgY++;
+            imgX = 0;
+        }
+        
+        
+        UIImageView *imgBuBack = [[UIImageView alloc] initWithFrame:CGRectMake(imgSpaceBetT+imgX*(imgWidth+imgSpaceBetT), imgSpaceBetT+imgY*(imgHeight+imgSpaceBetT), imgWidth, imgHeight)];
+        [imgBuBack setUserInteractionEnabled:YES];
+        [imgBuBack setImage:[UIImage imageNamed:[_imgArray objectAtIndex:i]]];
+        UIButton *imgButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, imgWidth, imgHeight)];
+        [imgButton setBackgroundColor:[UIColor clearColor]];
+        [imgButton setTag:btTag];
+        [imgButton setImage:[UIImage imageNamed:@"album_mask.png"] forState:UIControlStateNormal];
+        [imgButton setShowsTouchWhenHighlighted:YES];
+        [imgButton addTarget:self action:@selector(imgAction:) forControlEvents:UIControlEventTouchUpInside];
+        
+        [allView addSubview:imgBuBack];
+        [imgBuBack addSubview:imgButton];
+        [_btImgArray addObject:imgButton];
+        [imgBuBack release];
+        [imgButton release];
+        if (i == selectId) {
+            [self performSelector:@selector(imgAction:) withObject:imgButton afterDelay:.1f];
+        }
+        imgX++;
+        btTag++;
+    }
+    
+    [allView setFrame:CGRectMake(0, 0, 320, imgSpaceBetT+(imgBgHeight+imgSpaceBetT)*(imgY+1))];
+    return allView;
+}
+//再图片上  添加选择  框
+- (void)addImgBg:(UIButton *)bt ifadd:(BOOL)ifadd{
+    UIImageView *frontImgView = [[UIImageView alloc] initWithFrame:CGRectMake(0, imgHeight-25, imgWidth, 25)];
+    [frontImgView setImage:[UIImage imageNamed:@"pic_selected2.png"]];
+    [frontImgView setTag:bt.tag];
+    if (ifadd) {
+        [bt addSubview:frontImgView];
+    }else{
+        [bt insertSubview:frontImgView atIndex:0];
+    }
+    
+    [frontImgView release];
+}
+//imgButton触发事件
+- (void)imgAction:(id)sender {
+    if (header.rightButton.userInteractionEnabled) {
+        [[CommonHelper shareInstance]playSound:5];
+    }
+    YBLogInfo(@"sender === %@", sender);
+    UIButton *bt = (UIButton *)sender;
+    
+    for (int i = 0; i < [_btImgArray count]; i++) {
+        UIButton *st = [_btImgArray objectAtIndex:i];
+        for (UIView *s in st.subviews) {
+            if (s.tag != 0) {
+                [s removeFromSuperview];
+            }
+            
+        }
+    }
+    [_btImgArray removeObject:bt];
+    
+    [self addImgBg:bt ifadd:NO];
+    selectedTag = bt.tag;
+    [header setClickRight];
+    [_btImgArray addObject:bt];
+
+    
+}
+
+//右边button的应用事件(保存默认图片)
+- (void)leftAction{
+    [[CommonHelper shareInstance]playSound:5];
+
+    YBLogInfo(@"selectedTag == %d",selectedTag);
+    NSString *imgTitle = [NSString stringWithFormat:@"homebg_default%d.jpg",selectedTag];
+    UserSettingMode *settingMode = [[YiBanLocalDataManager sharedInstance] currentUserSetting];
+    [settingMode setUserPersonPageBg:imgTitle];
+    [[YiBanLocalDataManager sharedInstance] saveUserSetting:[[settingMode dict] JSONFragment] key:@""];
+    
+//    [[NSNotificationCenter defaultCenter] postNotificationName:NOTIFICATIONCHANGEPAGEBG object:nil];
+    [[NSNotificationCenter defaultCenter] postNotificationName:NOTIFICATIONCHANGEPAGEBG2 object:[NSString stringWithFormat:@"%d",selectedTag-1]];
+    _isUse=YES;
+    [self back];
+    
+}
+
+
+@end

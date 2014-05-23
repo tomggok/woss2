@@ -1,0 +1,19 @@
+//
+//  PersonalPageViewController.h
+//  Yiban
+//
+//  Created by NewM on 12-11-21.
+//
+//
+
+//个人主页
+
+#import "PersonalPageView.h"
+#import "Doback_delegate.h"
+
+@interface PersonalPageViewController : UIViewController<Doback_delegate>{
+    PersonalPageView *personalView;
+}
+
+-(void)setParameter:(NSString *)userid bOtherPeople:(BOOL)bOtherPeople bPush:(BOOL)bPush bPresent:(BOOL)bPresent bRight:(BOOL)bRight;
+@end

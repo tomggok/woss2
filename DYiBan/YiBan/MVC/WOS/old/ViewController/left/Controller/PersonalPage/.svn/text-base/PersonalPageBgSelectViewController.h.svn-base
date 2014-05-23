@@ -1,0 +1,17 @@
+//
+//  PersonalPageBgSelectViewController.h
+//  Yiban
+//
+//  Created by NewM on 12-12-4.
+//
+//
+
+#import <UIKit/UIKit.h>
+
+    //更改主页背景
+@interface PersonalPageBgSelectViewController : UIViewController
+{
+    UIScrollView *_scrollView;
+    BOOL _isUse;//是否点击右上角应用按钮
+}
+@end

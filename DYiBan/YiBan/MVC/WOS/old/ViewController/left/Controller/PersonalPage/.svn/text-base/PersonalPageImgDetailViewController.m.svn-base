@@ -1,0 +1,519 @@
+//
+//  PersonalPageImgDetailViewController.m
+//  Yiban
+//
+//  Created by NewM on 12-11-22.
+//
+//
+
+#import "PersonalPageImgDetailViewController.h"
+#import "YiBanHeadBarView.h"
+#import "YiBanLocalDataManager.h"
+#import "Rrequest_Data.h"
+#import "HttpHelp.h"
+#import "DownLoadScrollView.h"
+#import "Static.h"
+#import "user.h"
+#import "album_piclist.h"
+#import "PersonalPageImgViewController.h"
+#import "UIButton+WebCache.h"
+#import "albums.h"
+#import "PersonalPageImgSeeViewController.h"
+#import "NSDictionary+JSON.h"
+
+#define imgBgWidth       68
+#define imgBgHeight      68
+
+#define imgWidth        64
+#define imgHeight       64
+#define imgSpaceBetT    13
+#define imgSpeceBetL    10
+
+
+@interface PersonalPageImgDetailViewController ()//类别的特例,extension,
+{
+    NSInteger readPage;//读取到的页数
+    UIView *upLoadView;//上拉加载
+    BOOL isWillRead;//是否还要加载
+    
+    NSInteger imgX;//加载到列
+    NSInteger imgY;//加载到行
+    NSInteger btTag;//加载的button的tag
+    
+    NSMutableArray *imgList;//加载到的图片
+    
+    UIView *imgListView;//图片墙
+    
+    
+    UIButton *editButton;
+}
+@end
+
+
+@implementation PersonalPageImgDetailViewController
+@synthesize albumId;
+@synthesize albumName;
+@synthesize albumUserId,allImgCount = _allImgCount;
+
+- (void)dealloc
+{
+    [albumId release];
+    [super dealloc];
+}
+
+- (NSString *)albumUserId{
+    if (!albumUserId || albumUserId.length == 0) {
+        self.albumUserId = [[[YiBanLocalDataManager sharedInstance] currentUser] userid];
+
+    }
+    return albumUserId;
+}
+//返回
+- (void)back{
+    [[CommonHelper shareInstance]playSound:5];
+    [self.navigationController popViewControllerAnimated:YES];
+}
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    //背景颜色
+    [[self view] setBackgroundColor:YIALLVIEWBGCOLOR];
+    
+    //添加头
+    YiBanHeadBarView *header = [[YiBanHeadBarView alloc] initWithFrame:CGRectMake(0, 0, 320, 44) titleLabel:albumName];
+    [header normalHeadView];
+//    [[header rightButton] setHidden:NO];
+//    [[header rightButton] addTarget:self action:@selector(submit) forControlEvents:UIControlEventTouchUpInside];
+    [[header leftButton] addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:header];
+    [header release];
+    
+    imgX = 0;
+    imgY = 0;
+    btTag = 1;
+    
+    imgList = [[NSMutableArray alloc] init];
+    
+    
+    
+    readPage = 1;
+    
+/***********************************
+ Mark By Hyde.Xu 12.12 (写了一个方法 “-(void)setParameter:(NSString *)name”)
+ ***********************************
+    NSMutableDictionary *params = [Rrequest_Data albumList:albumUserId albumId:albumId num:24 page:readPage];
+    HttpHelp * help = [[HttpHelp alloc]init:self progress_show:TRUE page:readPage];
+//    help.type = [NSString stringWithFormat:@"%d",2];
+    [help startHttpEX:ALBUMPICLIST :params];
+    
+    _scrollView = [[DownLoadScrollView alloc] initWithFrame:CGRectMake(0, 44, 320, 460-44)];
+    _scrollView.userInteractionEnabled = YES;
+    _scrollView.indicatorStyle = UIScrollViewIndicatorStyleBlack;
+    _scrollView.scrollEnabled = YES;
+    _scrollView.delegate = self;
+    [_scrollView setBackgroundColor:[UIColor clearColor]];
+    [self.view addSubview:_scrollView];
+    [_scrollView release];
+*/    
+    // Add By Hyde.Xu 12.12 (替换 上面请求)
+    [self setParameter];
+    
+    _tableView = [[YiBanTableView alloc] initWithFrame:CGRectMake(0, 44, 320, self.view.frame.size.height-44)];
+    [_tableView setDelegate:self];
+    [_tableView setDataSource:self];
+    [_tableView setBackgroundColor:[UIColor clearColor]];
+    [_tableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
+    [_tableView.footerView setHidden:YES];
+    [self.view addSubview:_tableView];
+    [_tableView release];
+}
+//图片流图片
+- (UIView *)imgListView:(CGRect)frame arrayObject:(NSArray *)arrayObject{
+    
+    
+    UIView *allView = nil;
+    if (imgListView) {
+        allView = imgListView;
+    }else{
+        allView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, frame.size.width, frame.size.height)];
+    }
+    
+    [allView setBackgroundColor:[UIColor clearColor]];
+    
+    if (imgX == 4) {
+        imgY++;
+        imgX = 0;
+    }
+    
+    for (int i = 0; i < [arrayObject count]; i++) {
+        
+        if (i !=0 && i%4 == 0) {
+            imgY++;
+            imgX = 0;
+        }
+        
+        albums *al = [arrayObject objectAtIndex:i];
+        
+        UIImageView *imgBuBack = [[UIImageView alloc] initWithFrame:CGRectMake(imgSpeceBetL+imgX*(imgBgWidth+imgSpeceBetL), imgSpaceBetT+imgY*(imgBgHeight+imgSpaceBetT), imgBgWidth, imgBgHeight)];
+        [imgBuBack setUserInteractionEnabled:YES];
+        [imgBuBack setImage:[UIImage imageNamed:@""]];
+        UIButton *imgButton = [[UIButton alloc] initWithFrame:CGRectMake(2, 1, imgWidth, imgHeight)];
+        [imgButton setBackgroundColor:[UIColor clearColor]];
+        [imgButton setTag:btTag];
+        [imgButton setImageWithURL:[NSURL URLWithString:al.pic_s] placeholderImage:[UIImage imageNamed:@"noface_64.png"]];
+        [imgButton addTarget:self action:@selector(imgAction:) forControlEvents:UIControlEventTouchUpInside];
+        [allView addSubview:imgBuBack];
+        [imgBuBack addSubview:imgButton];
+        [imgBuBack release];
+        [imgButton release];
+        
+        UIImageView *onRealImg = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 64, 64)];
+        [onRealImg setImage:[UIImage imageNamed:@"album_mask.png"]];
+        [imgButton addSubview:onRealImg];
+        [onRealImg release];
+        imgX++;
+        btTag++;
+    }
+
+    [allView setFrame:CGRectMake(0, 0, 320, imgSpaceBetT+(imgBgHeight+imgSpaceBetT)*(imgY+1))];
+    return allView;
+}
+
+//img事件
+- (void)imgAction:(id)sender{
+    [[CommonHelper shareInstance]playSound:5];
+
+    NSMutableArray *newImgList = [[NSMutableArray alloc] initWithArray:imgList];
+    
+    UIButton *bt = (UIButton *)sender;
+    PersonalPageImgSeeViewController *detail = [[PersonalPageImgSeeViewController alloc] init];
+    [detail setGetInObjectl:[imgList objectAtIndex:[bt tag]-1]];
+    [detail setImgArray:newImgList];
+    [detail setAlbumId:albumId];
+    [detail setIfHaveImg:isWillRead];
+    [detail setUserId:albumUserId];
+    [detail setAllImgCount:_allImgCount];
+    [newImgList release];
+    
+
+	[self presentModalViewController:detail animated:YES];
+    [detail release];
+}
+
+//Add By Hyde.Xu 12.12 (Tableview方法： 返回 SectionCount)
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)aTableView
+{
+    //* 出现几组
+    return 1;
+}
+
+//Add By Hyde.Xu 12.12 (Tableview方法： 返回 Rows in each Section)
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    // Only one section, so return the number of items in the list.
+    if ([imgList count] == 0) {
+        return 0;
+    }
+    else{
+        int nCount = [imgList count]/4+1;
+        return nCount;
+    }
+}
+
+////Add By Hyde.Xu 12.12 (Tableview方法： 返回 类型选择按钮)
+//-(UITableViewCellAccessoryType)tableView:(UITableView *)tableView accessoryTypeForRowWithIndexPath:(NSIndexPath *)indexPath{
+//    return UITableViewCellAccessoryNone;
+//}
+
+//Add By Hyde.Xu 12.12 (Tableview方法： 返回 控制行高:图片高 imgBgHeight 图片纵向间距：imgSpaceBetT)
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    return imgBgHeight+imgSpaceBetT;
+}
+
+//选中时执行的操作
+- (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    return indexPath;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableview cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    
+    static NSString *TableSampleIdentifier = @"TableSampleIdentifier";
+    
+    UITableViewCell *cell = [tableview cellForRowAtIndexPath:indexPath];
+    if (cell == nil) {
+        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:TableSampleIdentifier] autorelease];
+        [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
+        
+        int row = [indexPath row]+1;
+        int nTotal = 0;
+        int nAll = [imgList count];
+        int nCur = row*4;
+        
+        if ((nAll - nCur) > 0) {
+            nTotal = 4;
+        }
+        else{
+            nTotal = [imgList count] - (row-1)*4;
+        }
+        
+        for (int i = 0 ; i < nTotal; i++)
+        {
+            albums *al = [imgList objectAtIndex:(row-1)*4+i];
+            
+            UIImageView *imgBuBack = [[UIImageView alloc] initWithFrame:CGRectMake(imgSpeceBetL+i*(imgBgWidth+imgSpeceBetL), imgSpaceBetT, imgBgWidth, imgBgHeight)];
+            [imgBuBack setUserInteractionEnabled:YES];
+            [imgBuBack setImage:[UIImage imageNamed:@""]];
+            UIButton *imgButton = [[UIButton alloc] initWithFrame:CGRectMake(2, 1, imgWidth, imgHeight)];
+            [imgButton setBackgroundColor:[UIColor clearColor]];
+            [imgButton setTag:(row-1)*4+i+1];
+            [imgButton setImageWithURL:[NSURL URLWithString:al.pic_s] placeholderImage:[UIImage imageNamed:@"noface_64.png"]];
+            [imgButton addTarget:self action:@selector(imgAction:) forControlEvents:UIControlEventTouchUpInside];
+            [cell addSubview:imgBuBack];
+            [imgBuBack addSubview:imgButton];
+            [imgBuBack release];
+            [imgButton release];
+            UIImageView *onRealImg = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 64, 64)];
+            [onRealImg setImage:[UIImage imageNamed:@"album_mask.png"]];
+            [imgButton addSubview:onRealImg];
+            [onRealImg release];
+        }
+    }
+    
+	return cell;
+}
+
+/*
+#pragma mark - httpdelegate
+-(void)Http_result:(NSDictionary*)data :(NSString*)message{
+    album_piclist *album = [[album_piclist alloc] initWithDictionary:data];
+    [imgList addObjectsFromArray:album.albums];
+    YBLogInfo(@"imgList === %d", [imgList count]);
+    if ([album.havenext isEqualToString:@"1"]) {
+        isWillRead = YES;
+    }else{
+        isWillRead = NO;
+    }
+    imgListView = [self imgListView:CGRectMake(0, 0, 80, 80) arrayObject:album.albums];
+    [_scrollView addSubview:imgListView];
+    
+    _scrollView.contentSize = CGSizeMake(320, imgListView.frame.size.height);
+    float upLoadViewY = _scrollView.contentSize.height;
+    if (upLoadViewY < (460-44)) {
+        upLoadViewY = 460-43;
+        _scrollView.contentSize = CGSizeMake(320, upLoadViewY);
+    }
+    
+    
+    if (!upLoadView) {
+        upLoadView = [PersonalPageImgViewController downUpLoad:CGRectMake(0, upLoadViewY, 320, 40)];
+        
+        [upLoadView setBackgroundColor:[UIColor redColor]];
+        [_scrollView addSubview:upLoadView];
+        [_scrollView setUpLoadView:upLoadView];
+    }else{
+        [upLoadView setFrame:CGRectMake(0, upLoadViewY, 320, 40)];
+    }
+}
+*/
+
+- (album_piclist *)dateForAlbumsObj:(NSDictionary *)data{
+    NSArray *arrTestData = [data objectForKey:@"albums"];
+    
+    album_piclist *album = nil;
+    
+    if ([arrTestData count] > 0) {
+        album = (album_piclist *)[data initDictionaryTo:[album_piclist class]];
+        [imgList addObjectsFromArray:album.albums];
+        /*
+        for (int i = 0; i < [album.albums count]; i++) {
+            albums *s_album = [[album.albums objectAtIndex:i] initDictionaryTo:[albums class]];
+            [imgList addObject:s_album];
+        }*/
+        
+        
+        if ([album.havenext isEqualToString:@"1"]) {
+            isWillRead = YES;
+            [_tableView reloadData:NO];
+            [_tableView.footerView setHidden:NO];
+        }else{
+            isWillRead = NO;
+            [_tableView reloadData:YES];
+            [_tableView.footerView setHidden:YES];
+        }
+    }else{
+        [_tableView reloadData:YES];
+        [_tableView.footerView setHidden:YES];
+    }
+    
+    return album;
+}
+
+#pragma mark -
+#pragma mark - httpDelegate
+#pragma mark -
+- (void)requestSuccess:(NSDictionary *)data message:(NSString *)message http:(HttpHelp *)http
+{
+    [imgList removeAllObjects];
+    readPage++;
+    
+    album_piclist *album = [self dateForAlbumsObj:data];
+    if ([album.havenext isEqualToString:@"1"]) {
+        isWillRead = YES;
+    }else{
+        isWillRead = NO;
+    }
+    /*
+     NSArray *arrTestData = [data objectForKey:@"albums"];
+     if ([arrTestData count] > 0) {
+     album_piclist *album = [[album_piclist alloc] initWithDictionary:data];
+     
+     for (albums *s_album in album.albums) {
+     [imgList addObject:s_album];
+     }
+     
+     if ([album.havenext isEqualToString:@"1"]) {
+     isWillRead = YES;
+     [_tableView reloadData:NO];
+     [_tableView.footerView setHidden:NO];
+     }else{
+     isWillRead = NO;
+     [_tableView reloadData:YES];
+     [_tableView.footerView setHidden:YES];
+     }
+     }*/
+    
+    [_tableView reloadData];
+    [http release];
+}
+
+- (void)requestForQueryMore:(NSDictionary *)data message:(NSString *)message http:(HttpHelp *)http
+{
+    readPage++;
+    [self dateForAlbumsObj:data];
+    /*
+     NSArray *arrTestData = [data objectForKey:@"albums"];
+     
+     if ([arrTestData count] > 0) {
+     album_piclist *album = [[album_piclist alloc] initWithDictionary:data];
+     for (albums *s_album in album.albums) {
+     [imgList addObject:s_album];
+     }
+     
+     [imgList retain];
+     
+     if ([album.havenext isEqualToString:@"1"]) {
+     [_tableView reloadData:NO];
+     [_tableView.footerView setHidden:NO];
+     }else{
+     [_tableView reloadData:YES];
+     [_tableView.footerView setHidden:YES];
+     }
+     }*/
+    
+    [_tableView reloadData];
+    [http release];
+
+}
+
+- (void)requestForQueryRefresh:(NSDictionary *)data message:(NSString *)message http:(HttpHelp *)http
+{
+    [imgList removeAllObjects];
+    
+    readPage = 1;
+    [self dateForAlbumsObj:data];
+    /*
+     NSArray *arrTestData = [data objectForKey:@"albums"];
+     
+     if ([arrTestData count] > 0) {
+     album_piclist *album = [[album_piclist alloc] initWithDictionary:data];
+     for (albums *s_album in album.albums) {
+     [imgList addObject:s_album];
+     }
+     
+     [imgList retain];
+     
+     if ([album.havenext isEqualToString:@"1"]) {
+     [_tableView reloadData:NO];
+     [_tableView.footerView setHidden:NO];
+     }else{
+     [_tableView reloadData:YES];
+     [_tableView.footerView setHidden:YES];
+     }
+     }*/
+    
+    [_tableView reloadData];
+    [http release];
+}
+
+// Add By Hyde.Xu 12.12 (ALBUMLIST 请求)
+- (void)setParameter{
+    NSMutableDictionary *params = [Rrequest_Data albumList:albumUserId albumId:albumId num:24 page:readPage];
+    HttpHelp * help = [[HttpHelp alloc]init:self progress_show:NO page:readPage];
+    help.err_cgRect = CGRectMake(0, 0, 320, 440);
+    [help startHttpEX:ALBUMPICLIST :params];
+}
+
+// Add By Hyde.Xu 12.12 (ALBUMLIST QueryMore 请求)
+-(void)doMore{
+    NSMutableDictionary *params = [Rrequest_Data albumList:albumUserId albumId:albumId num:24 page:readPage];
+    HttpHelp * help = [[HttpHelp alloc]init:self progress_show:NO page:readPage];
+    help.err_cgRect = CGRectMake(0, 0, 320, 440);
+    [help setNAnimaType:1];
+    [help startHttpEX:ALBUMPICLIST :params isQueryMore:YES];
+}
+
+// Add By Hyde.Xu 12.12 (ALBUMLIST Refreash 请求)
+-(void)doRefreash{
+    NSMutableDictionary *params = [Rrequest_Data albumList:albumUserId albumId:albumId num:24 page:1];
+    HttpHelp * help = [[HttpHelp alloc]init:self progress_show:NO page:1];
+    help.err_cgRect = CGRectMake(0, 0, 320, 440);
+    [help startHttpEX:ALBUMPICLIST :params isrefresh:YES];
+}
+
+//Add By Hyde.Xu 12.12
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView{
+    [_tableView tableViewDidDragging];
+}
+
+//Add By Hyde.Xu 12.12
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate{
+    int returnKey = [_tableView tableViewDidEndDragging];
+    if (returnKey != RETURNDONOTHING) {
+        if (returnKey == RETURNLOADMORE){
+            [self doMore];
+        }else if (returnKey == RETURNREFRESH){
+            [self doRefreash];
+        }
+    }
+}
+
+/*************************
+ Mark by Hyde.Xu 12.12 (重写2个方法见正上方)
+ *************************
+#pragma mark - scrollviewdelegate
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView{
+    [_scrollView scrollViewDidScroll:scrollView];
+    
+}
+
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate{
+    if (isWillRead) {
+
+        BOOL isLoadMore = [_scrollView scrollViewDidEndDragging:scrollView willDecelerate:decelerate];
+        if (isLoadMore) {
+            readPage++;
+//            NSString *currentUserId = [[[YiBanLocalDataManager sharedInstance] currentUser] userid];
+            NSMutableDictionary *params = [Rrequest_Data albumList:albumUserId albumId:albumId num:24 page:(readPage)];
+            HttpHelp * help = [[HttpHelp alloc]init:self progress_show:TRUE page:(readPage)];
+//            help.type = [NSString stringWithFormat:@"%d",2];
+            [help startHttpEX:ALBUMPICLIST :params];
+            
+        }
+    }else{
+        YBLogInfo(@"没有了");
+    }
+    
+}
+*/
+
+@end

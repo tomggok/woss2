@@ -1,0 +1,265 @@
+//
+//  PersonalPageRankingViewController.m
+//  Yiban
+//
+//  Created by NewM on 12-12-2.
+//
+//
+
+#import "PersonalPageRankingViewController.h"
+#import "YiBanHeadBarView.h"
+#import "Rrequest_Data.h"
+#import "Static.h"
+#import "UIView+Table.h"
+#import "UIImageView+WebCache.h"
+#import "charts_all.h"
+#import "charts.h"
+#import "PersonalPageViewController.h"
+#import "NSDictionary+JSON.h"
+@interface PersonalPageRankingViewController ()
+{
+    NSInteger requestTag;//邀请求的tag
+    NSInteger requestPage;//请求过的页数
+    NSInteger requestNum;//请求每一页的数量
+    
+    NSMutableArray *peopleList;//读到的数据array
+    
+    BOOL ifRefresh;
+    
+    NSString *titleString;
+}
+
+@end
+
+@implementation PersonalPageRankingViewController
+
+- (void)dealloc
+{
+    [peopleList release];
+    [super dealloc];
+}
+//返回
+- (void)back{
+
+    [self.navigationController popViewControllerAnimated:YES];
+}
+
+- (id)init:(NSInteger)_tag titleString:(NSString *)_titleString
+{
+    self = [super init];
+    if (self) {
+        requestTag = _tag;
+        requestPage = 1;
+        requestNum = 10;
+        
+        peopleList = [[NSMutableArray alloc] initWithCapacity:5];
+        
+        titleString = _titleString;
+    }
+    return self;
+}
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    
+    //添加头
+//    NSString *titleString = @"好友排行";
+//    if (requestTag == 4) {
+//        titleString = @"班级排行";
+//    }else if (requestTag == 7){
+//        titleString = @"易班活跃用户排行";
+//    }
+    YiBanHeadBarView *header = [[YiBanHeadBarView alloc] initWithFrame:CGRectMake(0, 0, 320, 44) titleLabel:titleString];
+    [header normalHeadView];
+    [[header leftButton] addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:header];
+    [header release];
+    
+    //背景颜色
+    [[self view] setBackgroundColor:YIALLVIEWBGCOLOR];
+
+    //tableView
+    _tableView = [[YiBanTableView alloc] initWithFrame:CGRectMake(0, 44, 320, self.view.frame.size.height-44)];
+    [_tableView setDelegate:self];
+    [_tableView setDataSource:self];
+    [_tableView setBackgroundColor:[UIColor clearColor]];
+    [_tableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
+    [self.view addSubview:_tableView];
+    [_tableView release];
+    
+    [self getChartList:YES];
+    
+}
+
+//获得二级排行榜列表
+- (void)getChartList:(BOOL)isFirst{
+    
+    //判断当前的状态
+    if (!isFirst) {
+        if (!ifRefresh){
+            requestPage ++;
+        }else{
+            [peopleList removeAllObjects];
+            requestPage = 1;
+        }
+    }
+    
+    
+    NSMutableDictionary *params = [Rrequest_Data charts_list:[NSString stringWithFormat:@"%d",requestTag] num:[NSString stringWithFormat:@"%d",requestNum] page:[NSString stringWithFormat:@"%d",requestPage]];
+    HttpHelp * help = [[HttpHelp alloc]init:self progress_show:isFirst page:requestPage];
+    [help startHttpEX_For_Tag:CHARTSLIST :params isForTag:YES];
+    [help setTag:@"1"];
+
+}
+
+#pragma mark - httpDelegate
+- (void)Http_resultFor_tag:(NSDictionary *)data :(NSString *)message :(HttpHelp *)help{
+    
+    charts_all *all = (charts_all *)[data initDictionaryTo:[charts_all class]];
+    
+    [peopleList addObjectsFromArray:[all charts]];
+    
+    if (![[all havenext] isEqualToString:@"1"]) {
+        
+        [[_tableView footerView] setHidden:YES];
+        [_tableView reloadData:YES];
+
+
+    }else{
+        [[_tableView footerView] setHidden:NO];
+        [_tableView reloadData:NO];
+    }
+    
+    [_tableView reloadData];
+    [all release];
+    [help release];
+}
+
+
+#pragma mark - Scroll View Delegate
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView{
+    [_tableView tableViewDidDragging];
+}
+
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate{
+    NSInteger returnKey = [_tableView tableViewDidEndDragging];//判断是load或者refresh
+    
+    //  returnKey用来判断执行的拖动是下拉还是上拖，如果数据正在加载，则返回DO_NOTHING
+    if (returnKey != RETURNDONOTHING) {
+        if (returnKey == RETURNLOADMORE){
+            ifRefresh = NO;
+        }else if (returnKey == RETURNREFRESH){
+            ifRefresh = YES;
+        }
+        
+        [self getChartList:NO];
+        
+    }
+}
+
+#pragma mark - tableViewdelegate
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
+    return [peopleList count];
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    return 45;
+}
+
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
+    static NSString *identifer = @"Ranking";
+    
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identifer];
+    if (!cell) {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifer];
+    }
+    [cell removeAllSubviews];
+    NSInteger row = indexPath.row;
+
+    if (row >= 0 && [peopleList count] == 0) {//因为网络没有取到数据要去重绘
+        return cell;
+    }
+    UIView *cellView = [self cellView:CGRectMake(0, 0, 320, 45) row:row];
+    
+    [cell addSubview:cellView];
+    [cellView release];
+    
+    [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
+    
+    return cell;
+}
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+
+    
+}
+
+- (void)cellAction:(id)sender{
+    
+    UIButton *bt = (UIButton *)sender;
+    
+    charts *chart = [peopleList objectAtIndex:bt.tag];
+    
+    PersonalPageViewController *comingViewcontroller = [[PersonalPageViewController alloc] init];
+    [comingViewcontroller setParameter:chart.id bOtherPeople:YES bPush:YES bPresent:NO bRight:NO];
+    [self.navigationController pushViewController:comingViewcontroller animated:YES];
+    [comingViewcontroller release];
+}
+
+//cell view
+- (UIView *)cellView:(CGRect)frame row:(NSInteger)row{
+    UIView *bdView = [[UIView alloc] initWithFrame:frame];
+    UIButton *bdImgBu = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 320, 44)];
+    [bdImgBu setTag:row];
+    [bdImgBu addTarget:self action:@selector(cellAction:) forControlEvents:UIControlEventTouchUpInside];
+    [bdView addSubview:bdImgBu];
+    
+    UIImageView *iconImgBg = [[UIImageView alloc] initWithFrame:CGRectMake(5, (45-32)/2, 32, 32)];
+    [iconImgBg setImage:[UIImage imageNamed:@"face64_mask1.png"]];
+    [bdImgBu addSubview:iconImgBg];
+    [iconImgBg release];
+    //对应的数据
+    charts *chart = [peopleList objectAtIndex:row];
+    //icon
+    UIImageView *iconImg = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 32, 32)];
+    [iconImg setImageWithURL:[NSURL URLWithString:chart.pic] placeholderImage:[UIImage imageNamed:@"noface_32.png"]];
+    [iconImgBg addSubview:iconImg];
+    [iconImg release];
+    //名字
+    UILabel *labelName = [[UILabel alloc] initWithFrame:CGRectMake(iconImgBg.frame.size.width+iconImgBg.frame.origin.x+5, 5, 240, 20)];
+    [labelName setText:chart.name];
+    [labelName setFont:[UIFont systemFontOfSize:12.f]];
+    [labelName setBackgroundColor:[UIColor clearColor]];
+    [bdImgBu addSubview:labelName];
+    [labelName release];
+    //贡献值
+    UILabel *contributionLable = [[UILabel alloc] initWithFrame:CGRectMake(labelName.frame.origin.x, labelName.frame.origin.y+labelName.frame.size.height+2, labelName.frame.size.width, 15)];
+    NSString *pointString = [NSString stringWithFormat:@"贡献值：%@",chart.weekpoints];
+    [contributionLable setText:pointString];
+    [contributionLable setBackgroundColor:[UIColor clearColor]];
+    [contributionLable setFont:[UIFont systemFontOfSize:9.f]];
+    [contributionLable setTextColor:[CommonHelper colorWithHex:@"333333"]];
+    [bdImgBu addSubview:contributionLable];
+    [contributionLable release];
+    
+    //数字排行
+    UILabel *rankLabel = [[UILabel alloc] initWithFrame:CGRectMake(contributionLable.frame.size.width+contributionLable.frame.origin.x, 0, 320-(contributionLable.frame.size.width+contributionLable.frame.origin.x), 45)];
+    [rankLabel setTextColor:[CommonHelper color:223 green:48 blue:0 alpha:1]];
+    [rankLabel setText:chart.rank];
+    [rankLabel setBackgroundColor:[UIColor clearColor]];
+    [rankLabel setFont:[UIFont systemFontOfSize:12.f]];
+    [bdView addSubview:rankLabel];
+    [rankLabel release];
+    
+    //线的img
+    UIImageView *line = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"dotline1.png"]];
+    [line setFrame:CGRectMake(0, 44, 320, 2)];
+    [bdView addSubview:line];
+    [line release];
+    
+    return bdView;
+}
+
+
+@end

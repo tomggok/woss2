@@ -1,0 +1,267 @@
+//
+//  PersonalPageComingViewController.m
+//  Yiban
+//
+//  Created by NewM on 12-11-27.
+//
+//
+
+#import "PersonalPageComingViewController.h"
+#import "UIView+Table.h"
+#import "YiBanHeadBarView.h"
+#import "user.h"
+#import "YiBanLocalDataManager.h"
+#import "Static.h"
+#import "Rrequest_Data.h"
+#import "guest_list_all.h"
+#import "guest_list.h"
+#import "UIImageView+WebCache.h"
+#import "PersonalPageViewController.h"
+#import "YIBanNoDataView.h"
+#import "AppDelegate.h"
+
+#import "NSDictionary+JSON.h"
+@interface PersonalPageComingViewController ()
+{
+    guest_list_all *guest;//访客
+    
+    user *guestUser;//客人的Usermodel
+    
+    YIBanNoDataView *noDataView;
+    
+    BOOL isNotOther;
+    
+}
+@end
+
+@implementation PersonalPageComingViewController
+@synthesize comingUserModel,isPush=_isPush;
+
+- (void)dealloc
+{
+    [guest release];
+    [super dealloc];
+}
+
+//返回
+- (void)back{
+    [[CommonHelper shareInstance]playSound:5];
+    if (isNotOther) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:NOTIFICATIONRELOADPAGEHEADERVIEW object:nil];
+    }
+    
+    [self.navigationController popViewControllerAnimated:YES];
+}
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    
+    if ([[comingUserModel userid] isEqualToString:[[[YiBanLocalDataManager sharedInstance] currentUser] userid]]) {
+        isNotOther = YES;
+    }
+    
+    //背景颜色
+    [[self view] setBackgroundColor:YIALLVIEWBGCOLOR];
+//    UIImageView *backImg = [[UIImageView alloc] initWithFrame:CGRectMake(0, 44, 320, 460-44)];
+//    [backImg setImage:[UIImage imageNamed:@"album_bg.png"]];
+//    [backImg setUserInteractionEnabled:YES];
+//    [self.view addSubview:backImg];
+//    [backImg release];
+    
+    //添加头
+    YiBanHeadBarView *header = [[YiBanHeadBarView alloc] initWithFrame:CGRectMake(0, 0, 320, 44) titleLabel:@"访客"];
+    [header normalHeadView];
+    [[header leftButton] addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:header];
+    [header release];
+    
+    [self getGuset];
+        
+    //创建tableview
+    _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 44, 320, self.view.bounds.size.height-44) style:UITableViewStylePlain];
+    _tableView.delegate = self;
+    _tableView.dataSource = self;
+    [_tableView setBackgroundColor:[UIColor clearColor]];
+    [_tableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
+    
+    UIView *zeroView = [[UIView alloc] initWithFrame:CGRectZero];
+    [_tableView setTableFooterView:zeroView];
+    [_tableView setTableHeaderView:zeroView];
+    [zeroView release];
+    
+    [self.view addSubview:_tableView];
+    [_tableView release];
+    
+    noDataView = [[YIBanNoDataView alloc] initWithFrame:CGRectMake(0, 44, 320, self.view.bounds.size.height-44) imgName:@"txt_novisitor.png"];
+    [noDataView setHidden:YES];
+    [self.view addSubview:noDataView];
+    [noDataView release];
+}
+//获得访客列表
+- (void)getGuset{
+    //请求网络
+    NSString *currentUserId = [comingUserModel userid];
+    NSMutableDictionary *params = [Rrequest_Data user_perguest:currentUserId];
+    HttpHelp * help = [[HttpHelp alloc]init:self progress_show:TRUE page:1];
+    [help startHttpEX_For_Tag:USERPERGUEST :params isForTag:YES];
+    [help setTag:@"1"];
+
+}
+//获得用户信息
+- (void)getUserModel:(NSString *)userId{
+//    NSString *currentUserId = [comingUserModel userid];
+    NSMutableDictionary *params = [Rrequest_Data user_detail:userId];
+    HttpHelp * help = [[HttpHelp alloc]init:self progress_show:TRUE page:1];
+    [help startHttpEX_For_Tag:USERDETAIL :params isForTag:YES];
+    [help setTag:@"2"];
+}
+//跳到主页
+- (void)toPage:(user *)userM{
+//    [[[MainViewController share] navigationController] pushViewController:comingViewcontroller animated:YES];
+//    if (_isPush)
+//    {
+        if ([userM.userid isEqualToString:[[[YiBanLocalDataManager sharedInstance] currentUser] userid]] && [[[[YiBanLocalDataManager sharedInstance] currentUser] verify] isEqualToString:@"0"]) {
+            [theApp addWindowAlertView:NORESETALLTYPE type:2 warning:NO];
+        }else{
+            PersonalPageViewController *comingViewcontroller = [[PersonalPageViewController alloc] init];
+            [comingViewcontroller setParameter:userM.userid bOtherPeople:YES bPush:YES bPresent:NO bRight:NO];
+            [[[LLSplitViewController getmainController] navigationController] pushViewController:comingViewcontroller animated:YES];
+            [comingViewcontroller release];
+        }
+/*
+    }else{
+        [self.navigationController popViewControllerAnimated:NO];
+        [[MainViewController share] addViewThree:YES user:userM];
+    }
+*/    
+}
+
+- (void)viewDidDisappear:(BOOL)animated{
+    
+}
+
+#pragma mark - tableviewdelegate
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
+//    if (isNotOther) {
+//        [[[YiBanLocalDataManager sharedInstance] currentUser] setVisit_num:[NSString stringWithFormat:@"%d",[[guest guest_list] count]]];
+//    }
+    
+    return [[guest guest_list] count];
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    return 50;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
+    static NSString *identifer = @"comingPgae";
+    
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identifer];
+    if (!cell) {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifer];
+    }
+    [cell removeAllSubviews];
+    
+    guest_list *list = [[guest guest_list] objectAtIndex:indexPath.row];
+    user *coPeUser = list.user;
+    NSString *time = list.time;
+    UIView *coPeView = [self coPeView:CGRectMake(0, 0, 320, 50) user:coPeUser time:time];
+    [coPeView setBackgroundColor:[UIColor clearColor]];
+    [cell addSubview:coPeView];
+    [coPeView release];
+    
+    [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
+    return cell;
+    
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    guest_list *list = [[guest guest_list] objectAtIndex:indexPath.row];
+    YBLogInfo(@"list.user == %@", list.user.userid);
+    [self getUserModel:list.user.userid];
+}
+//cell view
+- (UIView *)coPeView:(CGRect)frame user:(user *)_userModel time:(NSString *)time{
+    UIView *coPeView = [[UIView alloc] initWithFrame:frame];
+    
+    UIImageView *iconImg = [[UIImageView alloc] initWithFrame:CGRectMake(9, (frame.size.height-32)/2, 32, 32)];
+    [iconImg setImageWithURL:[NSURL URLWithString:_userModel.pic] placeholderImage:[UIImage imageNamed:@"noface_32.png"]];
+    [coPeView addSubview:iconImg];
+    [iconImg release];
+    //头像图片背景
+    UIImageView *iconImgBg = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 32, 32)];
+    [iconImgBg setImage:[UIImage imageNamed:@"face64_mask1.png"]];
+    [iconImg addSubview:iconImgBg];
+    [iconImgBg release];
+    //名字
+    UILabel *coNameLabel = [[UILabel alloc] initWithFrame:CGRectMake(iconImg.frame.size.width+iconImg.frame.origin.x+5, 8, 220-5, 20)];
+    [coNameLabel setText:_userModel.name];
+    [coNameLabel setBackgroundColor:[UIColor clearColor]];
+    [coNameLabel setFont:[UIFont systemFontOfSize:12.f]];
+    [coPeView addSubview:coNameLabel];
+    [coNameLabel release];
+    //个性签名
+    UILabel *coSignLabel = [[UILabel alloc] initWithFrame:CGRectMake(coNameLabel.frame.origin.x, coNameLabel.frame.origin.y+coNameLabel.frame.size.height, coNameLabel.frame.size.width, 15)];
+    [coSignLabel setText:_userModel.desc];
+    [coSignLabel setBackgroundColor:[UIColor clearColor]];
+    [coSignLabel setFont:[UIFont systemFontOfSize:9.f]];
+    [coSignLabel setTextColor:YIPAGEMESSAGELOCKCOLOR];
+    [coPeView addSubview:coSignLabel];
+    [coSignLabel release];
+    
+    //时钟的图片
+    UIImageView *timeImg = [[UIImageView alloc] initWithFrame:CGRectMake(coNameLabel.frame.size.width+coNameLabel.frame.origin.x, (50-12)/2, 11, 12)];
+    [timeImg setImage:[UIImage imageNamed:@"icon_time.png"]];
+    [coPeView addSubview:timeImg];
+    [timeImg release];
+    
+    //天数相差的计算
+    NSInteger timeInt = [time intValue];
+    NSString *timeStr = [Static getAgo:timeInt];
+    
+    //相差的时间
+    UILabel *timeLabel = [[UILabel alloc] initWithFrame:CGRectMake(timeImg.frame.origin.x+timeImg.frame.size.width+5, (50-15)/2, 60, 15)];
+    [timeLabel setText:timeStr];
+    [timeLabel setTextColor:YIPAGEMESSAGELOCKCOLOR];
+    [timeLabel setBackgroundColor:[UIColor clearColor]];
+    [timeLabel setFont:[UIFont systemFontOfSize:9.f]];
+    [coPeView addSubview:timeLabel];
+    [timeLabel release];
+    
+    UIImageView *line = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"dotline1.png"]];
+    [line setFrame:CGRectMake(0, 50, 320, 2)];
+    [coPeView addSubview:line];
+    [line release];
+    
+    return coPeView;
+    
+}
+
+#pragma mark - httpdelegate
+- (void)Http_resultFor_tag:(NSDictionary *)data :(NSString *)message :(HttpHelp *)help{
+    if ([help.tag isEqualToString:@"1"]) {
+        guest = (guest_list_all *)[data initDictionaryTo:[guest_list_all class]];
+        
+        if ([guest.guest_list count] > 0) {
+            [_tableView reloadData];
+        }else{
+            [noDataView setHidden:NO];
+        }
+    
+        
+    }else{
+//        user *u = [[user alloc] initWithDictionary:[data objectForKey:@"user"]];
+        user *u = (user *)[[data objectForKey:@"user"] initDictionaryTo:[user class]];
+        [self toPage:u];
+        [u release];
+    }
+    [help release];
+}
+
+- (void)requestFail:(NSDictionary *)data message:(NSString *)message http:(HttpHelp *)help{
+    [_tableView reloadData];
+    [help release];
+}
+
+@end

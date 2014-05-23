@@ -1,0 +1,44 @@
+//
+// Prefix header for all source files of the 'DYiBan' target in the 'DYiBan' project
+//
+
+#import <Availability.h>
+
+#ifndef __IPHONE_3_0
+#warning "This project uses features only available in iOS SDK 3.0 and later."
+#endif
+
+#ifdef __OBJC__
+    #import <UIKit/UIKit.h>
+    #import <Foundation/Foundation.h>
+    #import <QuartzCore/QuartzCore.h>
+
+#import "Magic_Logger.h"
+#import "Magic_View.h"
+#import "Magic_CommentMethod.h"
+#import "Magic_Sandbox.h"
+#import "Magic_UITableView.h"
+#import "Magic_UIButton.h"
+#import "DYBParameter.h"    
+#import "DYBShareinstaceDelegate.h"
+
+#import "Magic_JSONReflection.h"
+
+#import "DYBRequest.h"
+#import "DYBHttpInterface.h"
+#import "DYBHttpMethod.h"
+#import "DYBUITableView.h"
+
+#define SCREEN_WIDTH ([UIScreen mainScreen].bounds.size.width)
+#define SCREEN_HEIGHT ([UIScreen mainScreen].bounds.size.height)
+#define INPUTWIDTH  290 //输入框宽度
+#define INPUTHEIGHT  43 //输入框高度
+
+#define OFFSETFROM  15 //偏移的距离
+
+#define BUTTONWIDTH  290 //按钮长度
+#define BUTTONHEIGHT  51 //按钮高度
+//#define YBLogInfo 
+#import "JsonResponse.h"
+
+#endif

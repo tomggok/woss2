@@ -1,0 +1,19 @@
+//
+//  SettingIMGViewController.h
+//  Yiban
+//
+//  Created by NewM on 12-11-19.
+//
+//
+
+#import <UIKit/UIKit.h>
+#import "UIAlertTableView.h"
+
+@interface SettingIMGViewController : UIViewController<UIAlertTableViewDelegate>
+{
+    UILabel *autoTiltleLabel;//动态数字
+    UIImageView *autoImgView;//动态图片
+    
+    UIAlertTableView *alertTableView;
+}
+@end

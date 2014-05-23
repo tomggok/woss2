@@ -1,0 +1,63 @@
+//
+//  PersonalPageView.h
+//  Yiban
+//
+//  Created by Hyde.Xu on 13-3-4.
+//
+//
+
+#import <UIKit/UIKit.h>
+#import "HttpCon_delegate.h"
+#import "MessageDynamicViewController.h"
+#import "ChangeSignalView.h"
+#import "YIBanAlertView.h"
+#import "BigImageViewController.h"
+#import "YiBanHeadBarView.h"
+#import "Doback_delegate.h"
+
+@class user;
+
+//个人主页
+@interface PersonalPageView : UIView<HttpCon_delegate, UIActionSheetDelegate, UIScrollViewDelegate, MessageDynamicViewControllerDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate,ChangeSignalViewDelegate,YIBanAlertViewDelegate,BigDelegate>{
+    MessageDynamicViewController *dyViewController;
+    
+    UIView *tableView;//
+    UIScrollView *downImgScroll;//
+    UIView *tableHeaderA;//
+    
+    NSMutableArray *numLabelArray;//数字的labelarray
+    
+    BOOL ifChangeIcon;//是否更改头像
+    BOOL ifChangeBg;//是否更改背景
+    
+    UIImageView *headPortrait;//头像IMGView
+    
+    ChangeSignalView *signalView;//更改个性签名的view
+    
+    UILabel *personLabel;//个性签名的label
+    NSString *changePersonLabelString;
+    UIImageView *bgImg;//主页背景
+    
+    
+    YiBanHeadBarView *header;//头
+    YiBanHeadBarView *headerWindows;//头
+    
+    UIButton *addMe;//添加好友button
+    
+    id<Doback_delegate> delegate;
+    //    UIButton *send;//footbar上的button
+}
+
+@property (nonatomic, retain)NSString *userId;//用户id
+@property (nonatomic, assign)BOOL isOtherPeople;//是否是其他用户
+@property (nonatomic, assign)BOOL isPush;//是否是推送过来的
+@property (nonatomic, assign)BOOL isPresent;//是否是推上方法
+@property (nonatomic, assign)BOOL isRight;//是否是推右
+@property (nonatomic, retain)NSString * changePersonLabelString;
+@property (nonatomic, retain)user *userModel;
+@property (retain ,nonatomic) id<Doback_delegate> delegate;
+
+- (id)init:(NSString *)userID isOther:(BOOL)isOther;
+- (id)initWithFrame:(CGRect)frame Userid:(NSString *)userid bOtherPeople:(BOOL)bOtherPeople bPush:(BOOL)bPush bPresent:(BOOL)bPresent bRight:(BOOL)bRight;
+-(void)releaseDyview;
+@end

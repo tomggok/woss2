@@ -1,0 +1,170 @@
+//
+//  SettingIMGViewController.m
+//  Yiban
+//
+//  Created by NewM on 12-11-19.
+//
+//
+
+
+#import "SettingIMGViewController.h"
+#import "YiBanHeadBarView.h"
+#import "YiBanLocalDataManager.h"
+#import "UserSettingMode.h"
+#import "user.h"
+#import "JSON.h"
+@interface SettingIMGViewController ()
+{
+    UIView *autoView;//下拉框
+}
+@end
+
+@implementation SettingIMGViewController
+
+
+//返回
+- (void)back{
+    [[CommonHelper shareInstance] playSound:5];
+
+    [self.navigationController popViewControllerAnimated:YES];
+}
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    //背景颜色
+    [[self view] setBackgroundColor:YIALLVIEWBGCOLOR];
+    
+    //添加头
+    YiBanHeadBarView *header = [[YiBanHeadBarView alloc] initWithFrame:CGRectMake(0, 0, 320, 44) titleLabel:@"图片设置"];
+    [header normalHeadView];
+    [[header leftButton] addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];
+    
+    
+    UIView *bodyView = [[UIView alloc] initWithFrame:CGRectMake(0, header.frame.size.height, 320, self.view.frame.size.height-44)];
+    [bodyView setBackgroundColor:[UIColor clearColor]];
+    [self.view addSubview:bodyView];
+    [bodyView release];
+    
+    UILabel *bTitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 20, 220, 15)];
+    [bTitleLabel setText:@"图片上传质量"];
+    bTitleLabel.textAlignment = UITextAlignmentLeft;
+    [bTitleLabel setBackgroundColor:[UIColor clearColor]];
+    [bTitleLabel setFont:[UIFont systemFontOfSize:15]];
+    [bTitleLabel setTextColor:[UIColor blackColor]];
+    [bodyView addSubview:bTitleLabel];
+    [bTitleLabel release];
+    
+    UILabel *sTitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(bTitleLabel.frame.origin.x, bTitleLabel.frame.origin.y+bTitleLabel.frame.size.height+5, bTitleLabel.frame.size.width, 10)];
+    [sTitleLabel setText:@"发布信息时图片质量，质量越低越省流量"];
+    [sTitleLabel setTextAlignment:UITextAlignmentLeft];
+    [sTitleLabel setBackgroundColor:[UIColor clearColor]];
+    [sTitleLabel setTextColor:[CommonHelper color:170 green:170 blue:170 alpha:1]];
+    [sTitleLabel setFont:[UIFont systemFontOfSize:11]];
+    [bodyView addSubview:sTitleLabel];
+    [sTitleLabel release];
+    
+    
+    UITapGestureRecognizer *autoTag = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(turnAroundImg:)];
+    autoView = [[UIView alloc] initWithFrame:CGRectMake(bTitleLabel.frame.origin.x+bTitleLabel.frame.size.width, bTitleLabel.frame.origin.y, 320-(bTitleLabel.frame.origin.x+bTitleLabel.frame.size.width), bTitleLabel.frame.size.height)];
+    [autoView setBackgroundColor:[UIColor clearColor]];
+    
+    
+    autoTiltleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 50, bTitleLabel.frame.size.height)];
+    [autoTiltleLabel setBackgroundColor:[UIColor clearColor]];
+    [autoTiltleLabel setText:[[[YiBanLocalDataManager sharedInstance] currentUserSetting] upSendImgType]];
+    [autoTiltleLabel setFont:[UIFont systemFontOfSize:15]];
+    [autoTiltleLabel setTextAlignment:UITextAlignmentCenter];
+    [autoView addSubview:autoTiltleLabel];
+    [autoTiltleLabel release];
+    
+    autoImgView = [[UIImageView alloc] initWithFrame:CGRectMake(autoTiltleLabel.frame.origin.x+autoTiltleLabel.frame.size.width+2, (autoView.frame.origin.y-11)/2, 14, 11)];
+    [autoImgView setImage:[UIImage imageNamed:@"setup_arrowdown.png"]];
+    [autoView addSubview:autoImgView];
+    [autoImgView release];
+    
+    
+    alertTableView = [[UIAlertTableView alloc] initWithFrame:CGRectMake(autoView.frame.origin.x-21, 40, 94, 161) img:@"pic_qualitybox.png" detail:[[[YiBanLocalDataManager sharedInstance] currentUserSetting] upSendImgType]];
+    [bodyView addSubview:alertTableView];
+    [alertTableView setDelegate:self];
+    [alertTableView setBackgroundColor:[UIColor clearColor]];
+    [alertTableView setHidden:YES];
+    [alertTableView release];
+    
+    [bodyView addSubview:autoView];
+    [autoView addGestureRecognizer:autoTag];
+    [autoView release];
+    [autoTag release];
+    
+    [self.view addSubview:header];
+    [header release];
+    
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(turnAroundImg:) name:NOTIFICATIONVIEWCHANGEAUTOTITLE object:nil];
+    
+}
+//图片旋转
+- (void)turnAroundImg:(NSNotification *)sender{
+    NSString *title = autoTiltleLabel.text;
+    YBLogInfo(@"sender == %@", sender);
+    [autoView setUserInteractionEnabled:NO];
+    if ([sender isKindOfClass:[NSNotification class]]) {
+        title = (NSString *)[sender object];
+        
+        
+        UserSettingMode *settingMode = [[YiBanLocalDataManager sharedInstance] currentUserSetting];
+        [settingMode setUpSendImgType:title];
+        [settingMode setUserId:[[[YiBanLocalDataManager sharedInstance] currentUser] userid]];
+        [[YiBanLocalDataManager sharedInstance] saveUserSetting:[[settingMode dict] JSONFragment] key:@""];
+
+    }
+    
+    // 旋转
+    [UIView beginAnimations:nil context:nil];
+	[UIView setAnimationDuration:.5f];
+    [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
+    if ([alertTableView isHidden]) {
+        CGAffineTransform rotate = CGAffineTransformMakeRotation( M_PI*1 );
+        [autoImgView setTransform:rotate];
+        [alertTableView setHidden:NO];
+        [alertTableView showView];
+        [alertTableView setDetailString:title];
+        [alertTableView reloadTableView];
+    }else{
+        CGAffineTransform rotate = CGAffineTransformMakeRotation( M_PI*2 );
+        [autoImgView setTransform:rotate];
+        [alertTableView hideView];
+    }
+    [autoTiltleLabel setText:title];
+    
+    [UIView commitAnimations];
+
+    
+}
+/**图片旋转的角度
+ *
+ #define M_E         2.71828182845904523536028747135266250   e
+ #define M_LOG2E     1.44269504088896340735992468100189214   log 2e
+ #define M_LOG10E    0.434294481903251827651128918916605082  log 10e
+ #define M_LN2       0.693147180559945309417232121458176568  log e2
+ #define M_LN10      2.30258509299404568401799145468436421   log e10
+ #define M_PI        3.14159265358979323846264338327950288   pi
+ #define M_PI_2      1.57079632679489661923132169163975144   pi/2
+ #define M_PI_4      0.785398163397448309615660845819875721  pi/4
+ #define M_1_PI      0.318309886183790671537767526745028724  1/pi
+ #define M_2_PI      0.636619772367581343075535053490057448  2/pi
+ #define M_2_SQRTPI  1.12837916709551257389615890312154517   2/sqrt(pi)
+ #define M_SQRT2     1.41421356237309504880168872420969808   sqrt(2)
+ #define M_SQRT1_2   0.707106781186547524400844362104849039  1/sqrt(2)
+ */
+
+#pragma mark - uialerttableview delegate
+- (void)alertTableViewAnimationShowEnd:(UIAlertTableView *)alertView{
+
+    [autoView setUserInteractionEnabled:YES];
+}
+- (void)alertTableViewAnimationHiddenEnd:(UIAlertTableView *)alertView{
+    [alertTableView setHidden:YES];
+    [autoView setUserInteractionEnabled:YES];
+}
+@end

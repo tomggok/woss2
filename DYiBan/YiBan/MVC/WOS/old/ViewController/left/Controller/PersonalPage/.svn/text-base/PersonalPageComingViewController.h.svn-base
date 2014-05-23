@@ -1,0 +1,23 @@
+//
+//  PersonalPageComingViewController.h
+//  Yiban
+//
+//  Created by NewM on 12-11-27.
+//
+//
+
+#import <UIKit/UIKit.h>
+@class user;
+#import "HttpHelp.h"
+
+//访客页
+@interface PersonalPageComingViewController : UIViewController<UITableViewDataSource, UITableViewDelegate, HttpCon_delegate>
+{
+    UITableView *_tableView;
+    user *comingUserModel;
+}
+@property (nonatomic, retain)user *comingUserModel;
+@property (nonatomic, assign)BOOL isPush;
+
+
+@end

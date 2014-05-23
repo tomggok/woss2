@@ -1,0 +1,16 @@
+//
+//  PersonalPageChangePhoneViewController.h
+//  Yiban
+//
+//  Created by NewM on 12-12-1.
+//
+//
+
+#import <UIKit/UIKit.h>
+#import "HttpHelp.h"
+#import "YIBanAlertView.h"
+
+//修改手机页
+@interface PersonalPageChangePhoneViewController : UIViewController<HttpCon_delegate, UITextFieldDelegate, YIBanAlertViewDelegate>
+
+@end

@@ -1,0 +1,46 @@
+//
+//  SettingTextViewController.m
+//  Yiban
+//
+//  Created by NewM on 12-11-20.
+//
+//
+
+#import "SettingTextViewController.h"
+#import "SettingTextView.h"
+#import "YiBanHeadBarView.h"
+
+@interface SettingTextViewController ()
+
+@end
+
+@implementation SettingTextViewController
+@synthesize textTag;
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    
+    //添加头
+    YiBanHeadBarView *header = [[YiBanHeadBarView alloc] initWithFrame:CGRectMake(0, 0, 320, 44) titleLabel:@"用户协议"];
+    if (textTag == 0) {
+        [[header titleLabel] setText:@"帮助"];
+    }
+    [header normalHeadView];
+    [[header leftButton] addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:header];
+    [header release];
+    
+    SettingTextView *textView = [[SettingTextView alloc] initWithFrame:CGRectMake(0, 44, 320, self.view.frame.size.height-44) tag:textTag];
+    [self.view addSubview:textView];
+    [textView release];
+}
+
+//返回
+- (void)back{
+    [[CommonHelper shareInstance] playSound:5];
+
+    [self.navigationController popViewControllerAnimated:YES];
+}
+
+@end

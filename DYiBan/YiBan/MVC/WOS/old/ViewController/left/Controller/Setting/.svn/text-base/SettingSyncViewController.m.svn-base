@@ -1,0 +1,291 @@
+//
+//  SettingSyncViewController.m
+//  Yiban
+//
+//  Created by NewM on 12-12-5.
+//
+//
+
+#import "SettingSyncViewController.h"
+#import "YiBanHeadBarView.h"
+#import "UIView+Table.h"
+#import "SNS_Controller_webViewViewController.h"
+#import "user.h"
+#import "Rrequest_Data.h"
+#import "Static.h"
+#import "SyncType.h"
+@interface SettingSyncViewController ()
+{
+    NSArray *_itemsArray;
+    user *_userModel;//当前用户的model
+    
+    BOOL isSyncTenct;//是否同步腾讯
+    BOOL isSyncRenren;//是否同步人人
+    BOOL isSyncSina;//是否同步新浪
+    BOOL isSyncDouban;//是否同步豆瓣
+    
+    BOOL canSyncTenct;
+    BOOL canSyncRenren;
+    BOOL canSyncSina;
+    BOOL canSyncDouban;
+    
+    NSInteger canShowNum;//可以显示的行数
+}
+@end
+
+@implementation SettingSyncViewController
+
+- (void)dealloc
+{
+    [_itemsArray release];
+    _itemsArray = nil;
+    [super dealloc];
+}
+
+//返回
+- (void)back{
+    [[CommonHelper shareInstance] playSound:5];
+
+    [self.navigationController popViewControllerAnimated:YES];
+}
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    
+    _userModel = [[YiBanLocalDataManager sharedInstance] currentUser];
+    
+    _itemsArray = [[NSArray alloc] initWithObjects:@"将手机易班发布的信息同时分享给您的朋友或粉丝", @"同步到腾讯微博", @"同步到人人网", @"同步到新浪", @"同步到豆瓣", nil];
+    
+    //背景颜色
+    [[self view] setBackgroundColor:YIALLVIEWBGCOLOR];
+    
+    //添加头
+    YiBanHeadBarView *header = [[YiBanHeadBarView alloc] initWithFrame:CGRectMake(0, 0, 320, 44) titleLabel:@"同步设置"];
+    [header normalHeadView];
+    [[header leftButton] addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:header];
+    [header release];
+    
+    UIView *titleView = [self titleView:CGRectMake(0, 44, 320, 50) text:[_itemsArray objectAtIndex:0]];
+    [titleView setBackgroundColor:YIALLVIEWBGCOLOR2];
+    [self.view addSubview:titleView];
+    [titleView release];
+    
+    UIImageView *seplineview = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"sepline.png"]];
+    [seplineview setFrame:CGRectMake(0, 92, 320, 2)];
+    [self.view addSubview:seplineview];
+    [seplineview release];
+    
+    _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, titleView.frame.origin.y+titleView.frame.size.height, 320, self.view.bounds.size.height-(titleView.frame.origin.y+titleView.frame.size.height))];
+    [_tableView setDataSource:self];
+    [_tableView setDelegate:self];
+    [_tableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
+    [_tableView setBackgroundColor:[UIColor clearColor]];
+    [self.view addSubview:_tableView];
+    [_tableView release];
+    
+    
+    
+}
+
+- (void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    [self checkSyncType];
+}
+
+- (void)checkSyncType{
+    [self doSyncTag];//处理是否授权
+    [_tableView reloadData];
+}
+
+- (void)doSyncTag{
+    NSInteger sysTagCount = [[_userModel sync_tag] intValue];
+    
+    SyncType *sync = [[SyncType alloc] init:sysTagCount];
+    isSyncTenct = sync.isSyncTenct;
+    isSyncSina = sync.isSyncSina;
+    isSyncRenren = sync.isSyncRenren;
+    isSyncDouban = sync.isSyncDouban;
+    
+    NSInteger canSyncTagCount = [[_userModel yiban_sync] intValue];
+//    canSyncTagCount = 6;
+    SyncType *canSync = [[SyncType alloc] init:canSyncTagCount];
+    canSyncDouban = canSync.isSyncDouban;
+    canSyncRenren = canSync.isSyncRenren;
+    canSyncSina = canSync.isSyncSina;
+    canSyncTenct = canSync.isSyncTenct;
+    
+    canShowNum = canSync.canShowNum;
+
+//Add by Hyde 20130220 #memoryleaks    
+    [sync release];
+    [canSync release];
+}
+
+//titleView
+- (UIView *)titleView:(CGRect)frame text:(NSString *)text{
+    UIView *titleView = [[UIView alloc] initWithFrame:frame];
+    
+    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, frame.size.width, frame.size.height)];
+    [label setText:text];
+    [label setTextAlignment:UITextAlignmentCenter];
+    [label setBackgroundColor:[UIColor clearColor]];
+    [label setTextColor:YIEXPLAINCOLOR];
+    [label setFont:YIFOURVIEWDETAILSIZE];
+    [titleView addSubview:label];
+    [label release];
+    
+    return titleView;
+}
+
+
+#pragma mark - tableViewDelegate
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
+    
+    return canShowNum;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    return 45;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
+    static NSString *identify = @"settingSync";
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identify];
+    
+    if (!cell) {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identify];
+    }
+    [cell removeAllSubviews];
+    
+    NSInteger count = 0;
+    if (canSyncTenct) {
+        canSyncTenct = NO;
+        count = 1;
+    }else if(canSyncRenren){
+        canSyncRenren = NO;
+        count = 2;
+    }else if (canSyncSina){
+        canSyncSina = NO;
+        count = 3;
+    }else if (canSyncDouban){
+        canSyncDouban = NO;
+        count = 4;
+    }
+    
+    
+    
+    UIView *cellRowView = [self cellView:CGRectMake(0, 0, 320, 45) text:[_itemsArray objectAtIndex:indexPath.row+1] tag:count];
+    [cell addSubview:cellRowView];
+    [cellRowView release];
+    
+    return cell;
+    
+}
+
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView{
+    [self checkSyncType];
+}
+
+//cell view
+- (UIView *)cellView:(CGRect)frame text:(NSString *)text tag:(NSInteger)tag{
+    
+    UIView *cellView = [[UIView alloc] initWithFrame:frame];
+    
+    UIButton *button = [[UIButton alloc] initWithFrame:frame];
+    [button setBackgroundImage:[UIImage imageNamed:@"setup_bar_a.png"] forState:UIControlStateNormal];
+    [button setBackgroundImage:[UIImage imageNamed:@"setup_bar_b.png"] forState:UIControlStateHighlighted];
+    [button setTag:(tag)];
+    [button addTarget:self action:@selector(cellButtonActon:) forControlEvents:UIControlEventTouchUpInside];
+    [button setUserInteractionEnabled:YES];
+    [cellView addSubview:button];
+    [button release];
+    
+    if ((isSyncTenct && tag == 1) || (isSyncRenren && tag == 2) || (isSyncSina && tag == 3) || (isSyncDouban && tag == 4)) {
+        UIButton *imgView = [[UIButton alloc] initWithFrame:CGRectMake(320-28-15, (44-28)/2, 28, 28)];
+        [imgView setBackgroundImage:[UIImage imageNamed:@"tongbu_ok_a.png"] forState:UIControlStateNormal];
+        [imgView setBackgroundImage:[UIImage imageNamed:@"tongbu_ok_b.png"] forState:UIControlStateHighlighted];
+        [imgView setUserInteractionEnabled:NO];
+        [button addSubview:imgView];
+        [imgView release];
+    }
+    
+    
+    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, 300, 44)];
+    [label setText:text];
+    [label setBackgroundColor:[UIColor clearColor]];
+    [label setFont:YIFOURVIEWNAMESIZE];
+    [cellView addSubview:label];
+    [label release];
+    
+    
+    UIImageView *line = [[UIImageView alloc] initWithFrame:CGRectMake(0, 44, 320, 2)];
+    [line setImage:[UIImage imageNamed:@"dotline1.png"]];
+    [cellView addSubview:line];
+    [line release];
+    
+    
+    return cellView;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    
+    
+    [tableView cellForRowAtIndexPath:indexPath].selected = NO;
+}
+//cell上的button事件
+- (void)cellButtonActon:(id)sender{
+    UIButton *bt = (UIButton *)sender;
+
+    
+    if ((isSyncDouban && bt.tag == 4) || (isSyncRenren && bt.tag == 2) || (isSyncSina && bt.tag == 3) || (isSyncTenct && bt.tag == 1)) {
+        NSMutableDictionary *dic = nil;
+        if (bt.tag == 1) {
+            dic = [Rrequest_Data user_delsync_m:[NSString stringWithFormat:@"%d",2]];
+        }else if (bt.tag == 2){
+            dic = [Rrequest_Data user_delsync_m:[NSString stringWithFormat:@"%d",4]];
+        }else if (bt.tag == 3){
+            dic = [Rrequest_Data user_delsync_m:[NSString stringWithFormat:@"%d",1]];
+        }else if (bt.tag == 4){
+            dic = [Rrequest_Data user_delsync_m:[NSString stringWithFormat:@"%d",8]];
+        }
+        
+        HttpHelp * help = [[HttpHelp alloc]init:self progress_show:false page:0];
+        help.tag = user_delsync;
+        [help startHttpEX_For_Tag:user_delsync :dic isForTag:true];
+    }else{
+        SNS_Controller_webViewViewController *sns = [[SNS_Controller_webViewViewController alloc] init];
+        if (bt.tag == 1) {
+            [sns setTag:1];
+        }else if (bt.tag == 2){
+            [sns setTag:2];
+        }
+        [self presentModalViewController:sns animated:YES];
+        [sns release];
+    }
+    
+}
+
+#pragma mark -
+#pragma mark - httpdelegate
+#pragma mark -
+-(void)Http_resultFor_tag:(NSDictionary *)data :(NSString *)message :(HttpHelp *)help{
+    if ([help.tag isEqualToString:@"user_delsync"]) {
+        NSString * tag = [help.params objectForKey:@"sync_tag"];
+        NSString * result = [data objectForKey:@"result"];
+        if ([result isEqualToString:@"1"]) {
+            [Static alertView:self.view msg:@"解除绑定成功"];
+            //更新本地数据
+            int count = [[[[YiBanLocalDataManager sharedInstance] currentUser] sync_tag] intValue] - [tag intValue];
+            [YiBanLocalDataManager sharedInstance].currentUser.sync_tag =[NSString stringWithFormat:@"%d",count];
+            [self checkSyncType];
+        }else{
+            [Static alertView:self.view msg:@"解除绑定失败"];
+        }
+    }
+    [help release];
+}
+
+
+@end

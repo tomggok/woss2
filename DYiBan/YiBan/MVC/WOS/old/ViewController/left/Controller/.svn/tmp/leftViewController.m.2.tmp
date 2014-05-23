@@ -1,0 +1,772 @@
+    //
+//  leftViewController.m
+//  splitViewTest
+//
+//  Created by zeng tom on 12-10-8
+//  Copyright 2012 __MyCompanyName__. All rights reserved.
+//
+#import "leftViewController.h"
+#import "AppDelegate.h"
+#import "MainViewController.h"
+#import "UserSettingMode.h"
+#import "CommonHelper.h"
+#import "Static.h"
+#import "Rrequest_Data.h"
+#import "HttpHelp.h"
+#import "UserLoginModel.h"
+#import "YiBanLocalDataManager.h"
+#import "CommonHelper.h"
+#import "RegisetSchoolViewController.h"
+#import "SettingViewController.h"
+#import "list.h"
+#import "YiBanApp_list.h"
+#import "UIImageView+WebCache.h"
+#import "NSDictionary+JSON.h"
+
+@implementation leftViewController
+@synthesize labelName;
+@synthesize imageViewUser;
+@synthesize btnLogout;
+@synthesize arrAppList;
+
+// The designated initializer.  Override if you create the controller programmatically and want to perform customization that is not appropriate for viewDidLoad.
+/*
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
+    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    if (self) {
+        // Custom initialization.
+    }
+    return self;
+}
+*/
+
+/*
+// Implement loadView to create a view hierarchy programmatically, without using a nib.
+- (void)loadView {
+}
+*/
+static leftViewController *share = nil;
++(leftViewController *)share{
+    if (!share) {
+        share = [[leftViewController alloc] init];
+    }
+    return share;
+}
+
+
+- (UIView*)drawAppCellDefault:(CGRect)rect appName:(NSString*)appName btnTag:(int)tag{
+    UIView* cell = [[[UIView alloc]initWithFrame:rect] autorelease];
+    [cell setBackgroundColor:[UIColor clearColor]];
+    UIImageView *imageAppIcon = [[[UIImageView alloc]initWithFrame:CGRectMake(25.0f, 12.0f, 18.0f, 18.0f)] autorelease];
+    
+    if ([appName isEqualToString:@"新华e讯"]) {
+        [imageAppIcon setImage:[UIImage imageNamed:@"icon_xinhua.png"]];
+    }
+    else if([appName isEqualToString:@"易码通"]){
+        [imageAppIcon setImage:[UIImage imageNamed:@"icon_qrcode.png"]];
+    }
+    
+    [imageAppIcon setBackgroundColor:[UIColor clearColor]];
+    [cell addSubview:imageAppIcon];
+  
+    UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
+    [btn setFrame:CGRectMake(0, 0, rect.size.width, rect.size.height)];
+    [btn.titleLabel setFont:YILOGINVIEWCONTENTSIZE];
+    [btn setTitle:appName forState:UIControlStateNormal];
+    [btn setTitleColor:YIFOURVIEWDETALCOLOR forState:UIControlStateNormal];
+    [btn setTitleColor:[UIColor whiteColor] forState:UIControlStateHighlighted];
+    [btn setTitleEdgeInsets:UIEdgeInsetsMake(8,25,8,240-[appName sizeWithFont:YILOGINVIEWCONTENTSIZE].width)];
+    [btn setTag:tag];
+
+    [btn setBackgroundColor:[UIColor clearColor]];
+    UIImageView * bottom= [[UIImageView alloc]initWithFrame:CGRectMake(0, 42, rect.size.width, 2)];
+    [bottom setImage:[UIImage imageNamed:@"dotline.png"]];
+    [cell addSubview:bottom];
+    [bottom release];
+    
+    [btn addTarget:self action:@selector(showOtherView:) forControlEvents:UIControlEventTouchUpInside];
+    [cell addSubview:btn];
+    
+    [leftList addSubview:cell];
+    return cell;
+}
+
+- (UIView*)drawAppCell:(CGRect)rect app:(list *)app btnTag:(int)tag{
+    UIView* cell = [[[UIView alloc]initWithFrame:rect] autorelease];
+    [cell setBackgroundColor:[UIColor clearColor]]; 
+    UIImageView *imageAppIcon = [[[UIImageView alloc]initWithFrame:CGRectMake(25.0f, 12.0f, 18.0f, 18.0f)] autorelease];
+    [imageAppIcon setImageWithURL:[NSURL URLWithString:app.app_icon]];
+    
+    if (imageAppIcon.image == nil) {
+        if ([app.name isEqualToString:@"新华e讯"]) {
+            [imageAppIcon setImage:[UIImage imageNamed:@"icon_xinhua.png"]];
+        }
+        else if([app.name isEqualToString:@"易码通"]){
+            [imageAppIcon setImage:[UIImage imageNamed:@"icon_qrcode.png"]];
+        }
+        else{
+            [imageAppIcon setImage:[UIImage imageNamed:@"noface_32.png"]];            
+        }
+
+    }
+    
+    [imageAppIcon setBackgroundColor:[UIColor clearColor]];
+    [cell addSubview:imageAppIcon];
+    
+//    UIImage *imgMask = [UIImage imageNamed:@"face64_mask5.png"];
+//    UIImageView *viewMask =[[[UIImageView alloc] initWithImage:imgMask] autorelease];
+//    [viewMask setFrame:CGRectMake(0, 0, 18, 18)];
+//    [viewMask setImage:imgMask];
+//    [viewMask setBackgroundColor:[UIColor clearColor]];
+//    [imageAppIcon addSubview:viewMask];
+   
+    UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
+    [btn setFrame:CGRectMake(0, 0, rect.size.width, rect.size.height)];
+    [btn.titleLabel setFont:YILOGINVIEWCONTENTSIZE];
+    [btn setTitle:app.name forState:UIControlStateNormal];
+    [btn setTitleColor:YIFOURVIEWDETALCOLOR forState:UIControlStateNormal];
+    [btn setTitleColor:[UIColor whiteColor] forState:UIControlStateHighlighted];
+    [btn setTitleEdgeInsets:UIEdgeInsetsMake(8,25,8,240-[app.name sizeWithFont:YILOGINVIEWCONTENTSIZE].width)];
+    [btn setTag:tag];
+    
+    if (![[NSUserDefaults standardUserDefaults] boolForKey:app.name] && app.tip_type == 2){
+        UIImage *tipNew = [UIImage imageNamed:@"plugin_new.png"];
+        UIImageView * tip = [[UIImageView alloc]initWithFrame:CGRectMake([app.name sizeWithFont:YILOGINVIEWCONTENTSIZE].width+60, (btn.frame.size.height-16)/2, tipNew.size.width/2, tipNew.size.height/2)];
+        [tip setImage:tipNew];
+        [tip setTag:btn.tag];
+        [btn addSubview:tip];
+        [tip release];
+    }
+
+// 位置校对线
+/*
+    UIImageView * mid= [[UIImageView alloc]initWithFrame:CGRectMake(0, 21, rect.size.width, 2)];
+    [mid setBackgroundColor:[UIColor redColor]];
+    [cell addSubview:mid];
+    [mid release];
+*/    
+    [btn setBackgroundColor:[UIColor clearColor]];
+    UIImageView * bottom= [[UIImageView alloc]initWithFrame:CGRectMake(0, 42, rect.size.width, 2)];
+    [bottom setImage:[UIImage imageNamed:@"dotline.png"]];
+    [cell addSubview:bottom];
+    [bottom release];
+    
+    [btn addTarget:self action:@selector(showOtherView:) forControlEvents:UIControlEventTouchUpInside];
+
+    
+//    [btn addSubview:label];
+
+    [cell addSubview:btn];
+    
+/******************
+ ***** 显示Gif*****
+ ******************
+    NSData *localData = nil;
+    switch (app.tip_type) {
+        case 1:
+            localData = [NSData dataWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"tip_new" ofType:@"gif"]];
+            break;
+        case 2:
+            localData = [NSData dataWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"tip_hot" ofType:@"gif"]];
+            break;
+        default:
+            localData = nil;
+            break;
+    }
+    
+    if (localData != nil) {
+        GifView *gifView = [[GifView alloc] initWithFrame:CGRectMake(btn.frame.size.width -100, (btn.frame.size.height-13)/2, 23, 13) data:localData];
+        [btn addSubview:gifView];
+        [gifView release];
+    }
+*/
+    
+    [leftList addSubview:cell];
+    return cell;
+}
+
+
+- (void)openApp:(NSString *)appurl AppSchemesURL:(NSString *)schemesurl{
+    
+    NSString *stringURL = [NSString stringWithFormat:@"%@", schemesurl];
+    NSURL *url = [NSURL URLWithString:stringURL];
+    
+    BOOL bCanOpenUrl = [[UIApplication sharedApplication] canOpenURL:url];
+    
+    if (bCanOpenUrl) {
+        [[UIApplication sharedApplication] openURL:url];
+    }
+    else{
+//       NSURL *appstoreurl = [NSURL URLWithString:[NSString stringWithFormat:@"%@", appurl]];
+//       [[UIApplication sharedApplication] openURL:appstoreurl];
+        [[MainViewController share] removeSubViews:YES];
+        
+        webview = [[UIWebView alloc] initWithFrame:CGRectMake(0.0f, 44.0f, 320.0f, self.view.frame.size.height-44)];
+        [webview setDelegate:self];
+        [webview loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:appurl]]];
+        [[MainViewController share].view addSubview:webview];
+        [webview release];
+        
+        bar = [[YiBanHeadBarView alloc]initWithFrame:CGRectMake(0.0f, 0.0f, 320.0f, 44.0f) titleLabel:@""];
+        [bar normalHeadView];
+        [[bar leftButton] addTarget:self action:@selector(doBack) forControlEvents:UIControlEventTouchUpInside];
+        [[MainViewController share].view addSubview:bar];
+        [bar release];
+        
+        [Static addAlertView:webview];
+    }
+}
+
+-(void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error{
+    [Static removeAlertView:webview];
+    YBLogInfo(@"info is %@",error.userInfo);
+    [self performSelector:@selector(doBack) withObject:nil afterDelay:1];
+}
+
+-(void)webViewDidFinishLoad:(UIWebView *)webView{
+    [Static removeAlertView:webview];
+    [bar setTitleLabelString:[webView stringByEvaluatingJavaScriptFromString:@"document.title"]];
+}
+
+-(void)doBack{
+    [[CommonHelper shareInstance] playSound:5];
+    [[LLSplitViewController getmainController] showLeftView:YES];
+}
+
+// Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
+-(UIView*)drawCell:(CGRect)rect :(NSString*)name :(int)tag :(NSString*)hImage :(NSString*)lImage{
+    UIView* cell = [[[UIView alloc]initWithFrame:rect] autorelease];
+    [cell setBackgroundColor:[UIColor clearColor]];
+    UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
+    [btn setFrame:CGRectMake(0.0f, 0, 320.0f, 43.0f)];
+    btn.tag = tag;
+    [btn addTarget:self action:@selector(showOtherView:) forControlEvents:UIControlEventTouchUpInside];
+    [btn setBackgroundImage:[UIImage imageNamed:hImage] forState:UIControlStateHighlighted];
+    [btn setBackgroundImage:[UIImage imageNamed:lImage] forState:UIControlStateNormal];
+    [cell addSubview:btn];
+    [btn setBackgroundColor:[UIColor clearColor]];
+    if (tag == 1) {
+        btn.selected = YES;
+    }
+        
+    
+    [leftList addSubview:cell];
+    return cell;
+}
+-(void)setButtonState:(int)tag{
+    UIButton *btn;
+    for (int i = 1;i<=6; i++) {
+        btn = (UIButton*)[self.view viewWithTag:i];
+
+        if (tag == i) {
+            continue;
+        }
+        [btn setBackgroundImage:[UIImage imageNamed:[NSString stringWithFormat:@"%d_a",i]] forState:UIControlStateNormal];
+        btn.selected = NO;
+    }
+
+
+}
+-(void)showOtherView:(id)sender{
+    //清空 动态页面
+//    [[MainViewController share].dynamic release];
+    
+//    if ([MainViewController share].dynamic != nil) {
+//        [MainViewController share].dynamic = nil;
+//    }
+    
+    UIButton *btn = nil;
+    int tag = -1;
+    if ([sender isKindOfClass:[UIButton class]]) {
+        btn = (UIButton *)sender;
+        tag = btn.tag;
+    }else{
+        tag = 2;
+    }
+    
+
+    LoginController *log = [LoginController creatLogin];
+    if ([log getController] == nil) {
+        [[LLSplitViewController getmainController]showViewController:[MainViewController share] animated:YES];
+    }
+    else{
+        [[log getController] showViewController:[MainViewController share] animated:YES];
+    }
+    [self.view setUserInteractionEnabled:NO];
+    YBLogInfo(@"tag= %d 锁住了",tag);
+    
+    if (tag > 10000) {
+        int nMark  = tag;
+        nMark = nMark -10001;
+        
+        if ([arrAppList count] > 0) {
+            list *app = [arrAppList objectAtIndex:nMark];
+            
+            if (![[NSUserDefaults standardUserDefaults] boolForKey:app.name]){
+                for (UIView *view in btn.subviews) {
+                    if (view.tag == tag) {
+                        [view removeFromSuperview];
+                        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:app.name];
+                        break;
+                    }
+                }
+            }
+            
+            if ([app.name isEqualToString:@"新华e讯"]) {
+                tag = 6;
+            }
+            else if([app.name isEqualToString:@"易码通"]){
+                tag = 7;
+            }else if([app.name isEqualToString:@"就业信息"]){
+                tag = 10;
+            }
+            
+        }
+    }
+    
+    if (tag == 0) {
+        [[MainViewController share] addViewOne];
+    }else if (tag == 1) {
+        [[MainViewController share] addViewTwo];
+        [btn setBackgroundImage:[UIImage imageNamed:@"leftmenu_news_b.png"] forState:UIControlStateNormal];
+    }
+    else if (tag == 2) {//主页
+
+        [[MainViewController share] addViewThree:NO user:nil];
+        [btn setBackgroundImage:[UIImage imageNamed:@"leftmenu_home_b.png"] forState:UIControlStateNormal];
+    }else if (tag == 3) {//好友
+
+        [[MainViewController share] addViewFour];
+        [btn setBackgroundImage:[UIImage imageNamed:@"leftmenu_friends_b.png"] forState:UIControlStateNormal];
+    }else if (tag == 4) {//找人
+
+        [[MainViewController share] addViewFive];
+        [btn setBackgroundImage:[UIImage imageNamed:@"leftmenu_find_b.png"] forState:UIControlStateNormal];
+    }else if (tag == 5) {//班级
+        [[MainViewController share] addViewSeven];
+        [btn setBackgroundImage:[UIImage imageNamed:@"leftmenu_class_b.png"] forState:UIControlStateNormal];
+    }else if (tag == 6){    
+        [[MainViewController share] addViewEight];
+    
+    }else if (tag == 7) {
+        [[MainViewController share] addViewNine];
+    }else if (tag == 10) {
+        [[MainViewController share] addVIewTen];
+//        [btn setBackgroundImage:[UIImage imageNamed:@"leftmenu_class_b.png"] forState:UIControlStateNormal];
+    }
+    else{
+        if ([arrAppList count] > 0) {
+            list *app = [arrAppList objectAtIndex:tag-10001];
+            [self openApp:app.store_url AppSchemesURL:app.schemes_url];
+            [[CommonHelper shareInstance] playSound:5];
+        }
+    }
+
+
+    [self setButtonState:tag];
+    [NSTimer scheduledTimerWithTimeInterval:1.f target:self selector:@selector(timeForClick) userInfo:nil repeats:NO];//。2秒之后才能触发事件
+}
+
+- (void)timeForClick{
+    YBLogInfo(@"我已给解开了");
+    [self.view setUserInteractionEnabled:YES];
+}
+- (void)viewDidLoad {
+    
+    [super viewDidLoad];
+    YBLogInfo(@"co,i12321");
+    
+    UIImageView *view = [[UIImageView alloc]initWithFrame:CGRectMake(0.0f, 0.0f, 320.0f, self.view.frame.size.height)];
+    [view setBackgroundColor:[UIColor clearColor]];
+    [view setImage:[UIImage imageNamed:@"side_bg.png"]];
+    [self.view addSubview:view];
+    [view release];
+    YBLogInfo(@"co,i12331232121");
+    arrAppList = [[NSMutableArray alloc] init];
+    YBLogInfo(@"co,i1232121321");
+    leftList =[[UITableView alloc]initWithFrame:CGRectMake(0.0f, 38.0f, 320.0f, self.view.frame.size.height-38-46)];
+    
+    [leftList setSeparatorStyle:UITableViewCellSeparatorStyleNone];
+    [leftList setBackgroundColor:[UIColor clearColor]];
+    leftList.delegate = self;
+    leftList.dataSource = self;
+    [self.view addSubview:leftList];
+    [leftList release];
+    YBLogInfo(@"co,i13212321");
+    UIImageView *head = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"yb_logo.png"]];
+    CGRect f = head.frame;
+    head.frame = CGRectMake((320-f.size.width)/2+ f.size.width/4-20, -30 - f.size.height/2, f.size.width/2, f.size.height/2);
+    [leftList addSubview:head];
+    [head release];
+    YBLogInfo(@"co,i1322321");
+//    if ([Static isWIFI]) {
+        [self setParameter];
+//    }
+//    else{
+//        [self loadLocalApp];
+//    }
+    
+    YBLogInfo(@"co,i13212321");
+    UIImageView *imageTopBar = [[[UIImageView alloc]initWithFrame:CGRectMake(0.0f, 0.0f, 320.0f, 48.0f)] autorelease];
+    [imageTopBar setUserInteractionEnabled:YES];
+    
+    [imageTopBar setImage:[UIImage imageNamed:@"right_topbar.png"]];
+    [self.view addSubview:imageTopBar];
+    
+    UITapGestureRecognizer *tapImgIcon = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(showOtherView:)];
+    UITapGestureRecognizer *tapImgIcon2 = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(showOtherView:)];
+    YBLogInfo(@"co,i12332132121");
+    imageViewUser= [[UIImageView alloc]initWithFrame:CGRectMake(10.0f, 5.0f, 32.0f, 32.0f)];
+    [imageViewUser setUserInteractionEnabled:YES];
+    [imageViewUser addGestureRecognizer:tapImgIcon];
+    [imageViewUser setBackgroundColor:[UIColor clearColor]];
+    imageViewUser.contentMode=UIViewContentModeScaleAspectFit;
+    [imageTopBar addSubview:imageViewUser];
+    YBLogInfo(@"co,21321321321");
+    labelName = [[UILabel alloc]initWithFrame:CGRectMake(imageViewUser.frame.origin.x+imageViewUser.frame.size.width+9.0f, 2.0f, 150.0f, 40.0f)];
+    [labelName setShadowColor:[UIColor blackColor]];
+    [labelName setShadowOffset:CGSizeMake(0, -1)];
+    [labelName setUserInteractionEnabled:YES];
+    [labelName setFont:[UIFont systemFontOfSize:18.0f]];
+    [labelName addGestureRecognizer:tapImgIcon2];
+    [labelName setBackgroundColor:[UIColor clearColor]];
+    [labelName setTextColor:[UIColor colorWithRed:187/255.0 green:187/255.0 blue:187/255.0 alpha:1.0f]];
+    [imageTopBar addSubview:labelName];
+    [tapImgIcon2 release];
+    [tapImgIcon release];
+    //    [label release];
+    YBLogInfo(@"co,321321");
+    [self drawCell:CGRectMake(0.0f, 5.0f, 320.0f, 43.0f) :@"动态":1 :@"leftmenu_news_b.png" :@"1_a.png"];
+    [self drawCell:CGRectMake(0.0f, 48.0f, 320.0f, 43.0f) :@"主页":2: @"leftmenu_home_b.png": @"2_a.png"];
+    [self drawCell:CGRectMake(0.0f, 91.0f, 320.0f, 43.0f) :@"好友":3: @"leftmenu_friends_b.png":@"3_a.png" ];
+    [self drawCell:CGRectMake(0.0f, 134.0f, 320.0f, 43.0f) :@"找人":4: @"leftmenu_find_b.png": @"4_a.png"];
+    [self drawCell:CGRectMake(0.0f, 177.0f, 320.0f, 43.0f) :@"班级":5: @"leftmenu_class_b.png": @"5_a.png"];
+    
+    UIButton *btn = (UIButton *)[self.view viewWithTag:1];
+    [btn setBackgroundImage:[UIImage imageNamed:@"leftmenu_news_b.png"] forState:UIControlStateSelected];
+    UIImageView *footView = [[UIImageView alloc]initWithFrame:CGRectMake(0.0f, self.view.frame.size.height-46, 320.0f, 46.0f)];
+    [footView setImage:[UIImage imageNamed:@"left_footbar.png"]];
+    [self.view addSubview:footView];
+    [footView release];
+    
+    UIButton *btnSetup = [[UIButton alloc]initWithFrame:CGRectMake(9.0f, footView.frame.origin.y+10, 125.0f, 30.0f)];
+    [btnSetup setBackgroundImage:[UIImage imageNamed:@"setup_a.png"] forState:UIControlStateNormal];
+    [btnSetup setBackgroundImage:[UIImage imageNamed:@"setup_b.png"] forState:UIControlStateHighlighted];
+    [btnSetup addTarget:self action:@selector(btnAction:) forControlEvents:UIControlEventTouchUpInside];
+    [btnSetup setTag:1];
+    [self.view addSubview:btnSetup];
+    [btnSetup release];
+    
+    YBLogInfo(@"co,i12321 vd321");
+    btnLogout = [[UIButton alloc]initWithFrame:CGRectMake(btnSetup.frame.origin.x+btnSetup.frame.size.width, footView.frame.origin.y+10,125.0f, 30.0f)];
+    [btnLogout setTag:2];
+    [btnLogout setBackgroundImage:[UIImage imageNamed:@"logout_a.png"] forState:UIControlStateNormal];
+    [btnLogout setBackgroundImage:[UIImage imageNamed:@"logout_b.png"] forState:UIControlStateHighlighted];
+    [btnLogout addTarget:self action:@selector(btnAction:) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:btnLogout];
+	 YBLogInfo(@"co,i123321 vd21");
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    
+    
+    
+}
+
+
+- (void)unVerifyUser{
+    viewCover = [UIButton buttonWithType:UIButtonTypeCustom];
+    [viewCover setFrame:CGRectMake(0, 48, 320, 172)];
+    [viewCover setBackgroundColor:[UIColor blackColor]];
+    [viewCover setAlpha:0.7];
+    [viewCover setUserInteractionEnabled:YES];
+    [viewCover addTarget:self action:@selector(verifyAlert) forControlEvents:UIControlEventTouchUpInside];
+    [leftList addSubview:viewCover];
+}
+
+- (void)removeVerifyWarning{
+    [viewCover removeFromSuperview];
+}
+
+-(void)verifyAlert{
+    [theApp addWindowAlertView:NORESETALLTYPE type:2 warning:NO];
+//    [CommonHelper alertView:@"非常抱歉，此功能仅对校方认证用户开放。现在就去认证？" tag:1 warning:NO view:self.view alertdelegate:self];
+}
+
+#pragma mark - yibanAlertViewDelegate
+- (void)YibanAlertViewCancelButton:(YIBanAlertView *)alertView
+{
+    
+    if (alertView.tag == 2) {
+        [btnLogout setUserInteractionEnabled:YES];
+        [self.view setUserInteractionEnabled:YES];
+    }
+    [alertView removeFromSuperview];
+}
+
+- (void)YibanAlertViewConfirmButton:(YIBanAlertView *)alertView
+{
+       
+    if (alertView.tag == 101) {
+        if (![Static cCon]){
+            [btnLogout setUserInteractionEnabled:NO];
+            [CommonHelper alertView:@"请确认您的网络连接，谢谢！" tag:2 warning:YES view:self.view alertdelegate:self];
+        }
+        else{
+            UIView *view = [[UIView alloc] initWithFrame:self.view.bounds];
+            [view setTag:998];
+            [view setBackgroundColor:[UIColor clearColor]];
+            [[LLSplitViewController getmainController].view addSubview:view];
+//            [view release];
+            [btnLogout setUserInteractionEnabled:NO];
+            NSMutableDictionary *params = [Rrequest_Data user_security_logout];
+            HttpHelp * help = [[HttpHelp alloc]init:self progress_show:YES page:0];
+            help.tag = u_security_logout;
+            help.nAnimaType = 1;
+            [help startHttpEX_For_Tag:u_security_logout :params isForTag:YES];
+            [CommonHelper saveStatusLists];//保存动态数据
+        }
+    }
+    [alertView removeFromSuperview];
+}
+
+- (void)YiBanAlertViewClickOuterView:(YIBanAlertView *)alertView touch:(UITouch *)touch
+{
+//    [alertView removeFromSuperview];
+}
+
+
+#pragma mark - btnAciton
+- (void)btnAction:(id)sender{
+    UIButton *btn = (UIButton *)sender;
+    [[CommonHelper shareInstance] playSound:5];
+
+    SettingViewController *settingViewCon = nil;
+    
+    switch (btn.tag) {
+        case 1:
+            settingViewCon = [[SettingViewController alloc] init];
+            [[[LLSplitViewController getmainController] navigationController] pushViewController:settingViewCon animated:YES];
+            [settingViewCon release];
+            
+            break;
+        case 2:
+        {
+            
+            [CommonHelper alertView:@"您确定要注销吗？" tag:101 warning:NO view:self.view alertdelegate:self];
+        }
+            break;
+        default:
+            break;
+    }
+}
+//注销操作
+- (void)loginOutAction:(BOOL)ifSessID{
+    [btnLogout setUserInteractionEnabled:YES];
+    for (UIView *views in [LLSplitViewController getmainController].view.subviews) {
+        if (views.tag == 998) {
+            [views removeFromSuperview];
+            break;
+        }
+    }
+    
+    UserLoginModel *loginModel = [[YiBanLocalDataManager sharedInstance] currentLoginModel];
+    if (loginModel) {
+        YBLogInfo(@"usersettingmode === %@", loginModel);
+        [[YiBanLocalDataManager sharedInstance] saveUserLoginModel:loginModel.userId username:loginModel.userName sessId:@"" autoLogin:@"0"];
+        /*放弃重新设置
+         if (ifSessID) {
+         NSString *strUID = [[[YiBanLocalDataManager sharedInstance] currentUser] userid];
+         UserLoginModel *u = [[YiBanLocalDataManager sharedInstance] getUserInfoMessage:strUID];
+         [[YiBanLocalDataManager sharedInstance] saveUserLoginModel:u.userId username:u.userName sessId:@"" autoLogin:@"0"];
+         }*/
+        [[YiBanLocalDataManager sharedInstance] setIsLogin:NO];//设置登陆状态的退出状态
+        
+        [Static UpdateDB_Online];
+        
+        [[LLSplitViewController getmainController].view setUserInteractionEnabled:YES];//页面可以动
+        //注销界面
+       UIView* shadow = [[LLSplitViewController getmainController].view viewWithTag:5050];
+        if (shadow) {
+//            [shadow removeFromSuperview];
+        }
+        [[YiBanLocalDataManager sharedInstance] clearCurrentUser];
+        
+        LoginController *log = [LoginController creatLogin];
+        [log setIsLogout:YES];
+        UINavigationController * controller = [[UINavigationController alloc]initWithRootViewController:log];
+        
+//        {
+            [AppDelegate sharedAppDelegate].nc=controller;    
+//        }
+        
+        [controller setNavigationBarHidden:YES animated:NO];
+        [[MainViewController share] presentModalViewController:controller animated:YES];
+        [controller release];
+        
+        MainViewController *conHome_ = [MainViewController share];
+//        [conHome_ releaseShare];
+
+        [conHome_ performSelector:@selector(releaseShare) withObject:Nil afterDelay:0.5];//避免右边的白边
+    }
+    
+}
+
+- (void)loadLocalApp{
+    UIImageView *viewMyapp = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"myapp.png"]];
+    [viewMyapp setFrame:CGRectMake(0, 220, 320, 33)];
+    [viewMyapp setBackgroundColor:[UIColor clearColor]];
+    [leftList addSubview:viewMyapp];
+    [viewMyapp release];
+    
+    [self drawAppCellDefault:CGRectMake(0.0f, 253.0f, 320.0f, 43.0f) appName:@"新华e讯" btnTag:6];
+    [self drawAppCellDefault:CGRectMake(0.0f, 296.0f, 320.0f, 43.0f) appName:@"易码通" btnTag:7];
+    [self drawAppCellDefault:CGRectMake(0.0f, 339.0f, 320.0f, 43.0f) appName:@"就业信息" btnTag:10];
+}
+
+#pragma mark - httpdelegate
+- (void)requestFail:(NSDictionary *)data message:(NSString *)message http:(HttpHelp *)help{
+    if([help.tag isEqualToString:YIBANAPP] && [arrAppList count] == 0){
+        [self loadLocalApp];
+    }
+    [help release];
+}
+
+-(void)Http_resultFor_tag:(NSDictionary *)data :(NSString *)message :(HttpHelp *)help{
+    if ([help.tag isEqualToString:u_security_logout]) {
+        NSString *strResult = [data objectForKey:@"result"];
+        YBLogInfo(@"%@", strResult);
+        
+        if ([strResult isEqualToString:@"1"]) {//可以注销
+            [[MainViewController share] stopTimer];
+            
+            [self loginOutAction:YES];
+        }else{//注销错误,返回的data为nil
+            for (UIView *views in [LLSplitViewController getmainController].view.subviews) {
+                if (views.tag == 998) {
+                    [views removeFromSuperview];
+                    [btnLogout setUserInteractionEnabled:YES];
+                    break;
+                }
+            }
+        }
+
+    }
+    else if([help.tag isEqualToString:YIBANAPP]){
+        NSArray *arrTest = [data objectForKey:@"list"];
+        
+        if ([arrTest count] > 0) {
+            [[[YiBanLocalDataManager sharedInstance] cacheDataDict] setObject:data forKey:CACHEDATAKEYAPPLIST];
+
+            UIImageView *viewMyapp = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"myapp.png"]];
+            [viewMyapp setFrame:CGRectMake(0, 220, 320, 33)];
+            [viewMyapp setBackgroundColor:[UIColor clearColor]];
+            [leftList addSubview:viewMyapp];
+            [viewMyapp release];
+            YiBanApp_list *yilist = (YiBanApp_list *)[data initDictionaryTo:[YiBanApp_list class]];
+            int nCount = 10001;
+            for (int i = 0; i < [yilist.list count]; i++) {
+                list *app = [yilist.list objectAtIndex:i];
+                [arrAppList addObject:app];
+                YBLogInfo(@"%@", ((list * )[arrAppList lastObject]).name);
+                [self drawAppCell:CGRectMake(0.0f, 253.0f+44*(nCount-10001), 320.0f, 44.0f) app:app btnTag:nCount];
+                nCount++;
+            }
+            
+            
+            [leftList reloadData];
+            [yilist release];
+        }
+
+    }
+    [help release];
+}
+
+
+#pragma mark -
+#pragma mark  uitableview datasource methods
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+	return 1;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    if ([arrAppList count] > 0)
+        return 6+[arrAppList count];
+    else
+        return 8;
+}
+-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    return 43.0f;
+}
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+	NSString *identifier = @"cell";
+	
+	UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+	
+	if(cell == nil)
+	{
+        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier] autorelease];
+		
+		cell.selectedBackgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"gray-cell-highlight.png"]];
+	}
+	cell.backgroundView.backgroundColor = [UIColor clearColor];
+	cell.backgroundColor = [UIColor clearColor];
+	cell.contentView.backgroundColor = [UIColor clearColor];
+	return cell;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+
+}
+
+
+- (void)setParameter
+{
+    NSDictionary *data = [[[YiBanLocalDataManager sharedInstance] cacheDataDict] objectForKey:CACHEDATAKEYAPPLIST];
+    
+    if (data == nil) {
+        NSMutableDictionary *dic = [[NSMutableDictionary alloc] initWithCapacity:1];
+        HttpHelp * help= [[HttpHelp alloc]init:self progress_show:NO page:1];
+        [help startHttpEX_For_Tag:YIBANAPP :dic isForTag:YES];
+        [help setTag:YIBANAPP];
+        [dic release];
+    }
+    
+    
+
+}
+
+- (void)didReceiveMemoryWarning {
+    // Releases the view if it doesn't have a superview.
+    [super didReceiveMemoryWarning];
+    
+    // Release any cached data, images, etc. that aren't in use.
+}
+
+- (void)viewDidUnload {
+    [super viewDidUnload];
+    // Release any retained subviews of the main view.
+    // e.g. self.myOutlet = nil;
+}
+
+
+- (void)dealloc {
+    [super dealloc];
+    [labelName release];
+    [btnLogout release];
+    [arrAppList release];
+    [imageViewUser release];
+}
+
+- (void)releaseShare{
+    share = nil;
+}
+
+@end

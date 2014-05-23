@@ -1,0 +1,393 @@
+//
+//  SettingMessageViewController.m
+//  Yiban
+//
+//  Created by NewM on 12-12-4.
+//
+//
+
+#import "SettingMessageViewController.h"
+#import "YiBanHeadBarView.h"
+#import "UIView+Table.h"
+#import "UserSettingMode.h"
+#import "JSON.h"
+#import "Rrequest_Data.h"
+#import "Static.h"
+
+@interface SettingMessageViewController ()
+{
+    UserSettingMode *settingMode;
+    
+    
+    NSMutableArray *pushArray;
+}
+@end
+
+@implementation SettingMessageViewController
+@synthesize viewType=_viewType;
+
+- (void)dealloc
+{
+    [pushArray release];
+    [super dealloc];
+}
+
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+{
+    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    if (self) {
+        // Custom initialization
+    }
+    return self;
+}
+
+//返回
+- (void)back{
+    
+    [self.navigationController popViewControllerAnimated:YES];
+    [[CommonHelper shareInstance] playSound:5];
+
+}
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    
+    pushArray = [[NSMutableArray alloc] initWithCapacity:6];
+    
+    settingMode = [[YiBanLocalDataManager sharedInstance] currentUserSetting];
+    
+    //背景颜色
+    [[self view] setBackgroundColor:YIALLVIEWBGCOLOR];
+    
+    NSString *titleName = @"消息提醒";
+    if (_viewType == 2) {
+        titleName = @"铃声设置";
+    }
+    
+    //添加头
+    YiBanHeadBarView *header = [[YiBanHeadBarView alloc] initWithFrame:CGRectMake(0, 0, 320, 44) titleLabel:titleName];
+    [header normalHeadView];
+    [[header leftButton] addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:header];
+    [header release];
+    
+    _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 44, 320, self.view.bounds.size.height-44) style:UITableViewStylePlain];
+    [_tableView setDelegate:self];
+    [_tableView setScrollEnabled:NO];
+    [_tableView setBackgroundColor:[UIColor clearColor]];
+    [_tableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
+    [_tableView setDataSource:self];
+    [self.view addSubview:_tableView];
+    [_tableView release];
+    
+    UIView *zeroView = [[UIView alloc] initWithFrame:CGRectZero];
+    [_tableView setTableFooterView:zeroView];
+    [_tableView setTableHeaderView:zeroView];
+    [zeroView release];
+}
+
+- (void)viewDidDisappear:(BOOL)animated{
+    [[YiBanLocalDataManager sharedInstance] saveUserSetting:[[settingMode dict] JSONFragment] key:@""];
+
+}
+
+
+#pragma mark - tableview delegate
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
+    
+    if (_viewType == 1) {
+        if (section == 0) {
+            return 6;
+        }else if (section == 1){
+            return 1;
+        }
+    
+    }else if (_viewType == 2){
+        return 1;
+    }
+    return 0;
+}
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
+    if (_viewType == 1) {
+        return 2;
+    }else if (_viewType == 2){
+        return 1;
+    }
+    return 2;
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
+    if (_viewType == 1) {
+        UIView *headView = [[[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 25)] autorelease];
+        UIImageView *bgImgView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 320, 25)];
+        [bgImgView setImage:[UIImage imageNamed:@"msg_input_bg.png"]];
+        [headView addSubview:bgImgView];
+        [bgImgView release];
+        UIImageView *imgView = [[UIImageView alloc] initWithFrame:CGRectMake(10, (headView.frame.size.height-12)/2, 48, 12)];
+        if (section == 0) {
+            [imgView setImage:[UIImage imageNamed:@"txt_mindkind.png"]];
+        }else if(section == 1){
+            [imgView setImage:[UIImage imageNamed:@"txt_quiet.png"]];
+        }
+        [headView setBackgroundColor:[UIColor clearColor]];
+        [bgImgView addSubview:imgView];
+        [imgView release];
+        return headView;
+    }else if (_viewType == 2){
+        return nil;
+    }
+    return nil;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
+    if (_viewType == 1) {
+        return 25;
+    }else if (_viewType == 2){
+        return 0;
+    }
+    return 0;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    return 45;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
+    static NSString *identifer = @"settingMessageTable";
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identifer];
+    
+    if (!cell) {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifer];
+    }
+    [cell removeAllSubviews];
+    
+    NSInteger row = indexPath.row;
+    NSInteger section = indexPath.section;
+    
+    if (section == 1) {
+        row = 5;
+    }
+    NSString *text = @"";
+    BOOL isTure = 0;
+    if (_viewType == 1) {
+        switch (row+section) {
+            case 0:
+                text = @"辅导员通知";
+                isTure = settingMode.teacherPush;
+                break;
+            case 1:
+                text = @"有人评价我时";
+                isTure = settingMode.evaluatePush;
+                break;
+            case 2:
+                text = @"有人发私信给我时";
+                isTure = settingMode.privateMessagePush;
+                break;
+            case 3:
+                text = @"有人@我时";
+                isTure = settingMode.atMePush;
+                break;
+            case 4:
+                text = @"有人加我为好友时";
+                isTure = settingMode.addMePush;
+                break;
+            case 5:
+                text = @"就业信息";
+                isTure = settingMode.jobPush;
+                YBLogInfo(@"就业信息");
+                break;
+            case 6:
+                text = @"免打扰时段（晚10点-早8点）";
+                isTure = settingMode.timeForNoPush;
+                break;
+                
+            default:
+                break;
+        }
+    }else if (_viewType == 2){
+        switch (row+section) {
+            case 0:
+                text = @"声音";
+                isTure = settingMode.sound;
+                break;
+            case 1:
+                text = @"震动";
+                isTure = settingMode.shake;
+                break;
+            
+                
+            default:
+                break;
+        }
+    }
+    
+    
+    UIView *cellView = [self cellView:CGRectMake(0, 0, 320, 45) text:text value:isTure row:(row+section)];
+    [cell addSubview:cellView];
+    [cellView release];
+    [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
+    return cell;
+}
+
+//cell view
+- (UIView *)cellView:(CGRect)frame text:(NSString *)text value:(BOOL)value row:(NSInteger)row{
+    UIView *cellRowView = [[UIView alloc] initWithFrame:frame];
+    [cellRowView setUserInteractionEnabled:YES];
+    
+    UILabel *title = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, 230, frame.size.height)];
+    [title setBackgroundColor:[UIColor clearColor]];
+    [title setText:text];
+    [cellRowView addSubview:title];
+    [title release];
+    
+    
+    YiBanSwitchView *switchView = [[YiBanSwitchView alloc] initWithFrame:CGRectMake(title.frame.size.width+title.frame.origin.x+5, (45-28)/2, 76, 28) isOn:value];
+    [switchView setTag:(row+1)];
+    [switchView setDelegate:self];
+    [pushArray addObject:switchView];
+    [cellRowView addSubview:switchView];
+    [switchView release];
+    
+    
+    UIImageView *line = [[UIImageView alloc] initWithFrame:CGRectMake(0, 43, 320, 2)];
+    [line setImage:[UIImage imageNamed:@"dotline1.png"]];
+    [cellRowView addSubview:line];
+    [line release];
+    
+    if (row == 4) {
+        [line setHidden:YES];
+    }
+    
+    return cellRowView;
+    
+}
+
+#pragma mark - yibanswitchview delegate
+/**
+ *switchTag(1,teacher;2,evalue;3,message;4,@;5,add;6,time)
+ */
+- (void)YiBanSwitchViewStatic:(YiBanSwitchView *)uiSwitch{
+    YBLogInfo(@"uiSwitch.tag === %d", uiSwitch.tag);
+    YBLogInfo(@"uiSwitch.isOn] === %d", uiSwitch.isOn);
+    
+    if (_viewType == 1) {
+        
+        NSInteger willTag = 0;
+        switch (uiSwitch.tag) {
+            case 1:
+                willTag = 11;
+                [settingMode setTeacherPush:uiSwitch.isOn];
+                break;
+            case 2:
+                willTag = 5;
+                [settingMode setEvaluatePush:uiSwitch.isOn];
+                break;
+            case 3:
+                willTag = 8;
+                [settingMode setPrivateMessagePush:uiSwitch.isOn];
+                break;
+            case 4:
+                willTag = 6;
+                [settingMode setAtMePush:uiSwitch.isOn];
+                break;
+            case 5:
+                willTag = 10;
+                [settingMode setAddMePush:uiSwitch.isOn];
+                break;
+            case 6:
+                willTag = 12;
+                [settingMode setJobPush:uiSwitch.isOn];
+                break;
+            case 7:
+                willTag = 1;
+                [settingMode setTimeForNoPush:uiSwitch.isOn];
+                break;
+            default:
+                break;
+        }
+        
+        
+        NSString *tagHttp = @"";
+        
+        //1,teacher;2,evalue;3,message;4,@;5,add;6,time
+        for (int j = 0; j < [pushArray count]; j++) {
+            YiBanSwitchView *swithc = [pushArray objectAtIndex:j];
+            if (swithc.tag == 1 && swithc.isOn) {
+                
+                if (tagHttp.length == 0) {
+                    tagHttp = @"11";
+                }else{
+                    tagHttp = [NSString stringWithFormat:@"%@,%d",tagHttp,11];
+                }
+                
+            }else if (swithc.tag == 2 && swithc.isOn) {
+                if (tagHttp.length == 0) {
+                    tagHttp = @"5";
+                }else{
+                    tagHttp = [NSString stringWithFormat:@"%@,%d",tagHttp,5];
+                }
+            }else if (swithc.tag == 3 && swithc.isOn) {
+                if (tagHttp.length == 0) {
+                    tagHttp = @"8";
+                }else{
+                    tagHttp = [NSString stringWithFormat:@"%@,%d",tagHttp,8];
+                }
+            }else if (swithc.tag == 4 && swithc.isOn) {
+                if (tagHttp.length == 0) {
+                    tagHttp = @"6";
+                }else{
+                    tagHttp = [NSString stringWithFormat:@"%@,%d",tagHttp,6];
+                }
+            }else if (swithc.tag == 5 && swithc.isOn) {
+                if (tagHttp.length == 0) {
+                    tagHttp = @"12";
+                }else{
+                    tagHttp = [NSString stringWithFormat:@"%@,%d",tagHttp,12];
+                }
+            }
+            else if (swithc.tag == 6 && swithc.isOn) {
+                if (tagHttp.length == 0) {
+                    tagHttp = @"10";
+                }else{
+                    tagHttp = [NSString stringWithFormat:@"%@,%d",tagHttp,10];
+                }
+            }
+        }
+        
+        
+        NSString *time = @"";
+        if ([settingMode timeForNoPush]) {
+            time = @"22-8";
+        }
+        
+        NSMutableDictionary *params = [Rrequest_Data user_setpush:tagHttp isDisturb:[settingMode timeForNoPush] disturb_time:time];
+        HttpHelp * help = [[HttpHelp alloc]init:self progress_show:NO page:1];
+        [help startHttpEX_For_Tag:USERSETPUSH :params isForTag:YES];
+        [help setTag:tagHttp];
+        
+        
+    }else if (_viewType == 2){
+        switch (uiSwitch.tag) {
+            case 1:
+                [settingMode setSound:uiSwitch.isOn];
+                break;
+            case 2:
+                [settingMode setShake:uiSwitch.isOn];
+                break;
+                
+                
+            default:
+                break;
+        }
+    }
+    
+}
+
+#pragma mark - httpdelegate
+- (void)Http_resultFor_tag:(NSDictionary *)data :(NSString *)message :(HttpHelp *)help{
+    [help release];
+}
+
+@end

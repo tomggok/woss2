@@ -1,0 +1,35 @@
+//
+//  PersonalPageMessageViewController.h
+//  Yiban
+//
+//  Created by NewM on 12-11-27.
+//
+//
+
+#import <UIKit/UIKit.h>
+@class user;
+#import "HttpHelp.h"
+@class PagePickerModel;
+#import "YIBanAlertView.h"
+
+//个人资料页
+@interface PersonalPageMessageViewController : UIViewController<UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate,HttpCon_delegate,YIBanAlertViewDelegate>
+{
+    UITableView *_tableView;
+    
+    PagePickerModel *_pickerModel;
+    
+    BOOL ifOtherPeople;
+    
+    NSMutableArray *_muA_HttpHelps/*保存已发出的http请求对象,如果在未收到消息前此控制器被释放了,则数组里的每个httpHelp对象的delegate都=nil,避免回调respondsToSelector:时找不到此控制器*/;
+
+}
+@property (nonatomic, retain)user *messageUser;
+@property (nonatomic, retain)UITableView *_tableView;
+
+@property (nonatomic, assign)PagePickerModel *pickerModel;
+@property (nonatomic, assign)BOOL ifOtherPeople;
+
+//初始化
+- (id)init:(user *)_userModel ifOtherPeople:(BOOL)_ifOtherPeople;
+@end

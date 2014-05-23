@@ -1,0 +1,19 @@
+//
+//  SettingMessageViewController.h
+//  Yiban
+//
+//  Created by NewM on 12-12-4.
+//
+//
+
+#import <UIKit/UIKit.h>
+#import "YiBanSwitchView.h"
+#import "HttpHelp.h"
+@interface SettingMessageViewController : UIViewController<UITableViewDataSource, UITableViewDelegate, YiBanSwitchViewDelegate, HttpCon_delegate>
+{
+    UITableView *_tableView;
+
+}
+@property (nonatomic, assign)NSInteger viewType;//1，消息提醒2，铃声震动
+
+@end

@@ -1,0 +1,16 @@
+//
+//  PersonalPageBdImgViewController.h
+//  Yiban
+//
+//  Created by NewM on 12-12-3.
+//
+//
+
+#import <UIKit/UIKit.h>
+
+@interface PersonalPageBdImgViewController : UIViewController<UITableViewDataSource, UITableViewDelegate>
+{
+    UITableView *_tableView;
+
+}
+@end
