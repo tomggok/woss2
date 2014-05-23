@@ -10,7 +10,7 @@
 #import "JSONKit.h"
 #import "JSON.h"
 #import "WOSMakeSureOrderListViewController.h"
-
+#import "AppDelegate.h"
 
 @interface WOSFoodDetailViewController (){
 
@@ -51,10 +51,12 @@
     {
         [self.headview setTitle:@"菜的详情"];
         
-        [self.headview setTitleColor:[UIColor colorWithRed:193.0f/255 green:193.0f/255 blue:193.0f/255 alpha:1.0f]];
+        [self.headview setTitleColor:[UIColor whiteColor]];
+        [self setButtonImage:self.leftButton setImage:@"返回键"];
+        [self.view setBackgroundColor:[UIColor whiteColor]];
+        [self.headview setBackgroundColor:[UIColor colorWithRed:40.0f/255 green:191.0f/255 blue:140.0f/255 alpha:1.0f]];
         
-        [self.view setBackgroundColor:ColorBG];
-        [self setButtonImage:self.leftButton setImage:@"back"];
+
     }
     else if ([signal is:[MagicViewController CREATE_VIEWS]]) {
         
@@ -80,13 +82,19 @@
 
 -(void)creatView:(NSDictionary *)dict{
 
-    UIImageView *iamgeView = [[UIImageView alloc]initWithFrame:CGRectMake(20.0f,self.headHeight + 20, 200, 100)];
+    UIImageView *iamgeView = [[UIImageView alloc]initWithFrame:CGRectMake(0.0f,self.headHeight , 200, 100)];
     NSURL *url = [NSURL URLWithString:[DYBShareinstaceDelegate addIPImage:[dict objectForKey:@"imgUrl"] ]];
     [iamgeView setImageWithURL:url];
-    [iamgeView setFrame:CGRectMake(10.0f,self.headHeight + 20, 300, 200)];
+    [iamgeView setFrame:CGRectMake(0.0f,self.headHeight, 320, 200)];
     [iamgeView setBackgroundColor:[UIColor clearColor]];
     [self.view addSubview:iamgeView ];
     RELEASE(iamgeView);
+    
+    UIImageView *imageView1 = [[UIImageView alloc]initWithFrame:CGRectMake(0.0f, 200 -8, 320, 8)];
+    [imageView1 setImage:[UIImage imageNamed:@"腰线"]];
+    [iamgeView addSubview:imageView1];
+    RELEASE(imageView1);
+    
     
     UILabel *labeName = [[UILabel alloc]initWithFrame:CGRectMake(50.0f, CGRectGetHeight(iamgeView.frame) + CGRectGetMinY(iamgeView.frame) + 20,250.0f, 40.0f)];
     [labeName setText:[dict objectForKey:@"foodName"]];
@@ -96,15 +104,17 @@
     
     UILabel *labePrice = [[UILabel alloc]initWithFrame:CGRectMake(120.0f, CGRectGetHeight(iamgeView.frame) + CGRectGetMinY(iamgeView.frame) + 20,250.0f, 40.0f)];
     [labePrice setText:[NSString stringWithFormat:@"单价： ￥%@/份",[dict objectForKey:@"foodPrice"]]];
-    [labePrice setTextColor:[UIColor whiteColor]];
+    [labePrice setTextColor:[UIColor blackColor]];
     [self.view addSubview:labePrice];
     [labePrice release];
     
-    UIButton *btnBackR = [[UIButton alloc]initWithFrame:CGRectMake(10.0f, CGRectGetHeight(labePrice.frame) + CGRectGetMinY(labePrice.frame) + 20 + 10, 300, 44)];
+    
+    UIImage *image2 = [UIImage imageNamed:@"加入订单"];
+    UIButton *btnBackR = [[UIButton alloc]initWithFrame:CGRectMake((320 - image2.size.width/2)/2, CGRectGetHeight(labePrice.frame) + CGRectGetMinY(labePrice.frame) + 20 + 10, image2.size.width/2, image2.size.height/2)];
     [btnBackR setBackgroundColor:[UIColor clearColor]];
-    [btnBackR setImage:[UIImage imageNamed:@"button"] forState:UIControlStateNormal];
+    [btnBackR setImage:[UIImage imageNamed:@"加入订单"] forState:UIControlStateNormal];
     [btnBackR addTarget:self action:@selector(addRisgin) forControlEvents:UIControlEventTouchUpInside];
-    [self addlabel_title:@"加入到购物车" frame:btnBackR.frame view:btnBackR];
+    [self addlabel_title:@"加入订单" frame:btnBackR.frame view:btnBackR];
     [self.view addSubview:btnBackR];
     [btnBackR release];
 
@@ -132,16 +142,47 @@
 //    
 //    [self.drNavigationController pushViewController:make animated:YES];
 //    RELEASE(make);
-
-   
-    WOSMakeSureOrderListViewController *makeSure = [[WOSMakeSureOrderListViewController alloc]init];
     
-    makeSure.arrayAddInfo = arrayAddorder;
-//    makeSure.dictInfo = _dictInfo;
-    [self.drNavigationController pushViewController:makeSure animated:YES];
-    RELEASE(makeSure);
+    AppDelegate *appD = appDelegate;
+    
+    UIView *viewBtn = [appD.window viewWithTag:80800];
+    
+    if (!appD.btnOrder) {
+        
+        
+        appD.btnOrder = [[UIButton alloc]initWithFrame:CGRectMake(100.0f, 200.0f, 60.0, 60.0)];
+        [appD.btnOrder   setBackgroundColor:[UIColor redColor]];
+        [appD.btnOrder  addTarget:appD action:@selector(doTouch) forControlEvents:UIControlEventTouchUpInside];
+        [appD.btnOrder setTag:80800];
+        [self.view.window addSubview:appD.btnOrder ];
+        RELEASE(appD.btnOrder )
+        
+        
+        UIPanGestureRecognizer *panRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:appD action:@selector(handlePanFrom:)];
+        [panRecognizer setMaximumNumberOfTouches:1];
+        [panRecognizer setDelaysTouchesBegan:TRUE];
+        [panRecognizer setDelaysTouchesEnded:TRUE];
+        [panRecognizer setCancelsTouchesInView:TRUE];
+        [appD.btnOrder  addGestureRecognizer:panRecognizer];
+    }
+    
+    if (viewBtn) {
+        [viewBtn setHidden:NO];
+    }
+    
+    
+//   
+//    WOSMakeSureOrderListViewController *makeSure = [[WOSMakeSureOrderListViewController alloc]init];
+//    
+//    makeSure.arrayAddInfo = arrayAddorder;
+////    makeSure.dictInfo = _dictInfo;
+//    [self.drNavigationController pushViewController:makeSure animated:YES];
+//    RELEASE(makeSure);
 
 }
+
+
+
 - (void)handleViewSignal_DYBBaseViewController:(MagicViewSignal *)signal
 {
     if ([signal is:[DYBBaseViewController BACKBUTTON]])

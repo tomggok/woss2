@@ -19,7 +19,7 @@
 #import "WOSActivityDetailViewController.h"
 #import "UIImageView+WebCache.h"
 #import "WOSFoodDetailViewController.h"
-
+#import "WOSShoppDetailTableViewCell.h"
 
 @interface WOShopDetailViewController (){
 
@@ -27,6 +27,8 @@
     MagicUIButton *btn1;
     MagicUIButton *btn2;
     NSDictionary *dictResult;
+    MagicUITableView *_tableView;
+    NSMutableArray *arrayFoodList;
 }
 
 @end
@@ -63,24 +65,29 @@ DEF_SIGNAL(BTNTWO);
     
     if ([signal is:[MagicViewController LAYOUT_VIEWS]])
     {
-        //        [self.rightButton setHidden:YES];
         [self.headview setTitle:@"餐厅详情"];
-        
-        [self setButtonImage:self.leftButton setImage:@"back"];
-        [self.headview setBackgroundColor:[UIColor colorWithRed:97.0f/255 green:97.0f/255 blue:97.0f/255 alpha:1.0]];
-        [self.headview setTitleColor:[UIColor colorWithRed:203.0f/255 green:203.0f/255 blue:203.0f/255 alpha:1.0f]];
-        
-         [self.view setBackgroundColor: ColorBG];
+
+        [self.headview setTitleColor:[UIColor whiteColor]];
+        [self setButtonImage:self.leftButton setImage:@"返回键"];
+        [self setButtonImage:self.rightButton setImage:@"地图"];
+        [self.view setBackgroundColor:[UIColor colorWithRed:244.0f/255 green:234.0f/255 blue:220.0f/255 alpha:1.0f]];
+        [self.headview setBackgroundColor:[UIColor colorWithRed:40.0f/255 green:191.0f/255 blue:140.0f/255 alpha:1.0f]];
         
     }
     else if ([signal is:[MagicViewController CREATE_VIEWS]]) {
         
         [self.rightButton setHidden:YES];
         
+        arrayFoodList = [[NSMutableArray alloc]init];
+        [self creatTopView];
+        
+        _tableView = [[MagicUITableView alloc]initWithFrame:CGRectMake(0.0f, 166/2 + self.headHeight, 320.0f, self.view.frame.size.height -  166/2 + self.headHeight)];
+
+        [self.view addSubview:_tableView];
+        RELEASE(_tableView);
         
         
-        
-        MagicRequest *request = [DYBHttpMethod wosKitchenInfo_kitchenIndex:[_dictInfo objectForKey:@"kitchenIndex"] userIndex:SHARED.userId hotFoodCount:@"4" sAlert:YES receive:self];
+        MagicRequest *request = [DYBHttpMethod wosKitchenInfo_kitchenIndex:[_dictInfo objectForKey:@"kitchenIndex"] userIndex:SHARED.userId hotFoodCount:@"1000" sAlert:YES receive:self];
         [request setTag:3];
         
         
@@ -93,36 +100,52 @@ DEF_SIGNAL(BTNTWO);
         
         DLogInfo(@"rrr");
         
-        if (!btn1) {
-            
-            UIImage *iamge = [UIImage imageNamed:@"22_22"];
-            btn1 = [[MagicUIButton alloc]initWithFrame:CGRectMake(245.0f,(self.headHeight - iamge.size.height/2)/2,iamge.size.width/2, iamge.size.height/2 )];
-            [btn1 addSignal:[WOShopDetailViewController BTNONE] forControlEvents:UIControlEventTouchUpInside];
-            [btn1 addTarget:self action:@selector(doCollent) forControlEvents:UIControlEventTouchUpInside];
-            [btn1 setImage:iamge forState:UIControlStateNormal];
-            [btn1 setImage:iamge forState:UIControlStateHighlighted];
-            [btn1 setBackgroundColor:[UIColor clearColor]];
-            [self.headview addSubview:btn1];
-            [btn1 release];
-        }
-        
-        if (!btn2) {
-             UIImage *iamge = [UIImage imageNamed:@"22_08"];
-            btn2 = [[MagicUIButton alloc]initWithFrame:CGRectMake(285.0f,(self.headHeight - iamge.size.height/2)/2,iamge.size.width/2, iamge.size.height/2  )];
-            [btn2 addSignal:[WOShopDetailViewController BTNTWO] forControlEvents:UIControlEventTouchUpInside];
-            [btn2 addTarget:self action:@selector(doShare) forControlEvents:UIControlEventTouchUpInside];
-            [btn2 setImage:iamge forState:UIControlStateNormal];
-            [btn2 setImage:iamge forState:UIControlStateHighlighted];
-            [btn2 setBackgroundColor:[UIColor clearColor]];
-            [self.headview addSubview:btn2];
-            [btn2 release];
-        }
         
 
     } else if ([signal is:[MagicViewController DID_DISAPPEAR]]){
         
         
     }
+
+}
+
+
+-(void)creatTopView{
+
+    UILabel *labelBanner = [[UILabel alloc]initWithFrame:CGRectMake(10.0f, self.headHeight, 300.0f, 116/2)];
+    [labelBanner setText:@"testtttttt"];
+    [self.view addSubview:labelBanner];
+     [labelBanner setBackgroundColor:[UIColor clearColor]];
+    RELEASE(labelBanner);
+    
+    UILabel *labelDistance = [[UILabel alloc]initWithFrame:CGRectMake(10.0f, self.headHeight + 116/2 , 100.0f, 30)];
+    [labelDistance setText:@"3.2km"];
+    [self.view addSubview:labelDistance];
+    [labelDistance setBackgroundColor:[UIColor clearColor]];
+    RELEASE(labelDistance);
+    
+    
+    UILabel *labelQian = [[UILabel alloc]initWithFrame:CGRectMake(100.0f, self.headHeight + 116/2 , 100.0f, 30)];
+    [labelQian setText:@"50元起送"];
+    [self.view addSubview:labelQian];
+    [labelQian setBackgroundColor:[UIColor clearColor]];
+    RELEASE(labelQian);
+    
+    
+
+    
+    UIImageView  *labelCellect = [[UIImageView alloc]initWithFrame:CGRectMake(537/2, self.headHeight + 10, 55/2, 55/2)];
+//    [labelCellect setText:@"500元人收藏"];
+    [labelCellect setImage:[UIImage imageNamed:@"心填充"]];
+    [self.view addSubview:labelCellect];
+    [labelQian setBackgroundColor:[UIColor yellowColor]];
+    RELEASE(labelCellect);
+    
+    UILabel *labelCellect1 = [[UILabel alloc]initWithFrame:CGRectMake(537/2 - 30, CGRectGetHeight(labelCellect.frame) +CGRectGetMinY(labelCellect.frame) + 10, 100.0f, 30)];
+    [labelCellect1 setText:@"500人收藏"];
+    [self.view addSubview:labelCellect1];
+    [labelCellect setBackgroundColor:[UIColor clearColor]];
+    RELEASE(labelCellect1);
 
 }
 
@@ -569,12 +592,80 @@ DEF_SIGNAL(BTNTWO);
         [self.drNavigationController popViewControllerAnimated:YES];
         
     }else if ([signal is:[DYBBaseViewController NEXTSTEPBUTTON]]){
-        
+        [self doTapMap];
         
     }
 }
 
 
+#pragma mark- 只接受UITableView信号
+static NSString *cellName = @"cellName";
+
+- (void)handleViewSignal_MagicUITableView:(MagicViewSignal *)signal
+{
+    
+    
+    if ([signal is:[MagicUITableView TABLENUMROWINSEC]])/*numberOfRowsInSection*/{
+
+        NSNumber *s;
+                s = [NSNumber numberWithInteger:arrayFoodList.count];
+
+        [signal setReturnValue:s];
+        
+    }else if([signal is:[MagicUITableView TABLENUMOFSEC]])/*numberOfSectionsInTableView*/{
+        NSNumber *s = [NSNumber numberWithInteger:1];
+        [signal setReturnValue:s];
+        
+    }else if([signal is:[MagicUITableView TABLEHEIGHTFORROW]])/*heightForRowAtIndexPath*/{
+        
+        NSNumber *s = [NSNumber numberWithInteger:50];
+        [signal setReturnValue:s];
+        
+        
+    }else if([signal is:[MagicUITableView TABLETITLEFORHEADERINSECTION]])/*titleForHeaderInSection*/{
+        
+    }else if([signal is:[MagicUITableView TABLEVIEWFORHEADERINSECTION]])/*viewForHeaderInSection*/{
+        
+    }else if([signal is:[MagicUITableView TABLETHEIGHTFORHEADERINSECTION]])/*heightForHeaderInSection*/{
+        
+    }else if([signal is:[MagicUITableView TABLECELLFORROW]])/*cell*/{
+        NSDictionary *dict = (NSDictionary *)[signal object];
+        NSIndexPath *indexPath = [dict objectForKey:@"indexPath"];
+        
+        WOSShoppDetailTableViewCell *cell = [[WOSShoppDetailTableViewCell alloc]init];
+        
+        NSDictionary *dictInfoFood = [arrayFoodList objectAtIndex:indexPath.row];
+        [cell creatCell:dictInfoFood];
+        DLogInfo(@"%d", indexPath.section);
+        
+        [cell creatCell:[arrayFoodList objectAtIndex:indexPath.row]];
+        [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
+        [signal setReturnValue:cell];
+        
+    }else if([signal is:[MagicUITableView TABLEDIDSELECT]])/*选中cell*/{
+        NSDictionary *dict = (NSDictionary *)[signal object];
+        NSIndexPath *indexPath = [dict objectForKey:@"indexPath"];
+        
+        
+        WOSFoodDetailViewController *foodDetail = [[WOSFoodDetailViewController alloc]init];
+        [foodDetail setDictInfo:[[arrayFoodList objectAtIndex:indexPath.row] objectForKey:@"foodIndex"]];
+        [self.drNavigationController pushViewController:foodDetail animated:YES];
+        RELEASE(foodDetail);
+        
+        
+    }else if([signal is:[MagicUITableView TABLESCROLLVIEWDIDSCROLL]])/*滚动*/{
+        
+    }else if ([signal is:[MagicUITableView TABLEVIEWUPDATA]]){
+        
+        
+    }else if ([signal is:[MagicUITableView TAbLEVIEWLODATA]]){
+    }else if ([signal is:[MagicUITableView TAbLEVIERETOUCH]]){
+        
+    }
+    
+    
+    
+}
 
 #pragma mark- 只接受HTTP信号
 - (void)handleRequest:(MagicRequest *)request receiveObj:(id)receiveObj
@@ -613,7 +704,9 @@ DEF_SIGNAL(BTNTWO);
                     
                     dictResult = [[NSDictionary alloc]initWithDictionary:dict];
                     
-                     [self creatView:dict];
+                    arrayFoodList = [dictResult objectForKey:@"hotFoodList"];
+                    [_tableView reloadData];
+//                     [self creatView:dict];
 //                    UIButton *btn = (UIButton *)[UIButton buttonWithType:UIButtonTypeCustom];
 //                    [btn setTag:10];
 //                    [self doChange:btn];
@@ -636,6 +729,12 @@ DEF_SIGNAL(BTNTWO);
             
         }
     }
+}
+-(void)doColloct{
+    
+    MagicRequest *request = [DYBHttpMethod wosKitchenInfo_favorite_userIndex:SHARED.userId kitchenIndex:[_dictInfo objectForKey:@"kitchenIndex"] sAlert:YES receive:self];
+    [request setTag:2];
+    
 }
 
 

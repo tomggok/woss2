@@ -9,5 +9,5 @@
 #import <UIKit/UIKit.h>
 #import "DYBBaseViewController.h"
 @interface WOSShopDetail1ViewController : DYBBaseViewController
-
+@property (nonatomic,retain)NSDictionary *dictInfo;
 @end

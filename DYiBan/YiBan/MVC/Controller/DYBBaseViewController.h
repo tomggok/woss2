@@ -12,7 +12,7 @@
 #import "DYBUITabbarViewController.h"
 #import "UIViewController+MagicCategory.h"
 
-@interface DYBBaseViewController : MagicViewController
+@interface DYBBaseViewController : MagicViewController<UITableViewDataSource,UITableViewDelegate>
 {
     MagicUITableView *_tbv;
     

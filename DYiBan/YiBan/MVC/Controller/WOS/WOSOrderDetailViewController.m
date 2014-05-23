@@ -10,168 +10,102 @@
 #import "WOSGoodFoodListCell.h"
 #import "WOSTouchStar.h"
 #import "WOSOrderCAICell.h"
+#import "JSONKit.h"
+#import "JSON.h"
+#import "WOSOrderDetailTableViewCell.h"
+
 
 @interface WOSOrderDetailViewController (){
 
     DYBUITableView *tbDataBank1;
-
+    NSDictionary *dictResult;
+    NSMutableArray *arrayResult;
 }
 
 @end
 
 @implementation WOSOrderDetailViewController
+@synthesize dictInfo;
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+- (id)initWithFrame:(CGRect)frame
 {
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    self = [super initWithFrame:frame];
     if (self) {
-        // Custom initialization
+        // Initialization code
     }
     return self;
 }
 
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
-	// Do any additional setup after loading the view.
+-(void)creatView:(NSDictionary *)dict{
+    [self setBackgroundColor:[UIColor clearColor]];
+    dictResult = [[NSDictionary alloc]init];
+    
+  
+    
+    MagicRequest *request = [DYBHttpMethod wosFoodInfo_orderinfo_userIndex:SHARED.userId orderIndex:[dictInfo objectForKey:@"orderIndex"] sAlert:YES receive:self];
+    [request setTag:3];
+    
+    
+    
+    UIView *viewBG = [[UIView alloc]initWithFrame:self.frame];
+    [viewBG setBackgroundColor:[UIColor blackColor]];
+    [viewBG setAlpha:0.8];
+    [self addSubview:viewBG];
+    RELEASE(viewBG);
+    
+    UIButton *btn = [[UIButton alloc]initWithFrame:CGRectMake(12, 48/2, 56/2, 56/2)];
+    [btn addTarget:self action:@selector(doHidden) forControlEvents:UIControlEventTouchUpInside];
+    [btn setImage:[UIImage imageNamed:@"返回键"] forState:UIControlStateNormal];
+    [self addSubview:btn];
+    RELEASE(btn);
+    
+    UILabel *labelNum = [[UILabel alloc]initWithFrame:CGRectMake(146/2, 146/2, 100, 15)];
+    [labelNum setBackgroundColor:[UIColor clearColor]];
+    [labelNum setCenter:CGPointMake(160, 146/2 + 15)];
+    [labelNum setTextColor:[UIColor colorWithRed:40.0f/255 green:191.0f/255 blue:140.0f/255 alpha:1.0f]];
+    [labelNum setText:[dictInfo objectForKey:@"kitchenName"]];
+    [labelNum setCenter:CGPointMake(160 + 20, 150/2 + 15)];
+    [self addSubview:labelNum];
+    RELEASE(labelNum);
+    
+    
+    tbDataBank1 = [[DYBUITableView alloc]initWithFrame:CGRectMake(0.0f,  CGRectGetHeight(labelNum.frame) + 5 + 7 + CGRectGetMinY(labelNum.frame) + 2, 300.0f, 6*40) isNeedUpdate:YES];
+    [tbDataBank1 setSeparatorStyle:UITableViewCellSeparatorStyleNone];
+    [tbDataBank1 setTableViewType:DTableViewSlime];
+    [tbDataBank1 setBackgroundColor:[UIColor clearColor]];
+    [self addSubview:tbDataBank1];
+    
+    RELEASE(tbDataBank1);
+    
+    [tbDataBank1 setBackgroundColor:[UIColor clearColor]];
+    
+    
+    UIImageView *Line1 = [[UIImageView alloc]initWithFrame:CGRectMake(0,  CGRectGetHeight(tbDataBank1.frame) + CGRectGetMinY(tbDataBank1.frame)+10 +3 , 300, 0.5)];
+    [Line1 setBackgroundColor:[UIColor clearColor]];
+    [Line1 setImage:[UIImage imageNamed:@"class_dotline"]];
+    [viewBG addSubview:Line1];
+    RELEASE(Line1);
+    
+
+    
+    UILabel *labelPrice = [[UILabel alloc]initWithFrame:CGRectMake(456/2,  CGRectGetHeight(tbDataBank1.frame) + 5 + 7 + CGRectGetMinY(tbDataBank1.frame) + 4 , 100, 15)];
+    
+    NSString *strTotal = [[dictInfo objectForKey:@"totalSum"] stringValue];
+    [labelPrice setText:[NSString stringWithFormat:@"￥ %@",strTotal]];
+    [labelPrice setTextColor:[UIColor colorWithRed:246/255.0f green:46/255.0f blue:9/255.0f alpha:1.0f]];
+    [labelPrice setTextColor:[UIColor whiteColor]];
+
+    [labelPrice setBackgroundColor:[UIColor clearColor]];
+    [self addSubview:labelPrice];
+    RELEASE(labelPrice);
+    
+    
+    
+    
+    
+//    [viewBG setBackgroundColor:[UIColor whiteColor]];
+
 }
-
-
--(void)handleViewSignal_MagicViewController:(MagicViewSignal *)signal{
-    
-    
-    
-    DLogInfo(@"name -- %@",signal.name);
-    
-    
-    
-    if ([signal is:[MagicViewController LAYOUT_VIEWS]])
-        
-    {
-
-        
-        [self.headview setTitle:@"订单详情"];
-        
-        [self.headview setTitleColor:[UIColor colorWithRed:193.0f/255 green:193.0f/255 blue:193.0f/255 alpha:1.0f]];
-        
-        [self.view setBackgroundColor:ColorBG];
-        [self setButtonImage:self.leftButton setImage:@"back"];
-        
-        
-        
-    }
-    
-    else if ([signal is:[MagicViewController CREATE_VIEWS]]) {
-        
-        
-        UIView *viewBG = [[UIView alloc]initWithFrame:CGRectMake(10.0f, self.headHeight + 10.0f, 300.0f, CGRectGetHeight(self.view.frame) - self.headHeight - 10 -10 - 20)];
-        [viewBG setBackgroundColor:[UIColor whiteColor]];
-        [self.view addSubview:viewBG];
-        RELEASE(viewBG);
-        
-        UIImageView *imageViewIcon = [[UIImageView alloc]initWithFrame:CGRectMake(5.0f, 5.0f, 80, 70)];
-        [imageViewIcon setBackgroundColor:[UIColor redColor]];
-        [imageViewIcon setImage:[UIImage imageNamed:@"food1.png"]];
-        [viewBG addSubview:imageViewIcon];
-        RELEASE(imageViewIcon);
-        
-        UILabel *labelNum = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetWidth(imageViewIcon.frame) + CGRectGetMinX(imageViewIcon.frame) + 3 + 3, 5, 100, 15)];
-        [labelNum setBackgroundColor:[UIColor clearColor]];
-        [labelNum setTextColor:[UIColor blackColor]];
-        [labelNum setText:[NSString stringWithFormat:@"海底捞火锅"]];
-        [viewBG addSubview:labelNum];
-        RELEASE(labelNum);
-        
-    
-        UILabel *labelTime = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetWidth(imageViewIcon.frame) + CGRectGetMinX(imageViewIcon.frame) + 3 + 3,  24, 150, 15)];
-        [labelTime setTextColor:[UIColor blackColor]];
-        [labelTime setBackgroundColor:[UIColor clearColor]];
-        [labelTime setText:@"订单状态处理中"];
-        [viewBG addSubview:labelTime];
-        RELEASE(labelTime);
-        
-        
-        
-        UILabel *labelPrice = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetWidth(imageViewIcon.frame) + CGRectGetMinX(imageViewIcon.frame) + 3 +3,  CGRectGetHeight(labelTime.frame) + 5 + 7 + CGRectGetMinY(labelTime.frame) , 100, 15)];
-        [labelPrice setText:@"总额：￥93"];
-        [labelPrice setTextColor:[UIColor colorWithRed:246/255.0f green:46/255.0f blue:9/255.0f alpha:1.0f]];
-        [labelPrice setBackgroundColor:[UIColor clearColor]];
-        [viewBG addSubview:labelPrice];
-        RELEASE(labelPrice);
-
-//        
-//        WOSTouchStar *touch = [[WOSTouchStar alloc]initWithFrame:CGRectMake(200.0f, 50.0f, 100.0f, 50.0f)];
-//        [viewBG addSubview:touch];
-//        RELEASE(touch);
-//        
-        
-        UIImageView *Line1 = [[UIImageView alloc]initWithFrame:CGRectMake(0,  CGRectGetHeight(labelPrice.frame) + CGRectGetMinY(labelPrice.frame)+10 +3 , 300, 0.5)];
-        [Line1 setBackgroundColor:[UIColor clearColor]];
-        [Line1 setImage:[UIImage imageNamed:@"class_dotline"]];
-        [viewBG addSubview:Line1];
-        RELEASE(Line1);
-        
-
-        
-        UILabel *labelTIme= [[UILabel alloc]initWithFrame:CGRectMake(10,  CGRectGetHeight(Line1.frame) + 5 + 7 + CGRectGetMinY(Line1.frame) , 300, 22)];
-        [labelTIme setText:@"订单时间：2013-12-11 10:01"];
-        [labelTIme setTextColor:[UIColor blackColor]];
-        [labelTIme setBackgroundColor:[UIColor clearColor]];
-        [viewBG addSubview:labelTIme];
-        RELEASE(labelTIme);
-        
-        
-        UILabel *labelAddr = [[UILabel alloc]initWithFrame:CGRectMake(10,  CGRectGetHeight(labelTIme.frame) + 5 + 7 + CGRectGetMinY(labelTIme.frame) , 300, 22)];
-        [labelAddr setText:@"送餐地址：上海市区杨浦区国康路100号21楼"];
-        [labelAddr setTextColor:[UIColor blackColor]];
-        [labelAddr setBackgroundColor:[UIColor clearColor]];
-        [viewBG addSubview:labelAddr];
-        RELEASE(labelAddr);
-   
-        
-        UILabel *labelResque = [[UILabel alloc]initWithFrame:CGRectMake(10,  CGRectGetHeight(labelAddr.frame) + 5 + 7 + CGRectGetMinY(labelAddr.frame) , 300, 22)];
-        [labelResque setText:@"响应时间：2013-12-12 10:01"];
-        [labelResque setTextColor:[UIColor colorWithRed:246/255.0f green:46/255.0f blue:9/255.0f alpha:1.0f]];
-        [labelResque setBackgroundColor:[UIColor clearColor]];
-        [viewBG addSubview:labelResque];
-        RELEASE(labelResque);
-
-        
-        UIImageView *Line2 = [[UIImageView alloc]initWithFrame:CGRectMake(0,  CGRectGetHeight(labelResque.frame) + 3 + 7 + CGRectGetMinY(labelResque.frame), 300, 0.5)];
-        [Line2 setBackgroundColor:[UIColor clearColor]];
-        [Line2 setImage:[UIImage imageNamed:@"class_dotline"]];
-        [viewBG addSubview:Line2];
-        RELEASE(Line2);
-        
-        
-        
-        tbDataBank1 = [[DYBUITableView alloc]initWithFrame:CGRectMake(0.0f,  CGRectGetHeight(labelResque.frame) + 5 + 7 + CGRectGetMinY(labelResque.frame) + 2, 300.0f, 6*40) isNeedUpdate:YES];
-        
-        [tbDataBank1 setTableViewType:DTableViewSlime];
-        
-        [viewBG addSubview:tbDataBank1];
-        
-        RELEASE(tbDataBank1);
-        
-        [tbDataBank1 setBackgroundColor:[UIColor clearColor]];
-                
-        [viewBG setBackgroundColor:[UIColor whiteColor]];
-
-    }
-    
-    
-    else if ([signal is:[MagicViewController DID_APPEAR]]) {
-                
-        DLogInfo(@"rrr");
-        
-    } else if ([signal is:[MagicViewController DID_DISAPPEAR]]){
-        
-        
-    }
-    
-}
-
-
 
 
 - (void)handleViewSignal_MagicUITableView:(MagicViewSignal *)signal{
@@ -179,7 +113,7 @@
     
     if ([signal is:[MagicUITableView TABLENUMROWINSEC]])//numberOfRowsInSection
     {
-        NSNumber *s = [NSNumber numberWithInteger:5];
+        NSNumber *s = [NSNumber numberWithInteger:arrayResult.count];
         [signal setReturnValue:s];
         
     }else if ([signal is:[MagicUITableView TABLENUMOFSEC]])//numberOfSectionsInTableView
@@ -193,7 +127,7 @@
         
         
         
-        [signal setReturnValue:[NSNumber numberWithInteger:80]];
+        [signal setReturnValue:[NSNumber numberWithInteger:30]];
     }
     else if ([signal is:[MagicUITableView TABLETITLEFORHEADERINSECTION]])//titleForHeaderInSection
     {
@@ -217,9 +151,9 @@
         
         
         
-        WOSOrderCAICell *cell = [[WOSOrderCAICell alloc]init];
+        WOSOrderDetailTableViewCell *cell = [[WOSOrderDetailTableViewCell alloc]init];
         [cell setBackgroundColor:[UIColor clearColor]];
-        [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
+        [cell creatCell:[arrayResult objectAtIndex:indexPath.row]];
         [signal setReturnValue:cell];
         
         
@@ -261,26 +195,54 @@
 }
 
 
-
-
-#pragma mark - back button signal
-- (void)handleViewSignal_DYBBaseViewController:(MagicViewSignal *)signal
-{
-    if ([signal is:[DYBBaseViewController BACKBUTTON]])
-    {
-        [self.drNavigationController popViewControllerAnimated:YES];
-    }else if ([signal is:[DYBBaseViewController NEXTSTEPBUTTON]]){
-    }
-}
-
 - (void)didReceiveMemoryWarning
 {
-    [super didReceiveMemoryWarning];
+//    [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
 - (void)dealloc
 {
     
     [super dealloc];
+}
+
+
+
+#pragma mark- 只接受HTTP信号
+- (void)handleRequest:(MagicRequest *)request receiveObj:(id)receiveObj
+{
+    if ([request succeed])
+    {
+        if (request.tag == 3) {
+            
+            
+            NSDictionary *dict = [request.responseString JSONValue];
+            
+            if (dict) {
+                BOOL result = [[dict objectForKey:@"result"] boolValue];
+                if (!result) {
+                    dictResult = dict;
+                    arrayResult = [[NSMutableArray alloc]initWithArray:[dict objectForKey:@"orderDetails"]];
+                    
+//                    [arrayAddrList removeObjectAtIndex:delIndex];
+                    [tbDataBank1 reloadData];
+                    
+                    
+                }else{
+                    NSString *strMSG = [dict objectForKey:@"message"];
+                    
+                    [DYBShareinstaceDelegate popViewText:strMSG target:self hideTime:.5f isRelease:YES mode:MagicPOPALERTVIEWINDICATOR];
+                    
+                    
+                }
+            }
+        }
+    }
+}
+
+-(void)doHidden{
+
+    [self removeFromSuperview];
+    
 }
 @end

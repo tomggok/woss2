@@ -2140,4 +2140,14 @@
     return dict;
 
 }
+
++ (NSMutableDictionary *)wosFoodInfo_orderinfo_userIndex :(NSString *)userIndex orderIndex  :(NSString *)orderIndex {
+
+    NSMutableDictionary * dict = AUTORELEASE([[NSMutableDictionary alloc] init]);
+    [dict setValue:userIndex        forKey:@"userIndex"];
+    [dict setValue:orderIndex        forKey:@"orderIndex"];
+    [dict setValue:@"order/info.do" forKey:INTERFACEDOACTION];
+    return dict;
+
+}
 @end

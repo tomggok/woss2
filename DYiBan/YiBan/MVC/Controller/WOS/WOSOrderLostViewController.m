@@ -55,66 +55,30 @@
         
     {
         
-        [self.headview setTitle:@"我的订单"];
+        [self.headview setTitle:@"订单管理"];
         
-        [self.headview setTitleColor:[UIColor colorWithRed:193.0f/255 green:193.0f/255 blue:193.0f/255 alpha:1.0f]];
         
+        
+        [self.headview setTitleColor:[UIColor whiteColor]];
+        [self setButtonImage:self.leftButton setImage:@"返回键"];
         [self.view setBackgroundColor:ColorBG];
-       [self setButtonImage:self.leftButton setImage:@"back"];
-        
-        
-        
+        [self.headview setBackgroundColor:[UIColor colorWithRed:40.0f/255 green:191.0f/255 blue:140.0f/255 alpha:1.0f]];
     }
     
     else if ([signal is:[MagicViewController CREATE_VIEWS]]) {
-        
-        for (int i = 0; i< 3; i ++) {
-            
-            UIButton *btn1 = [[UIButton alloc]initWithFrame:CGRectMake(0.0f + i*320/3 + i*1, self.headHeight, 320/3, 30)];
-            [btn1 setTitle:@"处理中" forState:UIControlStateNormal];
-            [btn1 setTitleColor:ColorGryWhite forState:UIControlStateNormal];
-            switch (i) {
-                case 0:
-                    [btn1 setTitle:@"处理中" forState:UIControlStateNormal];
-                    [btn1 setTitleColor:ColorTextYellow forState:UIControlStateNormal];
-                    break;
-                case 1:
-                    [btn1 setTitle:@"配送中" forState:UIControlStateNormal];
-                    break;
-                case 2:
-                    [btn1 setFrame:CGRectMake(0.0f + i*320/3 + i *0.5 , self.headHeight, 320/3, 30)];
-                    [btn1 setTitle:@"已送到" forState:UIControlStateNormal];
-                    break;
-                    
-                default:
-                    break;
-            }
-            [btn1 setBackgroundColor:[UIColor blackColor]];
-            [btn1 addTarget:self action:@selector(doSelect:) forControlEvents:UIControlEventTouchUpInside];
-            [btn1 setTag:10 + i];
-            [self.view addSubview:btn1];
-            RELEASE(btn1);
-        }
-        
-        
+
         [self.rightButton setHidden:YES];
         
         
         
         [self.view setBackgroundColor:[UIColor clearColor]];
-        
-        
-        
-//        wosKitchenInfo_orderList_userIndex
-        
+
         orderStatus = 0;
         
-        MagicRequest *request = [DYBHttpMethod wosKitchenInfo_orderList_userIndex:SHARED.userId page:@"0" count:[NSString stringWithFormat:@"%d",orderStatus] status:@"0" sAlert:YES receive:self];
+        MagicRequest *request = [DYBHttpMethod wosKitchenInfo_orderList_userIndex:SHARED.userId page:@"0" count:[NSString stringWithFormat:@"%d",10] status:@"" sAlert:YES receive:self];
         [request setTag:3];
         
-//        0/1/2/3：备餐中/送餐中/已收货/取消
-        
-        tbDataBank1 = [[DYBUITableView alloc]initWithFrame:CGRectMake(0.0f,  self.headHeight + 30, 320.0f, self.view.frame.size.height - self.headHeight - 30) isNeedUpdate:YES];
+        tbDataBank1 = [[DYBUITableView alloc]initWithFrame:CGRectMake(0.0f,  self.headHeight , 320.0f, self.view.frame.size.height - self.headHeight) isNeedUpdate:NO];
         
         [tbDataBank1 setSeparatorColor:[UIColor clearColor]];
         [tbDataBank1 setTableViewType:DTableViewSlime];
@@ -195,7 +159,7 @@
         
     {
         
-        [signal setReturnValue:[NSNumber numberWithInteger:80]];
+        [signal setReturnValue:[NSNumber numberWithInteger:90]];
         
     }
     
@@ -242,8 +206,13 @@
         NSIndexPath *indexPath = [dict objectForKey:@"indexPath"];
         
            
-        WOSOrderDetailViewController *detail = [[WOSOrderDetailViewController alloc]init];
-        [self.drNavigationController pushViewController:detail animated:YES];
+        WOSOrderDetailViewController *detail = [[WOSOrderDetailViewController alloc]initWithFrame:self.drNavigationController.view.frame];
+        detail.dictInfo = [arrayResult objectAtIndex:indexPath.row];
+        [detail creatView:[arrayResult objectAtIndex:indexPath.row]];
+
+        [detail setBackgroundColor:[UIColor clearColor]];
+//        [detail setAlpha:0.9];
+        [self.drNavigationController.view addSubview:detail];
         RELEASE(detail);
         
         

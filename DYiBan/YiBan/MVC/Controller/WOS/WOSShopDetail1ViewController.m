@@ -13,6 +13,7 @@
 @end
 
 @implementation WOSShopDetail1ViewController
+@synthesize dictInfo;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {

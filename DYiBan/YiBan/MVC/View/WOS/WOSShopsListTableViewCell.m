@@ -7,7 +7,7 @@
 //
 #import "WOSStarView.h"
 #import "WOSShopsListTableViewCell.h"
-
+#import "UIImageView+WebCache.h"
 @implementation WOSShopsListTableViewCell
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
@@ -40,13 +40,15 @@
     
     UILabel *labelName = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetMinX(imageViewIcon.frame) + 10 + CGRectGetWidth(imageViewIcon.frame), 10.0f, 150.0f, 20.0f)];
     
-    [labelName setText:@"红蜻蜓梅花鱼头"];
+    [labelName setText:[dict objectForKey:@"kitchenName"]];
     [self addSubview:labelName];
     RELEASE(labelName);
     
     
     UIImageView *imageViewIndexHui = [[UIImageView alloc]initWithFrame:CGRectMake(CGRectGetMinX(labelName.frame)+ CGRectGetWidth(labelName.frame),  10, 20.0f, 20.0f)];
     [imageViewIndexHui setBackgroundColor:[UIColor redColor]];
+      NSURL *url = [NSURL URLWithString:[DYBShareinstaceDelegate addIPImage:[dict objectForKey:@"imgUrl"]]];
+    [imageViewIndexHui setImageWithURL:url];
     [self addSubview:imageViewIndexHui];
     RELEASE(imageViewIndexHui);
     
@@ -55,7 +57,7 @@
     [self addSubview:imageViewIndexchuan];
     RELEASE(imageViewIndexchuan);
     
-    WOSStarView *start = [[WOSStarView alloc]initWithFrame:CGRectMake(CGRectGetMinX(imageViewIndexchuan.frame) + 10, CGRectGetMinY(imageViewIndexchuan.frame), 100.0f, 20.0f) num:2];
+    WOSStarView *start = [[WOSStarView alloc]initWithFrame:CGRectMake(CGRectGetMinX(imageViewIndexchuan.frame) + 10, CGRectGetMinY(imageViewIndexchuan.frame), 100.0f, 20.0f) num:[[dict objectForKey:@"starLevel"] intValue]];
     [self addSubview:start];
     RELEASE(start);
     
@@ -69,7 +71,7 @@
     
     UILabel *labelFree = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetMinX(labelNameDistance.frame) + 10 +CGRectGetWidth(labelNameDistance.frame), 10.0f + CGRectGetMinY(start.frame), 150.0f, 20.0f)];
     
-    [labelFree setText:@"90元起送"];
+    [labelFree setText:[NSString stringWithFormat:@"%@",[dict objectForKey:@"pricePU"]]];
     [self addSubview:labelFree];
     RELEASE(labelFree);
     

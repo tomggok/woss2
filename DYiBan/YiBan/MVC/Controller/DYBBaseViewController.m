@@ -51,7 +51,7 @@ DEF_SIGNAL(NoInternetConnection)//无网
     
     _headview = [[DYBNaviView alloc] initWithFrame:CGRectMake(0, 0, 0, 0)];
     
-    float y = 0;
+    float y = 10;
     if ([MagicDevice sysVersion] >= 7)
     {
         y = 20;
@@ -60,10 +60,10 @@ DEF_SIGNAL(NoInternetConnection)//无网
 #endif
     }
     
-    _leftButton = [[MagicUIButton alloc] initWithFrame:CGRectMake(0, y, 60, self.headViewHeight)];
+    _leftButton = [[MagicUIButton alloc] initWithFrame:CGRectMake(10, y, 30, 30)];
     
     //临时
-    _rightButton = [[MagicUIButton alloc] initWithFrame:CGRectMake(SCREEN_WIDTH-60, y, 60,  self.headViewHeight)];
+    _rightButton = [[MagicUIButton alloc] initWithFrame:CGRectMake(SCREEN_WIDTH-60, y, 30, 30)];
     [_rightButton addSignal:[DYBBaseViewController NEXTSTEPBUTTON] forControlEvents:UIControlEventTouchUpInside];
     
 //    [_headview setTitle:@"登陆"];

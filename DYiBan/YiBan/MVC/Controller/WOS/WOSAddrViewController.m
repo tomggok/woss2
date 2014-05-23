@@ -11,6 +11,8 @@
 #import "WOSAddAddrViewController.h"
 #import "JSONKit.h"
 #import "JSON.h"
+#import "WOSAdrrDrtailView.h"
+
 
 @interface WOSAddrViewController ()
 {
@@ -46,14 +48,18 @@
     {
         [self.headview setTitle:@"送餐地址管理"];
         
-        [self.headview setTitleColor:[UIColor colorWithRed:193.0f/255 green:193.0f/255 blue:193.0f/255 alpha:1.0f]];
+        [self.headview setTitleColor:[UIColor whiteColor]];
         
-        [self.view setBackgroundColor:ColorBG];
-        [self setButtonImage:self.leftButton setImage:@"back"];
+        [self.view setBackgroundColor:[UIColor whiteColor]];
+        
+        [self setButtonImage:self.leftButton setImage:@"返回键"];
+        [self setButtonImage:self.rightButton setImage:@"加号2"];
+        
+        [self.headview setBackgroundColor:[UIColor colorWithRed:40.0f/255 green:191.0f/255 blue:140.0f/255 alpha:1.0f]];
     }
     else if ([signal is:[MagicViewController CREATE_VIEWS]]) {
         
-        [self.view setBackgroundColor:[UIColor clearColor]];
+        [self.view setBackgroundColor:[UIColor whiteColor]];
         NSLog(@"useid -- %@",SHARED.userId);
         
 //        arrayAddrList = [[NSMutableArray alloc]init];
@@ -61,16 +67,10 @@
         MagicRequest *request = [DYBHttpMethod wosKitchenInfo_addrList_userIndex:SHARED.userId page:@"0" count:@"3" sAlert:YES receive:self];
         [request setTag:3];
         
-        
-        UIImageView *imageView = [[UIImageView alloc]initWithFrame:CGRectMake(20.0f, 44 + 20 , 280,self.view.frame.size.height - 44 - 100 - 80)];
-        UIImage *imageNew = [[UIImage imageNamed:@"text_area"] resizableImageWithCapInsets:UIEdgeInsetsMake(10.5, 10.5 , 10.5,10.5)];
-        [imageView setImage:imageNew];
-        [self.view addSubview:imageView];
-        RELEASE(imageView);
-        
+        [self retain];
        
         
-        tableView1 = [[UITableView alloc]initWithFrame:CGRectMake(20.0f, 44 + 20 , 280,self.view.frame.size.height - 44 - 100 - 80)];
+        tableView1 = [[UITableView alloc]initWithFrame:CGRectMake(20.0f, self.headHeight , 280,self.view.frame.size.height - self.headHeight)];
         [tableView1 setBackgroundColor:[UIColor clearColor]];
         [tableView1 setDelegate:self];
         [tableView1 setDataSource:self];
@@ -129,87 +129,6 @@
 }
 
 
-//- (void)handleViewSignal_MagicUITableView:(MagicViewSignal *)signal{
-//    
-//    
-//    if ([signal is:[MagicUITableView TABLENUMROWINSEC]])//numberOfRowsInSection
-//    {
-//        NSNumber *s = [NSNumber numberWithInteger:arrayAddrList.count];
-//        [signal setReturnValue:s];
-//        
-//    }else if ([signal is:[MagicUITableView TABLENUMOFSEC]])//numberOfSectionsInTableView
-//    {
-//        NSNumber *s = [NSNumber numberWithInteger:1];
-//        [signal setReturnValue:s];
-//        
-//    }
-//    else if ([signal is:[MagicUITableView TABLEHEIGHTFORROW]])//heightForRowAtIndexPath
-//    {
-//        
-//        
-//        
-//        [signal setReturnValue:[NSNumber numberWithInteger:80]];
-//    }
-//    else if ([signal is:[MagicUITableView TABLETITLEFORHEADERINSECTION]])//titleForHeaderInSection
-//    {
-//        [signal setReturnValue:nil];
-//        
-//    }
-//    else if ([signal is:[MagicUITableView TABLEVIEWFORHEADERINSECTION]])//viewForHeaderInSection
-//    {
-//        [signal setReturnValue:nil];
-//        
-//    }
-//    else if ([signal is:[MagicUITableView TABLETHEIGHTFORHEADERINSECTION]])//heightForHeaderInSection
-//    {
-//        [signal setReturnValue:[NSNumber numberWithFloat:0.0]];
-//    }
-//    else if ([signal is:[MagicUITableView TABLECELLFORROW]])//cell
-//    {
-//        NSDictionary *dict = (NSDictionary *)[signal object];
-//        NSIndexPath *indexPath = [dict objectForKey:@"indexPath"];
-//        
-//        WOSAddrCell *cell = [[WOSAddrCell alloc]init];
-//        [cell setBackgroundColor:[UIColor colorWithRed:46/255 green:46/255 blue:46/255 alpha:1.0f]];
-//        [cell creatCell:[arrayAddrList objectAtIndex:indexPath.row]];
-//        [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
-//        
-//        [signal setReturnValue:cell];
-//        
-//        
-//    }else if ([signal is:[MagicUITableView TABLEDIDSELECT]])//选中cell
-//    {
-//        
-//        return;
-//        
-//    }else if([signal is:[MagicUITableView TABLESCROLLVIEWDIDENDDRAGGING]])/*滚动停止*/{
-//        
-//        
-//    }else if([signal is:[MagicUITableView TABLESCROLLVIEWDIDSCROLL]])/*滚动*/{
-//        
-//    }else if ([signal is:[MagicUITableView TABLEVIEWUPDATA]]) //刷新
-//    {
-//        //        MagicUIUpdateView *uptableview = (MagicUIUpdateView *)[signal object];
-//        
-//        
-//    }else if([signal is:[MagicUITableView TAbLEVIEWLODATA]]) //加载更多
-//    {
-//        
-//        
-//    }else if ([signal is:[MagicUITableView TAbLEVIEWSCROLLUP]]){ //上滑动
-//        
-//        //        [tbDataBank StretchingUpOrDown:0];
-//        //        [DYBShareinstaceDelegate opeartionTabBarShow:YES];
-//        
-//    }else if ([signal is:[MagicUITableView TAbLEVIEWSCROLLDOWN]]){ //下滑动
-//        
-//        //        [tbDataBank StretchingUpOrDown:1];
-//        //        [DYBShareinstaceDelegate opeartionTabBarShow:NO];
-//    }
-//    
-//}
-
-
 #pragma mark - tableviewdelete
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section/*第一次回调时系统传的section是数据源里section数量的最大值-1*/
 {
@@ -227,26 +146,75 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
    
-    return 80;
+    return 110/2;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     
+    static NSString *reuseIdetify = @"SvTableViewCell";
+    WOSAddrCell *cell = [tableView dequeueReusableCellWithIdentifier:reuseIdetify];
+    if (!cell) {
+        cell = [[WOSAddrCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseIdetify];
 
+    }else{
     
-    WOSAddrCell *cell = [[WOSAddrCell alloc]init];
-    [cell setBackgroundColor:[UIColor colorWithRed:46/255 green:46/255 blue:46/255 alpha:1.0f]];
+        for (UIView *view in [cell.contentView subviews ]) {
+            [view removeFromSuperview];
+            view  = nil;
+        }
+    
+    }
+    
+    [cell setBackgroundColor:[UIColor whiteColor]];
     [cell creatCell:[arrayAddrList objectAtIndex:indexPath.row]];
     [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
     
-
+    
     
     return cell;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    
+    WOSAddrCell *cell = (WOSAddrCell *)[tableView cellForRowAtIndexPath:indexPath];
+    
+    
+    NSArray *arrayCell = [tableView visibleCells];
+    for (WOSAddrCell *cllll in arrayCell) {
+        if ([cllll isEqual:cell]) {
+            
+            UILabel *label1 = (UILabel *)[cllll.contentView viewWithTag:100];
+            [label1 setTextColor:[UIColor colorWithRed:40.0f/255 green:191.0f/255 blue:140.0f/255 alpha:1.0f]];
+            
+            UILabel *label2 = (UILabel *)[cllll.contentView viewWithTag:101];
+            [label2 setTextColor:[UIColor colorWithRed:40.0f/255 green:191.0f/255 blue:140.0f/255 alpha:1.0f]];
+            
+            UIButton *btn = (UIButton *)[cllll.contentView viewWithTag:13];
+            [btn setHidden:NO];
+
+        }else{
+        
+            UILabel *label1 = (UILabel *)[cllll.contentView viewWithTag:100];
+            [label1 setTextColor:[UIColor blackColor]];
+            
+            UILabel *label2 = (UILabel *)[cllll.contentView viewWithTag:101];
+            [label2 setTextColor:[UIColor blackColor]];
+            
+            UIButton *btn = (UIButton *)[cllll.contentView viewWithTag:13];
+            [btn setHidden:YES];
+        }
+    }
+    
+    
+    WOSAdrrDrtailView *addDetail = [[WOSAdrrDrtailView alloc]initWithFrame:CGRectMake(0.0f, 0.0, self.drNavigationController.view.frame.size.width, self.drNavigationController.view.frame.size.height)];
+    addDetail.delegate = self;
+    [addDetail addView:[arrayAddrList objectAtIndex:indexPath.row]];
+    [self.drNavigationController.view addSubview:addDetail];
+    RELEASE(addDetail)
+    
+    
 //    NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithObjectsAndKeys:tableView, @"tableView", indexPath, @"indexPath", nil];
 //    [self sendViewSignal:[MagicUITableView TABLEDIDSELECT] withObject:dict];
 }
@@ -295,6 +263,9 @@
     {
         [self.drNavigationController popViewControllerAnimated:YES];
     }else if ([signal is:[DYBBaseViewController NEXTSTEPBUTTON]]){
+        
+        [self addNewAddr];
+        
     }
 }
 
@@ -372,6 +343,26 @@
         }
     }
 }
+
+-(void)delSueese:(NSString *)strIndex{
+
+    
+    for (int i = 0; i< arrayAddrList.count ; i++) {
+        
+        NSDictionary *dict = [arrayAddrList objectAtIndex:i];
+        if ([strIndex isEqualToString:[dict objectForKey:@"addrIndex"]]) {
+            
+            [arrayAddrList removeObject:dict];
+            [tableView1 reloadData];
+            return;
+        }
+        
+    }
+//[arrayAddrList objectAtIndex:indexPath.row] objectForKey:@"addrIndex"]
+}
+
+
+
 
 
 @end

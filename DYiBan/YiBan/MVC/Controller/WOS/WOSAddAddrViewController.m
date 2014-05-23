@@ -52,10 +52,12 @@
     {
         [self.headview setTitle:@"添加地址"];
         
-        [self.headview setTitleColor:[UIColor colorWithRed:193.0f/255 green:193.0f/255 blue:193.0f/255 alpha:1.0f]];
-        
+        [self.headview setTitleColor:[UIColor whiteColor]];
+        [self setButtonImage:self.leftButton setImage:@"返回键"];
         [self.view setBackgroundColor:ColorBG];
-        [self setButtonImage:self.leftButton setImage:@"back"];
+        [self.headview setBackgroundColor:[UIColor colorWithRed:40.0f/255 green:191.0f/255 blue:140.0f/255 alpha:1.0f]];
+        
+        
     }
     else if ([signal is:[MagicViewController CREATE_VIEWS]]) {
         
@@ -68,7 +70,7 @@
         RELEASE(scrollView);
         
         UIImageView *imageViewNameR= [[UIImageView alloc]initWithFrame:CGRectMake((320-INPUTWIDTH)/2, 20+self.headHeight, INPUTWIDTH, INPUTHEIGHT) ];
-        [imageViewNameR setImage:[UIImage imageNamed:@"input_bg"]];
+        [imageViewNameR setImage:[UIImage imageNamed:@"圆角矩形 "]];
         [scrollView addSubview:imageViewNameR];
         RELEASE(imageViewNameR);
         
@@ -83,7 +85,7 @@
         
         
         UIImageView *imageViewName2R = [[UIImageView alloc]initWithFrame:CGRectMake((320-INPUTWIDTH)/2, 20+self.headHeight +INPUTHEIGHT  + 20, INPUTWIDTH, INPUTHEIGHT) ];
-        [imageViewName2R setImage:[UIImage imageNamed:@"input_bg"]];
+        [imageViewName2R setImage:[UIImage imageNamed:@"圆角矩形 "]];
         [scrollView  addSubview:imageViewName2R];
         RELEASE(imageViewName2R);
         
@@ -97,7 +99,7 @@
       
         
         UIImageView *imageViewNameR11= [[UIImageView alloc]initWithFrame:CGRectMake((320-INPUTWIDTH)/2, 20+self.headHeight+INPUTHEIGHT*2  +40, INPUTWIDTH, INPUTHEIGHT) ];
-        [imageViewNameR11 setImage:[UIImage imageNamed:@"input_bg"]];
+        [imageViewNameR11 setImage:[UIImage imageNamed:@"圆角矩形 "]];
         [scrollView addSubview:imageViewNameR11];
         RELEASE(imageViewNameR11);
 
@@ -110,10 +112,10 @@
         RELEASE(_phoneInputNum);
 
        
-        UIButton *btnBack = [[UIButton alloc]initWithFrame:CGRectMake(10.0f, CGRectGetHeight(_phoneInputNum.frame) + CGRectGetMinY(_phoneInputNum.frame) + 35, 300, 44)];
-        [btnBack setImage:[UIImage imageNamed:@"button"] forState:UIControlStateNormal];
+        UIButton *btnBack = [[UIButton alloc]initWithFrame:CGRectMake((320 - 44)/2, CGRectGetHeight(_phoneInputNum.frame) + CGRectGetMinY(_phoneInputNum.frame) + 35, 44, 44)];
+        [btnBack setImage:[UIImage imageNamed:@"对号"] forState:UIControlStateNormal];
         [btnBack addTarget:self action:@selector(addOK) forControlEvents:UIControlEventTouchUpInside];
-        [self addlabel_title:@"添加地址" frame:btnBack.frame view:btnBack];
+//        [self addlabel_title:@"添加地址" frame:btnBack.frame view:btnBack];
 
         [scrollView addSubview:btnBack];
         [btnBack setBackgroundColor:[UIColor clearColor]];

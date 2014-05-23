@@ -21,6 +21,8 @@
 #import "DYBMentionedMeViewController.h"
 #import "DYBCommentMeViewController.h"
 #import "DYBEmployInfoViewController.h"
+#import "WOSMakeOrderView.h"
+
 
 @implementation AppDelegate
 {
@@ -29,9 +31,11 @@
     MagicUIImageView *backImv;
     UIScrollView *scroll;
     MagicUIButton *startBtn;
+    
+    CGPoint ptBegin;
 }
 @synthesize window = _window;
-@synthesize navi = _navi;
+@synthesize navi = _navi,btnOrder = _btnOrder;
 - (void)dealloc
 {
     [_window release];
@@ -401,4 +405,55 @@
     }
     
 }
+
+-(void)doTouch{
+
+    [self.btnOrder setHidden:YES];
+    
+    MagicViewController *vc = [self.navi topStackViewController];
+    
+    WOSMakeOrderView *orderView = [[WOSMakeOrderView alloc]initWithFrame:CGRectMake(0.0f, 0, 320.0f, self.window.frame.size.height - 305/2)];
+    orderView.nav = vc.drNavigationController;
+    [vc.view addSubview:orderView];
+    RELEASEOBJ(orderView);
+
+
+}
+
+- (void)handlePanFrom:(UIPanGestureRecognizer *)recognizer {
+	
+    
+	if (recognizer.state == UIGestureRecognizerStateBegan) {
+        
+        ptBegin = [recognizer locationInView:self.btnOrder];
+        
+    }
+    
+	else if(recognizer.state == UIGestureRecognizerStateChanged)
+	{
+
+        
+        
+        CGPoint pt = [recognizer locationInView:self.btnOrder];
+        CGRect frame =  self.btnOrder.frame;
+        frame.origin.x += pt.x - ptBegin.x;
+        frame.origin.y += pt.y - ptBegin.y;
+        
+        
+        if(frame.origin.x < 0 || frame.origin.x > 300 ||frame.origin.y < 20 || frame.origin.y > self.window.frame.size.height - 0){
+            
+            return;
+            
+        }
+        
+        [self.btnOrder setFrame:frame];
+
+    
+	} else if (recognizer.state == UIGestureRecognizerStateEnded) {
+        
+        
+    }
+}
+
+
 @end

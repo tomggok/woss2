@@ -102,13 +102,15 @@ DEF_SIGNAL(SELECTBUTTON)//选择按钮
         
         UIButton *btnMammageCol = [[UIButton alloc]initWithFrame:CGRectMake(10.0f, CGRectGetHeight(btnMammageAddr.frame) + CGRectGetMinY(btnMammageAddr.frame) +0, image1.size.width/2, image1.size.height/2)];
         [btnMammageCol setTitle:@"收藏夹" forState:UIControlStateNormal];
-        //        [btnMammageAddr setImage:[UIImage imageNamed:@""] forState:UIControlStateNormal];
+        //        [btnMammageAddr setImage:[UIImage imageNamed:@""] forState:UIControlStateNormal];'
+        [btnMammageCol setTag:13];
+
         [btnMammageCol addTarget:self action:@selector(goOrder:) forControlEvents:UIControlEventTouchUpInside];
         [self addSubview:btnMammageCol];
         RELEASE(btnMammageCol)
         
         UIButton *btnMammageSetting = [[UIButton alloc]initWithFrame:CGRectMake(10.0f, CGRectGetHeight(btnMammageCol.frame) + CGRectGetMinY(btnMammageCol.frame) + 0, image1.size.width/2, image1.size.height/2)];
-        [btnMammageSetting setTag:13];
+        [btnMammageSetting setTag:14];
         [btnMammageSetting setTitle:@"设置" forState:UIControlStateNormal];
         //        [btnMammageAddr setImage:[UIImage imageNamed:@""] forState:UIControlStateNormal];
         [btnMammageSetting addTarget:self action:@selector(goOrder:) forControlEvents:UIControlEventTouchUpInside];

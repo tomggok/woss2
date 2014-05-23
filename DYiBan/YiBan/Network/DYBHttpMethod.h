@@ -473,7 +473,10 @@
 
 + (MagicRequest *)wosFoodInfo_allInfo_userIndex :(NSString *)userIndex sAlert:(BOOL)isAlert receive:(id)receive;
 
-+ (MagicRequest *)wosFoodInfo_addressDel_userIndex :(NSString *)userIndex addrIndex :(NSString *)addrIndex
-                                             sAlert:(BOOL)isAlert receive:(id)receive;
++ (MagicRequest *)wosFoodInfo_addressDel_userIndex :(NSString *)userIndex addrIndex :(NSString *)addrIndex sAlert:(BOOL)isAlert receive:(id)receive;
+
+
++ (MagicRequest *)wosFoodInfo_orderinfo_userIndex :(NSString *)userIndex orderIndex  :(NSString *)orderIndex sAlert:(BOOL)isAlert receive:(id)receive;
+
 
 @end

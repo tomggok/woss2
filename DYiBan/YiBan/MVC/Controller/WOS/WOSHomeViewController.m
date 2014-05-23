@@ -21,11 +21,17 @@
 #import "Magic_Device.h"
 #import "WOSShopsListTableViewCell.h"
 #import "WOSShopDetail1ViewController.h"
+#import "WOSPreferentialCardViewController.h"
+#import "WOShopDetailViewController.h"
+
 
 @interface WOSHomeViewController (){
     SGFocusImageFrame *bannerView;
     UIScrollView *scrollView;
     NSMutableArray *arrayResult;
+    MagicUISearchBar *searchBar;
+    MagicUITableView *tabelViewList;
+    NSMutableArray *arrayShopList;
 }
 
 @end
@@ -62,37 +68,39 @@ DEF_SIGNAL(TOUCHBUTTON)
     
     if ([signal is:[MagicViewController LAYOUT_VIEWS]])
     {
-        //        [self.rightButton setHidden:YES];
-        [self.headview setTitle:@"极食客"];
-//        [self.headview setHidden:YES];
-//        [self.leftButton setHidden:YES];
+
         [self setButtonImage:self.rightButton setImage:@"account"];
-//        [self.imageViewHead setImage:[UIImage imageNamed:@"top"]];
-//        [self.headview setBackgroundColor:[UIColor grayColor]];
-        
+
         [self.headview setTitleColor:[UIColor colorWithRed:193.0f/255 green:193.0f/255 blue:193.0f/255 alpha:1.0f]];
-        
-        [self.view setBackgroundColor:[UIColor colorWithRed:61.0f/255 green:61.0f/255  blue:61.0f/255  alpha:1.0f]];
-        [self.view setBackgroundColor:[UIColor blackColor]];
+        [self.headview setBackgroundColor:[UIColor colorWithRed:40.0f/255 green:191.0f/255 blue:140.0f/255 alpha:1.0f]];
+        [self.view setBackgroundColor:ColorBG];
         DYBUITabbarViewController *tabBatC = [DYBUITabbarViewController sharedInstace];
         
         [tabBatC hideTabBar:YES animated:NO];
-                
+
+        
+        searchBar = [[MagicUISearchBar alloc]initWithFrame:CGRectMake(50, .0f, 200.0f, SEARCHBAT_HIGH) backgroundColor:[UIColor whiteColor] placeholder:@"" isHideOutBackImg:YES isHideLeftView:NO];
+        [searchBar setShowsCancelButton:NO];
+        [searchBar setBackgroundColor:[UIColor clearColor]];
+        [self.headview addSubview:searchBar];
+        RELEASE(searchBar)
+ 
         if ([MagicDevice sysVersion] >= 7)
         {
-//            [self.view setFrame:CGRectMake(0,20 , 320.0f, 1000)];
-            
-            //       self.view.frame.origin.y = 20.0f;
+
         }
 
     }
     else if ([signal is:[MagicViewController CREATE_VIEWS]]) {
-//        [self.view setFrame:CGRectMake(0.0f, 120.0f + 40, 320.0f, self.view.frame.size.height + 120)];
         
-        
+//        arrayShopList = [[NSMutableArray alloc]init];
         
         MagicRequest *request = [DYBHttpMethod wosKitchenInfo_activityList_count:@"4" sAlert:YES receive:self];
         [request setTag:3];
+        
+        
+        MagicRequest *request1 = [DYBHttpMethod wosgoodFood_typeIndex:@"100" orderBy:@"1" page:@"0" count:@"14" orderType:@"1"  sAlert:YES receive:self];
+        [request1 setTag:2];
         
        scrollView = [[UIScrollView alloc]initWithFrame:CGRectMake(0.0f, self.headHeight- 44, 320, self.view.frame.size.height+ 44 - self.headHeight + 44)];
         [scrollView setBackgroundColor:[UIColor colorWithRed:61.0f/255 green:61.0f/255  blue:61.0f/255  alpha:1.0f]];
@@ -103,7 +111,7 @@ DEF_SIGNAL(TOUCHBUTTON)
         [self.rightButton setHidden:YES];
         
         
-        MagicUITableView *tabelViewList = [[MagicUITableView alloc]initWithFrame:CGRectMake(0.0f, self.headHeight, 320.0f, self.view.frame.size.height - self.headHeight)];
+       tabelViewList = [[MagicUITableView alloc]initWithFrame:CGRectMake(0.0f, self.headHeight + 120, 320.0f, self.view.frame.size.height - self.headHeight)];
         
         [self.view addSubview:tabelViewList];
         RELEASE(tabelViewList)
@@ -221,15 +229,12 @@ DEF_SIGNAL(TOUCHBUTTON)
 
 static NSString *cellName = @"cellName";//
 
-- (void)handleViewSignal_MagicUITableView:(MagicViewSignal *)signal
-{
+- (void)handleViewSignal_MagicUITableView:(MagicViewSignal *)signal{
+    
+
     if ([signal is:[MagicUITableView TABLENUMROWINSEC]])//numberOfRowsInSection
     {
-        NSDictionary *dict = (NSDictionary *)[signal object];
-        UITableView *tableView = [dict objectForKey:@"tableView"];
-        NSInteger section = [[dict objectForKey:@"section"] integerValue];
-        
-                    NSNumber *s = [NSNumber numberWithInteger:10];
+            NSNumber *s = [NSNumber numberWithInteger:arrayResult.count];
             [signal setReturnValue:s];
         
     }else if ([signal is:[MagicUITableView TABLENUMOFSEC]])//numberOfSectionsInTableView
@@ -277,7 +282,7 @@ static NSString *cellName = @"cellName";//
 //        UITableViewCell *cell=[tableView dequeueReusableCellWithIdentifier:cellName];
         
         WOSShopsListTableViewCell *cell = [[WOSShopsListTableViewCell alloc]init];
-        [cell creatCell:nil];
+        [cell creatCell:[arrayShopList objectAtIndex:indexPath.row]];
         [signal setReturnValue:cell];
         
     }else if ([signal is:[MagicUITableView TABLEDIDSELECT]])//选中cell
@@ -287,9 +292,19 @@ static NSString *cellName = @"cellName";//
         NSIndexPath *indexPath = [dict objectForKey:@"indexPath"];
         
         
-        WOSShopDetail1ViewController *detail = [[WOSShopDetail1ViewController alloc]init];
+        WOShopDetailViewController *detail = [[WOShopDetailViewController alloc]init];
+        NSDictionary *dictResult = [arrayShopList objectAtIndex:indexPath.row];
+        detail.dictInfo = dictResult;
         [self.drNavigationController pushViewController:detail animated:YES];
         RELEASE(detail);
+        
+//        WOSPreferentialCardViewController *card = [[WOSPreferentialCardViewController alloc]init];
+//        
+//        //            [card setVc:_vc];
+//        [self.drNavigationController pushViewController:card animated:YES];
+//        
+//        [card release];
+        
     }
     else if ([signal is:[MagicUITableView TABLESCROLLVIEWDIDSCROLL]])//- (void)scrollViewDidScroll:(UIScrollView *)scrollView
     {
@@ -749,6 +764,8 @@ static NSString *cellName = @"cellName";//
                 BOOL result = [[dict objectForKey:@"result"] boolValue];
                 if (!result) {
                     
+                    arrayShopList = [[NSMutableArray alloc]initWithArray: [dict objectForKey:@"kitchenList"]];
+                    [tabelViewList reloadData];
                 }else{
                     NSString *strMSG = [dict objectForKey:@"message"];
                     

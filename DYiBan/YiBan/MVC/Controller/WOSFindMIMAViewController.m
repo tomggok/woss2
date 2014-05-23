@@ -47,10 +47,11 @@
     {
         //        [self.rightButton setHidden:YES];
         [self.headview setTitle:@"找回密码"];
-        [self.headview setBackgroundColor:[UIColor colorWithRed:97.0f/255 green:97.0f/255 blue:97.0f/255 alpha:1.0]];
+//        [self.headview setBackgroundColor:[UIColor colorWithRed:97.0f/255 green:97.0f/255 blue:97.0f/255 alpha:1.0]];
         [self.headview setTitleColor:[UIColor colorWithRed:193.0f/255 green:193.0f/255 blue:193.0f/255 alpha:1.0f]];
-        [self setButtonImage:self.leftButton setImage:@"back"];
+        [self setButtonImage:self.leftButton setImage:@"返回键"];
         [self.view setBackgroundColor:ColorBG];
+        [self.headview setBackgroundColor:[UIColor colorWithRed:40.0f/255 green:191.0f/255 blue:140.0f/255 alpha:1.0f]];
     }
     else if ([signal is:[MagicViewController CREATE_VIEWS]]) {
         
@@ -71,7 +72,7 @@
         RELEASE(labeMIMA);
         
         UIImageView *imageViewName2 = [[UIImageView alloc]initWithFrame:CGRectMake((320-INPUTWIDTH)/2,self.headHeight + 60, INPUTWIDTH, INPUTHEIGHT)];
-        [imageViewName2 setImage:[UIImage imageNamed:@"input_bg"]];
+        [imageViewName2 setImage:[UIImage imageNamed:@"圆角矩形 "]];
         [self.view addSubview:imageViewName2];
         RELEASE(imageViewName2);
         
@@ -84,11 +85,11 @@
         RELEASE(_phoneInputAddr);
         
 
-        UIButton *btnBack= [[UIButton alloc]initWithFrame:CGRectMake(10.0f, CGRectGetHeight(_phoneInputAddr.frame) + CGRectGetMinY(_phoneInputAddr.frame) + 20 + 10, 300, 44)];
+        UIButton *btnBack= [[UIButton alloc]initWithFrame:CGRectMake((320 - 44)/2, CGRectGetHeight(_phoneInputAddr.frame) + CGRectGetMinY(_phoneInputAddr.frame) + 20 + 10, 44, 44)];
         [btnBack setBackgroundColor:[UIColor clearColor]];
-        [btnBack setImage:[UIImage imageNamed:@"button"] forState:UIControlStateNormal];
+        [btnBack setImage:[UIImage imageNamed:@"对号"] forState:UIControlStateNormal];
         [btnBack addTarget:self action:@selector(addOK) forControlEvents:UIControlEventTouchUpInside];
-        [self addlabel_title:@"提交" frame:btnBack.frame view:btnBack];
+//        [self addlabel_title:@"提交" frame:btnBack.frame view:btnBack];
         [self.view addSubview:btnBack];
         [btnBack release];
     }

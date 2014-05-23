@@ -28,19 +28,20 @@
 }
 -(void)creat:(NSDictionary *)dict{
     
-    UIView *view = [[UIView alloc]initWithFrame:CGRectMake(0.0f, 0.0f, 320.0f, 70)];
+    UIImageView *view = [[UIImageView alloc]initWithFrame:CGRectMake(0.0f, 0.0f, 320.0f, 89)];
+    [view setImage:[UIImage imageNamed:@"订单"]];
     [self addSubview:view];
     RELEASE( view);
     
-    UIImageView *imageViewIcon = [[UIImageView alloc]initWithFrame:CGRectMake(5.0f, 5.0f, 80, 70)];
+    UIImageView *imageViewIcon = [[UIImageView alloc]initWithFrame:CGRectMake(5.0f, 5.0f, 20, 0)];
     [imageViewIcon setBackgroundColor:[UIColor redColor]];
     [imageViewIcon setImage:[UIImage imageNamed:@"food1.png"]];
-    [view addSubview:imageViewIcon];
-    RELEASE(imageViewIcon);
+//    [view addSubview:imageViewIcon];
+//    RELEASE(imageViewIcon);
     
     UILabel *labelNum = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetWidth(imageViewIcon.frame) + CGRectGetMinX(imageViewIcon.frame) + 3 + 3, 5, 100, 15)];
     [labelNum setBackgroundColor:[UIColor clearColor]];
-    [labelNum setTextColor:ColorGryWhite];
+//    [labelNum setTextColor:ColorGryWhite];
     [labelNum setText:[NSString stringWithFormat:@"海底捞火锅"]];
     [view addSubview:labelNum];
     RELEASE(labelNum);
@@ -48,9 +49,16 @@
 //    WOSStarView *star = [[WOSStarView alloc]initWithFrame:CGRectMake(CGRectGetWidth(imageViewIcon.frame) + CGRectGetMinX(imageViewIcon.frame) + 3, CGRectGetHeight(labelNum.frame) + 5 + 3,100, 30) num:3];
 //    [view addSubview:star];
 //    [star release];
-    UILabel *labelTime = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetWidth(imageViewIcon.frame) + CGRectGetMinX(imageViewIcon.frame) + 3 + 3,  CGRectGetHeight(labelNum.frame) + 5 + 7, 220, 15)];
+    
+    UIImageView *imageFen = [[UIImageView alloc]initWithFrame:CGRectMake(0.0f, CGRectGetHeight(labelNum.frame) + 45 + 7 - 16, 320.0f, 1)];
+    [imageFen setImage:[UIImage imageNamed:@"虚线"]];
+    [self addSubview:imageFen];
+    RELEASE(imageFen);
+    
+    
+    UILabel *labelTime = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetWidth(imageViewIcon.frame) + CGRectGetMinX(imageViewIcon.frame) + 3 + 3,  CGRectGetHeight(labelNum.frame) + 45 + 7, 220, 15)];
     [labelTime setFont:[UIFont systemFontOfSize:14]];
-    [labelTime setTextColor:ColorGryWhite];
+//    [labelTime setTextColor:ColorGryWhite];
     [labelTime setBackgroundColor:[UIColor clearColor]];
     [labelTime setText: [NSString stringWithFormat:@"订单时间：%@",[dict objectForKey:@"createTime"]]];
     [self addSubview:labelTime];
@@ -58,15 +66,15 @@
     
     
     
-    UILabel *labelPrice = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetWidth(imageViewIcon.frame) + CGRectGetMinX(imageViewIcon.frame) + 3 + 2,   CGRectGetMinY(labelTime.frame) +CGRectGetHeight(labelTime.frame) + 3 + 2 + 7, 100, 15)];
-    [labelPrice setText:[NSString stringWithFormat:@"总额：%@",[dict objectForKey:@"totalSum"]]];
-    [labelPrice setTextColor:[UIColor colorWithRed:246/255.0f green:46/255.0f blue:9/255.0f alpha:1.0f]];
+    UILabel *labelPrice = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetWidth(imageViewIcon.frame) + CGRectGetMinX(imageViewIcon.frame) + 130,  25, 100, 15)];
+    [labelPrice setText:[NSString stringWithFormat:@"￥：%@",[dict objectForKey:@"totalSum"]]];
+//    [labelPrice setTextColor:[UIColor colorWithRed:246/255.0f green:46/255.0f blue:9/255.0f alpha:1.0f]];
     [labelPrice setBackgroundColor:[UIColor clearColor]];
     [view addSubview:labelPrice];
     RELEASE(labelPrice);
     
-    UILabel *labelAddr = [[UILabel alloc]initWithFrame:CGRectMake(100 + CGRectGetWidth(imageViewIcon.frame) + CGRectGetMinX(imageViewIcon.frame) + 3 + 2,   CGRectGetMinY(labelPrice.frame) +CGRectGetHeight(labelPrice.frame) - 15 , 100, 15) ];
-    [labelAddr setTextColor:ColorGryWhite];
+    UILabel *labelAddr = [[UILabel alloc]initWithFrame:CGRectMake(200 + CGRectGetWidth(imageViewIcon.frame) + CGRectGetMinX(imageViewIcon.frame) + 3 + 2,   5 , 100, 15) ];
+//    [labelAddr setTextColor:ColorGryWhite];
     [labelAddr setBackgroundColor:[UIColor clearColor]];
     [labelAddr setText:[self getStatus:[dict objectForKey:@"status"]]];
     [view addSubview:labelAddr];
@@ -81,10 +89,14 @@
     [view setBackgroundColor:ColorBG];
     
     
-    UIImageView *imageFen = [[UIImageView alloc]initWithFrame:CGRectMake(0.0f, 79, 320.0f, 1)];
-    [imageFen setImage:[UIImage imageNamed:@"个人中心_line"]];
-    [self addSubview:imageFen];
-    RELEASE(imageFen);
+    UIImage *tt = [UIImage imageNamed:@"详情"];
+    UIImageView *imageViewDetail = [[UIImageView alloc]initWithFrame:CGRectMake(280.0f - tt.size.width/2 + 15, CGRectGetHeight(self.frame) - tt.size.height/2 + 40, tt.size.width/2, tt.size.height/2)];
+    [imageViewDetail setImage:tt];
+    [view addSubview:imageViewDetail];
+    //    [imageViewInt setBackgroundColor:[UIColor redColor]];
+    RELEASE(imageViewDetail);
+
+  
 }
 
 -(NSString *)getStatus:(NSString *)key{

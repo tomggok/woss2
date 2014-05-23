@@ -7,7 +7,8 @@
 //
 
 #import "DYBBaseViewController.h"
+#import "WOSAdrrDrtailView.h"
 
-@interface WOSAddrViewController : DYBBaseViewController<UITableViewDataSource,UITableViewDelegate>
+@interface WOSAddrViewController : DYBBaseViewController<UITableViewDataSource,UITableViewDelegate,WOSAdrrDrtailViewDelegate>
 
 @end

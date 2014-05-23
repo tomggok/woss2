@@ -125,8 +125,8 @@
 #define ColorSlightGray [MagicCommentMethod colorWithHex:@"0xfafafax"] //最淡的灰色
 #define ColorBackgroundGray [MagicCommentMethod colorWithHex:@"f8f8f8"] //最淡的背景色
 #define ColorNav [MagicCommentMethod color:248 green:248 blue:248 alpha:1] //导航栏背景色
-
-#define ColorBG [MagicCommentMethod color:36 green:36 blue:36 alpha:1] //view背景色
+//[UIColor colorWithRed:40.0f/255 green:191.0f/255 blue:140.0f/255 alpha:1.0f]
+#define ColorBG [MagicCommentMethod color:78 green:78 blue:78 alpha:1] //view背景色
 #define ColorTextYellow [MagicCommentMethod color:226 green:72 blue:49 alpha:1] //view背景色
 #define ColorGryWhite [MagicCommentMethod color:191 green:192 blue:191 alpha:1] //字体色
 

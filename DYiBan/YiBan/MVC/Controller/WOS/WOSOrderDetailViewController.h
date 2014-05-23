@@ -8,6 +8,9 @@
 
 #import "DYBBaseViewController.h"
 
-@interface WOSOrderDetailViewController : DYBBaseViewController
+@interface WOSOrderDetailViewController : UIView
 
+@property (nonatomic,retain)NSDictionary *dictInfo;
+
+-(void)creatView:(NSDictionary *)dict;
 @end

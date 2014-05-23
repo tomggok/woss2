@@ -445,6 +445,14 @@ MagicUIButton *hiddenView;
 
 -(void)addCardView{
 
+    WOSPreferentialCardViewController *card = [[WOSPreferentialCardViewController alloc]init];
+    
+    [card setVc:_vc];
+    [self.drNavigationController pushViewController:card animated:YES];
+    
+    [card release];
+    return;
+    
     
     NSArray *vcimgArr = [self initSavePaper];
     [_containerView removeAllVCView];
@@ -661,46 +669,77 @@ MagicUIButton *hiddenView;
 
 //        return;
         
-        if (selectBtIndex == button.tag)
-        {
-            if (button.tag == 2 ) {
-                [threeview endMoveViewWithX:0];
-
-                return;
-            }else{
-                [threeview endMoveViewWithX:0];
-                return;
-
-            }
-        }
-        
-        [view changStatus:button.tag];
+//        if (selectBtIndex == button.tag)
+//        {
+//            if (button.tag == 2 ) {
+//                [threeview endMoveViewWithX:0];
+//
+//                return;
+//            }else{
+//                [threeview endMoveViewWithX:0];
+//                return;
+//
+//            }
+//        }
+//        
+//        [view changStatus:button.tag];
         
 
         selectBtIndex = button.tag;
         if (button.tag == 10) {
             //社区
-            [self addCardView];
+            
+            WOSPreferentialCardViewController *card = [[WOSPreferentialCardViewController alloc]init];
+            
+//            [card setVc:_vc];
+            [self.drNavigationController pushViewController:card animated:YES];
+            
+            [card release];
+            
+//            [self addCardView];
         }
         else if (button.tag == 11) {
             //订单管理
-            [self addBankView];
+            WOSOrderLostViewController *download = [[[WOSOrderLostViewController alloc] init] autorelease];
+            
+            [download setVc:_vc];
+            [self.drNavigationController pushViewController:download animated:YES];
+            
+//            [download release];
+
+            
+//            [self addBankView];
         }else if (button.tag == 12) {
             //地址管理
-            [self initNotesCon];
+//            [self initNotesCon];
+            WOSAddrViewController *myNotesVc = [[[WOSAddrViewController alloc] init] autorelease];
+            [myNotesVc setVc:_vc];
+            [self.drNavigationController pushViewController:myNotesVc animated:YES];
+            
+            [myNotesVc release];
+            
+
         }else if (button.tag==13){
             
-            [self addCardView];
-            //设置
-//            [self addSettingView];
+            WOSCollectViewController *card = [[WOSCollectViewController alloc]init];
+            [card setVc:_vc];
+            [self.drNavigationController pushViewController:card animated:YES];
+            [card release];
+
         }else if (button.tag == 14){
         
+            
+            DYBSettingViewController *settingVC = [[[DYBSettingViewController alloc] init] autorelease];
+            [settingVC setVc:_vc];
+            [self.drNavigationController pushViewController:settingVC animated:YES];
+            
+            [settingVC release];
             [self addSettingView];
         
         
         }
         // 收藏进
-        [threeview endMoveViewWithX:0];
+//        [threeview endMoveViewWithX:0];
     }else if ([signal is:[DYBBaseViewLeftView MAPBUTTON]]){
         [self addCheckinView];
         [threeview endMoveViewWithX:0];

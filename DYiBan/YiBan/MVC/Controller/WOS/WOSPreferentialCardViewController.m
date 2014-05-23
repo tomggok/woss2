@@ -34,6 +34,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    [self.view setBackgroundColor:[UIColor whiteColor]];
 	// Do any additional setup after loading the view.
 }
 -(void)handleViewSignal_MagicViewController:(MagicViewSignal *)signal{
@@ -46,8 +47,10 @@
         [self.headview setTitle:@"电子优惠券"];
         
         //         [self setButtonImage:self.rightButton setImage:@"btn_more_def"];
-        [self setButtonImage:self.leftButton setImage:@"back"];
-        
+        [self setButtonImage:self.leftButton setImage:@"返回键"];
+        [self.headview setBackgroundColor:[UIColor colorWithRed:40.0f/255 green:191.0f/255 blue:140.0f/255 alpha:1.0f]];
+        [self.view setBackgroundColor:ColorBG];
+
     }
     else if ([signal is:[MagicViewController CREATE_VIEWS]]) {
         

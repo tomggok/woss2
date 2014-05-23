@@ -43,24 +43,38 @@
     if ([signal is:[MagicViewController LAYOUT_VIEWS]])
     {
         [self.headview setTitle:@"收藏夹"];
-                [self setButtonImage:self.leftButton setImage:@"back"];
-        [self.headview setTitleColor:[UIColor colorWithRed:193.0f/255 green:193.0f/255 blue:193.0f/255 alpha:1.0f]];
-        
-        [self.view setBackgroundColor:ColorBG];
-         [self setButtonImage:self.rightButton setImage:@"account"];
+        [self setButtonImage:self.leftButton setImage:@"返回键"];
+//        [self.view setBackgroundColor:ColorBG];
+        [self.headview setBackgroundColor:[UIColor colorWithRed:40.0f/255 green:191.0f/255 blue:140.0f/255 alpha:1.0f]];
+        [self.view setBackgroundColor:[UIColor whiteColor]];
+
     }
     else if ([signal is:[MagicViewController CREATE_VIEWS]]) {
         
     
-        
         MagicRequest *request = [DYBHttpMethod wosKitchenInfo_favoriteList_userIndex:SHARED.userId page:@"0" count:@"3" sAlert:YES receive:self];
         [request setTag:3];
         
         tableView1 = [[MagicUITableView alloc]initWithFrame:CGRectMake(0.0f, 44 , 320,self.view.frame.size.height - 44)];
-        [tableView1 setBackgroundColor:ColorBG];
+        [tableView1 setBackgroundColor:[UIColor whiteColor]];
         [tableView1 setSeparatorColor:[UIColor clearColor]];
         [self.view addSubview:tableView1];
         RELEASE(tableView1);
+        
+//        UIImage *imageChuan1 = [UIImage imageNamed:@"返回键"];
+//        UIImageView *imageViewChuan1 = [[UIImageView alloc]initWithFrame:CGRectMake(100, 150,imageChuan1.size.width/2 , imageChuan1.size.height/2)];
+//        [self.view addSubview:imageViewChuan1];
+//        [imageViewChuan1 release];
+////        [imageViewChuan1 setBackgroundColor:[UIColor redColor]];
+//        
+//        
+//        UIImage *imageChuan = [UIImage imageNamed:@"add_care_def"];
+//        UIImageView *imageViewChuan = [[UIImageView alloc]initWithFrame:CGRectMake(103,  130,10 , 10)];
+//        [self.view addSubview:imageViewChuan];
+////        [imageViewChuan setBackgroundColor:[UIColor blackColor]];
+//        [imageViewChuan release];
+        
+
     }
     
     
@@ -93,7 +107,7 @@
         
         
         
-        [signal setReturnValue:[NSNumber numberWithInteger:100]];
+        [signal setReturnValue:[NSNumber numberWithInteger:145/2]];
     }
     else if ([signal is:[MagicUITableView TABLETITLEFORHEADERINSECTION]])//titleForHeaderInSection
     {
@@ -118,7 +132,7 @@
         WOSGoodFoodListCell *cell = [[WOSGoodFoodListCell alloc]initRow:[arrayResult objectAtIndex:indexPath.row]];
         cell.row = indexPath.row;
         
-        [cell setBackgroundColor:ColorBG];
+        [cell setBackgroundColor:[UIColor whiteColor]];
     
         [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
         [signal setReturnValue:cell];
@@ -168,6 +182,7 @@
     {
         [self.drNavigationController popViewControllerAnimated:YES];
     }else if ([signal is:[DYBBaseViewController NEXTSTEPBUTTON]]){
+        
     }
 }
 

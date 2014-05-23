@@ -501,5 +501,6 @@
 //address/del.do
 + (NSMutableDictionary *)wosFoodInfo_addressDel_userIndex :(NSString *)userIndex addrIndex :(NSString *)addrIndex ;
 
-
+//order/info.do
++ (NSMutableDictionary *)wosFoodInfo_orderinfo_userIndex :(NSString *)userIndex orderIndex  :(NSString *)orderIndex  ;
 @end
