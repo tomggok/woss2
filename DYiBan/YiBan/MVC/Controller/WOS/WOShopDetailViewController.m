@@ -29,6 +29,7 @@
     NSDictionary *dictResult;
     MagicUITableView *_tableView;
     NSMutableArray *arrayFoodList;
+    UIButton  *btnCollect ;
 }
 
 @end
@@ -81,14 +82,14 @@ DEF_SIGNAL(BTNTWO);
         arrayFoodList = [[NSMutableArray alloc]init];
         [self creatTopView];
         
-        _tableView = [[MagicUITableView alloc]initWithFrame:CGRectMake(0.0f, 166/2 + self.headHeight, 320.0f, self.view.frame.size.height -  166/2 + self.headHeight)];
-
-        [self.view addSubview:_tableView];
-        RELEASE(_tableView);
-        
-        
-        MagicRequest *request = [DYBHttpMethod wosKitchenInfo_kitchenIndex:[_dictInfo objectForKey:@"kitchenIndex"] userIndex:SHARED.userId hotFoodCount:@"1000" sAlert:YES receive:self];
-        [request setTag:3];
+//        _tableView = [[MagicUITableView alloc]initWithFrame:CGRectMake(0.0f, 166/2 + self.headHeight, 320.0f, self.view.frame.size.height -  166/2 + self.headHeight)];
+//
+//        [self.view addSubview:_tableView];
+//        RELEASE(_tableView);
+//        
+//        
+//        MagicRequest *request = [DYBHttpMethod wosKitchenInfo_kitchenIndex:[_dictInfo objectForKey:@"kitchenIndex"] userIndex:SHARED.userId hotFoodCount:@"1000" sAlert:YES receive:self];
+//        [request setTag:3];
         
         
       
@@ -133,29 +134,30 @@ DEF_SIGNAL(BTNTWO);
     
     
 
+    UIImage *imageC = [UIImage imageNamed:@"心描边"];
+   btnCollect = [[UIButton alloc]initWithFrame:CGRectMake(537/2, self.headHeight + 10, imageC.size.width/2, imageC.size.height/2)];
+    if ([[_dictInfo objectForKey:@"isFavorite"] boolValue]) {
+        [btnCollect setImage:[UIImage imageNamed:@"心填充"] forState:UIControlStateNormal];
+         [btnCollect setEnabled:NO];
+    }else{
     
-    UIImageView  *labelCellect = [[UIImageView alloc]initWithFrame:CGRectMake(537/2, self.headHeight + 10, 55/2, 55/2)];
-//    [labelCellect setText:@"500元人收藏"];
-    [labelCellect setImage:[UIImage imageNamed:@"心填充"]];
-    [self.view addSubview:labelCellect];
-    [labelQian setBackgroundColor:[UIColor yellowColor]];
-    RELEASE(labelCellect);
+        [btnCollect setImage:[UIImage imageNamed:@"心描边"] forState:UIControlStateNormal];
+       
+    }
     
-    UILabel *labelCellect1 = [[UILabel alloc]initWithFrame:CGRectMake(537/2 - 30, CGRectGetHeight(labelCellect.frame) +CGRectGetMinY(labelCellect.frame) + 10, 100.0f, 30)];
+    [btnCollect addTarget:self action:@selector(doColloct) forControlEvents:UIControlEventTouchUpInside];
+//    [btnCollect setBackgroundColor:[UIColor redColor]];
+    [self.view addSubview:btnCollect];
+    RELEASE(btnCollect);
+    
+    UILabel *labelCellect1 = [[UILabel alloc]initWithFrame:CGRectMake(537/2 - 30, CGRectGetHeight(btnCollect.frame) +CGRectGetMinY(btnCollect.frame) + 10, 100.0f, 30)];
     [labelCellect1 setText:@"500人收藏"];
     [self.view addSubview:labelCellect1];
-    [labelCellect setBackgroundColor:[UIColor clearColor]];
     RELEASE(labelCellect1);
 
 }
 
 
--(void)doCollent{
-
-    MagicRequest *request = [DYBHttpMethod wosKitchenInfo_favorite_userIndex:SHARED.userId kitchenIndex:[_dictInfo objectForKey:@"kitchenIndex"] sAlert:YES receive:self];
-    [request setTag:2];
-
-}
 
 -(void)doShare{
 
@@ -581,8 +583,6 @@ DEF_SIGNAL(BTNTWO);
     
         DLogInfo( @"fff");
     }
-
-
 }
 #pragma mark - back button signal
 - (void)handleViewSignal_DYBBaseViewController:(MagicViewSignal *)signal
@@ -682,7 +682,9 @@ static NSString *cellName = @"cellName";
                 BOOL result = [[dict objectForKey:@"result"] boolValue];
                 if (!result) {
                     
-                    _dictInfo = dict;
+//                    _dictInfo = dict;
+                    
+                    [btnCollect setEnabled:NO];
                    [DYBShareinstaceDelegate popViewText:@"收藏成功！" target:self hideTime:.5f isRelease:YES mode:MagicPOPALERTVIEWINDICATOR];
                     
                 }else{

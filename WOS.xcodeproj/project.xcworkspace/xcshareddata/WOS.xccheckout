@@ -5,36 +5,36 @@
 	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
 	<false/>
 	<key>IDESourceControlProjectIdentifier</key>
-	<string>2FE48C05-BE3B-4EB6-BF52-175A4C0E0ECB</string>
+	<string>547285AC-DDFC-4D7B-B172-F4786CC3AB82</string>
 	<key>IDESourceControlProjectName</key>
 	<string>WOS</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
-		<key>50D0D971-C9BE-4FA6-9B2B-B0CF5F30614B</key>
-		<string>https://github.com/tomggok/WOSS.git</string>
+		<key>108F57F6-3AF6-4933-A6F7-BB11A428CFE0</key>
+		<string>https://github.com/tomggok/woss2.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
 	<string>WOS.xcodeproj/project.xcworkspace</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
-		<key>50D0D971-C9BE-4FA6-9B2B-B0CF5F30614B</key>
+		<key>108F57F6-3AF6-4933-A6F7-BB11A428CFE0</key>
 		<string>../..</string>
 	</dict>
 	<key>IDESourceControlProjectURL</key>
-	<string>https://github.com/tomggok/WOSS.git</string>
+	<string>https://github.com/tomggok/woss2.git</string>
 	<key>IDESourceControlProjectVersion</key>
 	<integer>110</integer>
 	<key>IDESourceControlProjectWCCIdentifier</key>
-	<string>50D0D971-C9BE-4FA6-9B2B-B0CF5F30614B</string>
+	<string>108F57F6-3AF6-4933-A6F7-BB11A428CFE0</string>
 	<key>IDESourceControlProjectWCConfigurations</key>
 	<array>
 		<dict>
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
 			<string>public.vcs.git</string>
 			<key>IDESourceControlWCCIdentifierKey</key>
-			<string>50D0D971-C9BE-4FA6-9B2B-B0CF5F30614B</string>
+			<string>108F57F6-3AF6-4933-A6F7-BB11A428CFE0</string>
 			<key>IDESourceControlWCCName</key>
-			<string>WOSS</string>
+			<string>woss2</string>
 		</dict>
 	</array>
 </dict>

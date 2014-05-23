@@ -21,7 +21,6 @@
 		285EC6FC192DF57300C6277F /* WOSPayTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 285EC6FB192DF57300C6277F /* WOSPayTableViewCell.m */; };
 		28B80BD1191619DF007EF5C5 /* 加入订单.png in Resources */ = {isa = PBXBuildFile; fileRef = 28B80B0D191619DF007EF5C5 /* 加入订单.png */; };
 		28B80BD2191619DF007EF5C5 /* 心填充.png in Resources */ = {isa = PBXBuildFile; fileRef = 28B80B0E191619DF007EF5C5 /* 心填充.png */; };
-		28B80BD3191619DF007EF5C5 /* 心描边.png in Resources */ = {isa = PBXBuildFile; fileRef = 28B80B0F191619DF007EF5C5 /* 心描边.png */; };
 		28B80BD4191619DF007EF5C5 /* 腰线.png in Resources */ = {isa = PBXBuildFile; fileRef = 28B80B10191619DF007EF5C5 /* 腰线.png */; };
 		28B80BD5191619DF007EF5C5 /* 菜品.png in Resources */ = {isa = PBXBuildFile; fileRef = 28B80B11191619DF007EF5C5 /* 菜品.png */; };
 		28B80BD6191619DF007EF5C5 /* 菜品图片大小.png in Resources */ = {isa = PBXBuildFile; fileRef = 28B80B12191619DF007EF5C5 /* 菜品图片大小.png */; };
@@ -1485,7 +1484,6 @@
 		285EC6FB192DF57300C6277F /* WOSPayTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WOSPayTableViewCell.m; sourceTree = "<group>"; };
 		28B80B0D191619DF007EF5C5 /* 加入订单.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "加入订单.png"; sourceTree = "<group>"; };
 		28B80B0E191619DF007EF5C5 /* 心填充.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "心填充.png"; sourceTree = "<group>"; };
-		28B80B0F191619DF007EF5C5 /* 心描边.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "心描边.png"; sourceTree = "<group>"; };
 		28B80B10191619DF007EF5C5 /* 腰线.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "腰线.png"; sourceTree = "<group>"; };
 		28B80B11191619DF007EF5C5 /* 菜品.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "菜品.png"; sourceTree = "<group>"; };
 		28B80B12191619DF007EF5C5 /* 菜品图片大小.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "菜品图片大小.png"; sourceTree = "<group>"; };
@@ -3560,7 +3558,6 @@
 			children = (
 				28B80B0D191619DF007EF5C5 /* 加入订单.png */,
 				28B80B0E191619DF007EF5C5 /* 心填充.png */,
-				28B80B0F191619DF007EF5C5 /* 心描边.png */,
 				28B80B10191619DF007EF5C5 /* 腰线.png */,
 				28B80B11191619DF007EF5C5 /* 菜品.png */,
 				28B80B12191619DF007EF5C5 /* 菜品图片大小.png */,
@@ -6941,7 +6938,6 @@
 				B594A058183E0573007904F6 /* icon_tm.png in Resources */,
 				B594A059183E0573007904F6 /* icon_video.png in Resources */,
 				B594A05A183E0573007904F6 /* slide_more.png in Resources */,
-				28B80BD3191619DF007EF5C5 /* 心描边.png in Resources */,
 				28B80C49191619DF007EF5C5 /* 绿分割线.png in Resources */,
 				B594A05B183E0573007904F6 /* tab_files_def.png in Resources */,
 				B594A05C183E0573007904F6 /* tab_files_high.png in Resources */,
