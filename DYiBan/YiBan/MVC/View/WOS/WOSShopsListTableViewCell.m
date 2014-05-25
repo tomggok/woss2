@@ -34,7 +34,9 @@
 -(void)creatCell:(NSDictionary *)dict{
 
     UIImageView *imageViewIcon = [[UIImageView alloc]initWithFrame:CGRectMake(10.0f, 10.0f, 30.0f, 30.0f)];
-    [imageViewIcon setBackgroundColor:[UIColor redColor]];
+      NSURL *url = [NSURL URLWithString:[DYBShareinstaceDelegate addIPImage:[dict objectForKey:@"imgUrl"] ]];
+    [imageViewIcon setImageWithURL:url];
+//    [imageViewIcon setBackgroundColor:[UIColor redColor]];
     [self addSubview:imageViewIcon];
     RELEASE(imageViewIcon);
     
@@ -47,8 +49,8 @@
     
     UIImageView *imageViewIndexHui = [[UIImageView alloc]initWithFrame:CGRectMake(CGRectGetMinX(labelName.frame)+ CGRectGetWidth(labelName.frame),  10, 20.0f, 20.0f)];
     [imageViewIndexHui setBackgroundColor:[UIColor redColor]];
-      NSURL *url = [NSURL URLWithString:[DYBShareinstaceDelegate addIPImage:[dict objectForKey:@"imgUrl"]]];
-    [imageViewIndexHui setImageWithURL:url];
+//      NSURL *url = [NSURL URLWithString:[DYBShareinstaceDelegate addIPImage:[dict objectForKey:@"imgUrl"]]];
+//    [imageViewIndexHui setImageWithURL:url];
     [self addSubview:imageViewIndexHui];
     RELEASE(imageViewIndexHui);
     
@@ -63,8 +65,13 @@
     
     
     UILabel *labelNameDistance = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetMinX(imageViewIcon.frame) + 10, 10.0f + CGRectGetMinY(start.frame), 150.0f, 20.0f)];
+    double lat = 100;
+    double lon = 34;
+    NSString *gps = [dict objectForKey:@"gps"];
+    NSArray *arrayGPS = [gps componentsSeparatedByString:@","];
+    double tt = [DYBShareinstaceDelegate getDsitance_lat_a:lat lng_a:lon lat_b:[[arrayGPS objectAtIndex:0] doubleValue] lng_b:[[arrayGPS objectAtIndex:1] doubleValue]];
     
-    [labelNameDistance setText:@"距离我120M"];
+    [labelNameDistance setText:[NSString stringWithFormat:@"距离我%@",[self getDistance:tt] ]];
     [self addSubview:labelNameDistance];
     RELEASE(labelNameDistance);
     
@@ -75,6 +82,19 @@
     [self addSubview:labelFree];
     RELEASE(labelFree);
     
+}
+
+-(NSString *)getDistance:(double)distance{
+
+    double distance1 = 0;
+    if (distance > 1000) {
+        distance1 = distance/1000;
+        return [NSString stringWithFormat:@"%.2fKM",distance1];
+    }else{
+    
+        return [NSString stringWithFormat:@"%.2f",distance];
+    }
+
 }
 
 @end

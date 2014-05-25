@@ -79,4 +79,7 @@
 //设置共享类型
 +(NSString *)getPermType:(int)type;
 +(NSString *)addIPImage:(NSString *)string;
+
++(double)getDsitance_lat_a:(double)x1 lng_a:(double)y1 lat_b:(double)x2 lng_b:(double)y2;
+
 @end

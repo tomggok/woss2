@@ -42,7 +42,7 @@
     [btnHidden addTarget:self action:@selector(doHidden) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:btnHidden];
     RELEASEOBJ(btnHidden);
-
+    
     
     UIView *view = [[UIView alloc]initWithFrame:CGRectMake(0.0F, 305/2, 320.0F, self.frame.size.height - 305/2)];
     [view setBackgroundColor:[UIColor whiteColor]];

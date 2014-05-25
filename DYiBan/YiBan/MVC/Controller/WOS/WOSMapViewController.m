@@ -55,11 +55,10 @@
     {
         [self.headview setTitle:@"地图"];
         
-    
-        [self.headview setTitleColor:[UIColor colorWithRed:203.0f/255 green:203.0f/255 blue:203.0f/255 alpha:1.0f]];
-        
-        [self.view setBackgroundColor:[UIColor whiteColor]];
-        [self setButtonImage:self.leftButton setImage:@"back"];
+        [self.headview setTitleColor:[UIColor whiteColor]];
+        [self setButtonImage:self.leftButton setImage:@"返回键"];
+        [self.view setBackgroundColor:[UIColor colorWithRed:244.0f/255 green:234.0f/255 blue:220.0f/255 alpha:1.0f]];
+        [self.headview setBackgroundColor:[UIColor colorWithRed:40.0f/255 green:191.0f/255 blue:140.0f/255 alpha:1.0f]];
     }
     else if ([signal is:[MagicViewController CREATE_VIEWS]]) {
         

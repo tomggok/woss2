@@ -523,4 +523,38 @@ static DYBShareinstaceDelegate *sharedInstace = nil;
 
 }
 
++(double)getDsitance_lat_a:(double)x1 lng_a:(double)y1 lat_b:(double)x2 lng_b:(double)y2{
+
+   
+    
+    
+    double radLat1 = (x1 * 3.1416 / 180.0);
+    double radLat2 = (x2 * 3.1416 / 180.0);
+    double a = radLat1 - radLat2;
+    double b = (y1 - y2) * 3.1416 / 180.0;
+    double s = 2 * asin(sqrt(pow(sin(a / 2), 2)
+                             + cos(radLat1) * cos(radLat2)
+                             * pow(sin(b / 2), 2)));
+    s = s * 6378137.0;
+    s = round(s * 10000) / 10000;
+    return s;
+    
+    
+//        double pk = (double) (180 / 3.14169);
+//        
+//        double a1 = lat_a / pk;
+//        double a2 = lng_a / pk;
+//        double b1 = lat_b / pk;
+//        double b2 = lng_b / pk;
+//        
+//        double t1 = Math.cos(a1) * Math.cos(a2) * Math.cos(b1) * Math.cos(b2);
+//        double t2 = Math.cos(a1) * Math.sin(a2) * Math.cos(b1) * Math.sin(b2);
+//        double t3 = Math.sin(a1) * Math.sin(b1);
+//        double tt = Math.acos(t1 + t2 + t3);
+//        
+//        return 6366000 * tt;
+   
+
+}
+
 @end

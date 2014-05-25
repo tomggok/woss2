@@ -95,6 +95,7 @@ DEF_SIGNAL(TOUCHBUTTON)
         
 //        arrayShopList = [[NSMutableArray alloc]init];
         
+        
         MagicRequest *request = [DYBHttpMethod wosKitchenInfo_activityList_count:@"4" sAlert:YES receive:self];
         [request setTag:3];
         
@@ -111,10 +112,7 @@ DEF_SIGNAL(TOUCHBUTTON)
         [self.rightButton setHidden:YES];
         
         
-       tabelViewList = [[MagicUITableView alloc]initWithFrame:CGRectMake(0.0f, self.headHeight + 120, 320.0f, self.view.frame.size.height - self.headHeight)];
-        
-        [self.view addSubview:tabelViewList];
-        RELEASE(tabelViewList)
+      
         
         
 //        [self.view setBackgroundColor:[UIColor clearColor]];
@@ -404,7 +402,16 @@ static NSString *cellName = @"cellName";//
 
 -(void)creatBowwon2{
 
-    UIView *viewBar = [[UIView alloc]initWithFrame:CGRectMake(0.0f, self.view.frame.size.height - 20 -40 - 40, 320.0f, 40.0f)];
+    
+    float version = [[UIDevice currentDevice].systemVersion floatValue];
+    int offset1 = 0;
+    if (version < 7.0) {
+        offset1 = 20;
+    }
+    
+
+    
+    UIView *viewBar = [[UIView alloc]initWithFrame:CGRectMake(0.0f, self.view.frame.size.height - offset1 -40 - 40, 320.0f, 40.0f)];
     [viewBar setTag:10001];
     [viewBar setBackgroundColor:[UIColor grayColor]];
     [self.view addSubview:viewBar];
@@ -509,8 +516,14 @@ static NSString *cellName = @"cellName";//
 
 -(void)creatBowwonView{
 
+    float version = [[UIDevice currentDevice].systemVersion floatValue];
+    int offset1 = 0;
+    if (version < 7.0) {
+        offset1 = 20;
+    }
+    
 
-    UIView *viewBowwonView = [[UIView alloc]initWithFrame:CGRectMake(0.0f, self.view.frame.size.height - 40 - 20, 320.0f, 40)];
+    UIView *viewBowwonView = [[UIView alloc]initWithFrame:CGRectMake(0.0f, self.view.frame.size.height - 40 - offset1, 320.0f, 40)];
     [viewBowwonView setTag:100101];
     [viewBowwonView setBackgroundColor:[UIColor redColor]];
     [self.view addSubview:viewBowwonView];
@@ -765,7 +778,12 @@ static NSString *cellName = @"cellName";//
                 if (!result) {
                     
                     arrayShopList = [[NSMutableArray alloc]initWithArray: [dict objectForKey:@"kitchenList"]];
-                    [tabelViewList reloadData];
+//                    [tabelViewList reloadData];
+                    tabelViewList = [[MagicUITableView alloc]initWithFrame:CGRectMake(0.0f, self.headHeight + 120, 320.0f, self.view.frame.size.height - self.headHeight-200)];
+                    
+                    [self.view addSubview:tabelViewList];
+                    RELEASE(tabelViewList)
+
                 }else{
                     NSString *strMSG = [dict objectForKey:@"message"];
                     

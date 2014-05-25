@@ -77,19 +77,18 @@ DEF_SIGNAL(BTNTWO);
     }
     else if ([signal is:[MagicViewController CREATE_VIEWS]]) {
         
-        [self.rightButton setHidden:YES];
+        [self.rightButton setHiddenYES];
         
         arrayFoodList = [[NSMutableArray alloc]init];
-        [self creatTopView];
+//        [self creatTopView];
         
-//        _tableView = [[MagicUITableView alloc]initWithFrame:CGRectMake(0.0f, 166/2 + self.headHeight, 320.0f, self.view.frame.size.height -  166/2 + self.headHeight)];
-//
-//        [self.view addSubview:_tableView];
-//        RELEASE(_tableView);
-//        
-//        
-//        MagicRequest *request = [DYBHttpMethod wosKitchenInfo_kitchenIndex:[_dictInfo objectForKey:@"kitchenIndex"] userIndex:SHARED.userId hotFoodCount:@"1000" sAlert:YES receive:self];
-//        [request setTag:3];
+        _tableView = [[MagicUITableView alloc]initWithFrame:CGRectMake(0.0f, 166/2 + self.headHeight, 320.0f, self.view.frame.size.height -  166/2 + self.headHeight)];
+
+        [self.view addSubview:_tableView];
+        RELEASE(_tableView);
+
+        MagicRequest *request = [DYBHttpMethod wosKitchenInfo_kitchenIndex:[_dictInfo objectForKey:@"kitchenIndex"] userIndex:SHARED.userId hotFoodCount:@"1000" sAlert:YES receive:self];
+        [request setTag:3];
         
         
       
@@ -111,7 +110,7 @@ DEF_SIGNAL(BTNTWO);
 }
 
 
--(void)creatTopView{
+-(void)creatTopView:(NSDictionary *)dict{
 
     UILabel *labelBanner = [[UILabel alloc]initWithFrame:CGRectMake(10.0f, self.headHeight, 300.0f, 116/2)];
     [labelBanner setText:@"testtttttt"];
@@ -127,7 +126,7 @@ DEF_SIGNAL(BTNTWO);
     
     
     UILabel *labelQian = [[UILabel alloc]initWithFrame:CGRectMake(100.0f, self.headHeight + 116/2 , 100.0f, 30)];
-    [labelQian setText:@"50元起送"];
+    [labelQian setText:[NSString stringWithFormat:@"%@元起送",[dict objectForKey:@"deliverFee"]]];
     [self.view addSubview:labelQian];
     [labelQian setBackgroundColor:[UIColor clearColor]];
     RELEASE(labelQian);
@@ -136,7 +135,7 @@ DEF_SIGNAL(BTNTWO);
 
     UIImage *imageC = [UIImage imageNamed:@"心描边"];
    btnCollect = [[UIButton alloc]initWithFrame:CGRectMake(537/2, self.headHeight + 10, imageC.size.width/2, imageC.size.height/2)];
-    if ([[_dictInfo objectForKey:@"isFavorite"] boolValue]) {
+    if ([[dict objectForKey:@"isFavorite"] boolValue]) {
         [btnCollect setImage:[UIImage imageNamed:@"心填充"] forState:UIControlStateNormal];
          [btnCollect setEnabled:NO];
     }else{
@@ -151,10 +150,16 @@ DEF_SIGNAL(BTNTWO);
     RELEASE(btnCollect);
     
     UILabel *labelCellect1 = [[UILabel alloc]initWithFrame:CGRectMake(537/2 - 30, CGRectGetHeight(btnCollect.frame) +CGRectGetMinY(btnCollect.frame) + 10, 100.0f, 30)];
-    [labelCellect1 setText:@"500人收藏"];
+    [labelCellect1 setText:[NSString stringWithFormat:@"%@收藏",[dict objectForKey:@"favorTimes"] ]];
     [self.view addSubview:labelCellect1];
     RELEASE(labelCellect1);
 
+    UILabel *labelTime = [[UILabel alloc]initWithFrame:CGRectMake(200.0f, CGRectGetMinY(labelCellect1.frame) + CGRectGetHeight(labelCellect1.frame) - 15, 120.0f, 30.0f)];
+    [labelTime setText:[NSString stringWithFormat:@"%@ -- %@",[dict objectForKey:@"businessTimeBegin"],[dict objectForKey:@"businessTimeEnd"]]];
+    [labelTime setFont:[UIFont systemFontOfSize:14]];
+    [self.view addSubview:labelTime];
+    RELEASE(labelTime);
+    
 }
 
 
@@ -685,6 +690,7 @@ static NSString *cellName = @"cellName";
 //                    _dictInfo = dict;
                     
                     [btnCollect setEnabled:NO];
+                    [btnCollect setImage:[UIImage imageNamed:@"心填充"] forState:UIControlStateNormal];
                    [DYBShareinstaceDelegate popViewText:@"收藏成功！" target:self hideTime:.5f isRelease:YES mode:MagicPOPALERTVIEWINDICATOR];
                     
                 }else{
@@ -708,6 +714,7 @@ static NSString *cellName = @"cellName";
                     
                     arrayFoodList = [dictResult objectForKey:@"hotFoodList"];
                     [_tableView reloadData];
+                    [self creatTopView:dictResult];
 //                     [self creatView:dict];
 //                    UIButton *btn = (UIButton *)[UIButton buttonWithType:UIButtonTypeCustom];
 //                    [btn setTag:10];

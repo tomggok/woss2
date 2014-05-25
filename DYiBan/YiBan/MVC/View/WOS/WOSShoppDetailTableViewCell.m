@@ -33,15 +33,15 @@
 -(void)creatCell:(NSDictionary *)dict{
 
     UILabel *labelName = [[UILabel alloc]initWithFrame:CGRectMake(10.0f, 10.f, 100, 20)];
-    [labelName setText:@"功底"];
+    [labelName setText:[dict objectForKey:@"foodName"]];
     [labelName setBackgroundColor:[UIColor clearColor]];
     [self.contentView addSubview:labelName];
     RELEASE(labelName);
     
-    
-    WOSStarView *star = [[WOSStarView alloc]initWithFrame:CGRectMake(250/2, 10.0f, 100.0f, 20.0f) num:0];
-    [self.contentView addSubview:star];
-    [star release];
+//    NSString *string = [dict objectForKey:@""];
+//    WOSStarView *star = [[WOSStarView alloc]initWithFrame:CGRectMake(250/2, 10.0f, 100.0f, 20.0f) num:[]];
+//    [self.contentView addSubview:star];
+//    [star release];
     
     UILabel *labelPrice = [[UILabel alloc]initWithFrame:CGRectMake(420/2, 10.0f, 50.0, 20.0f)];
     [labelPrice setText:[NSString stringWithFormat:@"%@",[dict objectForKey:@"foodPrice"]]];
