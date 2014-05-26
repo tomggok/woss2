@@ -654,7 +654,7 @@ static NSString *cellName = @"cellName";
         
         WOSFoodDetailViewController *foodDetail = [[WOSFoodDetailViewController alloc]init];
         [foodDetail setDictInfo:[[arrayFoodList objectAtIndex:indexPath.row] objectForKey:@"foodIndex"]];
-        foodDetail.dictShop = [arrayFoodList objectAtIndex:indexPath.row];
+        foodDetail.dictShop = dictResult;
         [self.drNavigationController pushViewController:foodDetail animated:YES];
         RELEASE(foodDetail);
         

@@ -78,102 +78,104 @@
         
         [self getData];
         
-        UITableView *_tableView = [[UITableView alloc]initWithFrame:CGRectMake(0.0f, self.headHeight + 50.0f, 320.0f, 200)];
+        UITableView *_tableView = [[UITableView alloc]initWithFrame:CGRectMake(0.0f, self.headHeight + 50.0f, 320.0f, 100)];
         [_tableView setDataSource:self];
         [_tableView setDelegate:self];
         [_tableView setTag:101];
         [self.view addSubview:_tableView];
-        RELEASEOBJ(_tableView);
+//        RELEASEOBJ(_tableView);
         
         
-//        UILabel *labelSave = [[UILabel alloc]initWithFrame:CGRectMake(10.0f, CGRectGetHeight(_tableView.frame) + CGRectGetMinY(_tableView.frame) + 5,320, 30.0f)];
-//        [labelSave setBackgroundColor:[UIColor clearColor]];
-//        [labelSave setText:@"优惠"];
-//        [self.view addSubview:labelSave];
+        UILabel *labelSave = [[UILabel alloc]initWithFrame:CGRectMake(20.0f, CGRectGetHeight(_tableView.frame) + CGRectGetMinY(_tableView.frame) + 5,60, 30.0f)];
+        [labelSave setBackgroundColor:[UIColor clearColor]];
+        [labelSave setText:@"优惠"];
+        [self.view addSubview:labelSave];
 //        RELEASEOBJ(labelSave);
-//        
-//        
-//        UILabel *labelTotal1 = [[UILabel alloc]initWithFrame:CGRectMake(270.0f, CGRectGetHeight(_tableView.frame) + CGRectGetMinY(_tableView.frame) + 5, 50.0, 30.0f)];
-//        [labelTotal1 setBackgroundColor:[UIColor clearColor]];
-//        [labelTotal1 setText:@"128"];
-//        [self.view addSubview:labelTotal1];
+        
+        
+        UILabel *labelTotal1 = [[UILabel alloc]initWithFrame:CGRectMake(270.0f, CGRectGetHeight(_tableView.frame) + CGRectGetMinY(_tableView.frame) + 5, 50.0, 30.0f)];
+        [labelTotal1 setBackgroundColor:[UIColor clearColor]];
+        [labelTotal1 setText:@"128"];
+        [self.view addSubview:labelTotal1];
 //        RELEASEOBJ(labelTotal1);
-//        
-//        
-//        
-//        UILabel *labelSaveNum = [[UILabel alloc]initWithFrame:CGRectMake(10.0f,CGRectGetHeight(labelTotal1.frame) + CGRectGetMinY(labelTotal1.frame) + 5, 250.0, 30.0f)];
-//        [labelSaveNum setBackgroundColor:[UIColor clearColor]];
-//        [labelSaveNum setText:@"10"];
-//        [self.view addSubview:labelSaveNum];
+        
+        
+        
+        UILabel *labelSaveNum = [[UILabel alloc]initWithFrame:CGRectMake(250.0f,CGRectGetHeight(labelTotal1.frame) + CGRectGetMinY(labelTotal1.frame) + 5, 250.0, 30.0f)];
+        [labelSaveNum setBackgroundColor:[UIColor clearColor]];
+        [labelSaveNum setText:@"10"];
+        [self.view addSubview:labelSaveNum];
 //        RELEASEOBJ(labelSaveNum);
-//        
-//        
-//        UILabel *labelSave2 = [[UILabel alloc]initWithFrame:CGRectMake(10.0f, CGRectGetHeight(labelSaveNum.frame) + CGRectGetMinY(labelSaveNum.frame) + 5, 250.0, 30.0f)];
-//        [labelSave2 setBackgroundColor:[UIColor clearColor]];
-//        [labelSave2 setText:@"总计"];
-//        [self.view addSubview:labelSave2];
+        
+        
+        UILabel *labelSave2 = [[UILabel alloc]initWithFrame:CGRectMake(10.0f, CGRectGetHeight(labelSaveNum.frame) + CGRectGetMinY(labelSaveNum.frame) + 5, 250.0, 30.0f)];
+        [labelSave2 setBackgroundColor:[UIColor clearColor]];
+        [labelSave2 setText:@"总计"];
+        [self.view addSubview:labelSave2];
 //        RELEASEOBJ(labelSave2);
-//        
-//        
-//        UILabel *labelName2 = [[UILabel alloc]initWithFrame:CGRectMake(270.0f, CGRectGetHeight(labelSaveNum.frame) + CGRectGetMinY(labelSaveNum.frame) + 5, 250.0, 30.0f)];
-//        [labelName2 setBackgroundColor:[UIColor clearColor]];
-//        [labelName2 setText:@"110"];
-//        
-//        [labelName2 setTextColor:[UIColor colorWithRed:97.0f/255 green:97.0f/255 blue:97.0f/255 alpha:1.0]];
-//        [self.view addSubview:labelName2];
+        
+        
+        UILabel *labelName2 = [[UILabel alloc]initWithFrame:CGRectMake(270.0f, CGRectGetHeight(labelSaveNum.frame) + CGRectGetMinY(labelSaveNum.frame) + 5, 250.0, 30.0f)];
+        [labelName2 setBackgroundColor:[UIColor clearColor]];
+        [labelName2 setText:@"110"];
+        
+        [labelName2 setTextColor:[UIColor colorWithRed:97.0f/255 green:97.0f/255 blue:97.0f/255 alpha:1.0]];
+        [self.view addSubview:labelName2];
 //        RELEASEOBJ(labelName2);
-//
-//        UILabel *labelUserFree = [[UILabel alloc]initWithFrame:CGRectMake(10.0f, CGRectGetHeight(labelName2.frame) + CGRectGetMinY(labelName2.frame) + 5, 250.0, 30.0f)];
-//        [labelUserFree setBackgroundColor:[UIColor clearColor]];
-//        [labelUserFree setText:@"使用优惠券"];
-// 
-//        [self.view addSubview:labelUserFree];
+
+        UILabel *labelUserFree = [[UILabel alloc]initWithFrame:CGRectMake(10.0f, CGRectGetHeight(labelName2.frame) + CGRectGetMinY(labelName2.frame) + 5, 250.0, 30.0f)];
+        [labelUserFree setBackgroundColor:[UIColor clearColor]];
+        [labelUserFree setText:@"使用优惠券"];
+ 
+        [self.view addSubview:labelUserFree];
 //        RELEASEOBJ(labelUserFree);
-//        
-//        UISwitch *switchFree = [[UISwitch alloc]initWithFrame:CGRectMake(270.0f, CGRectGetHeight(labelName2.frame) + CGRectGetMinY(labelName2.frame) + 5, 50.0f, 30.0f)];
-//        [switchFree addTarget:self action:@selector(doSwith:) forControlEvents:UIControlEventTouchUpInside];
-//        [self.view addSubview:switchFree];
+        
+        UISwitch *switchFree = [[UISwitch alloc]initWithFrame:CGRectMake(270.0f, CGRectGetHeight(labelName2.frame) + CGRectGetMinY(labelName2.frame) + 5, 50.0f, 30.0f)];
+        [switchFree addTarget:self action:@selector(doSwith:) forControlEvents:UIControlEventTouchUpInside];
+        [self.view addSubview:switchFree];
 //        RELEASEOBJ(switchFree);
-//        
-//        
-//        
-//        
-//        UITableView *_tableView1 = [[UITableView alloc]initWithFrame:CGRectMake(0.0f, CGRectGetHeight(switchFree.frame) + CGRectGetMinY(switchFree.frame) + 5, 320.0f, 60)];
-//        [_tableView1 setDataSource:self];
-//        [_tableView1 setDelegate:self];
-//        [_tableView1 setTag:102];
-////        [self.view addSubview:_tableView1];
-////        RELEASEOBJ(_tableView1);
-//        
-//        
-//        
-//        UILabel *labelAddr = [[UILabel alloc]initWithFrame:CGRectMake(10.0f, CGRectGetHeight(labelName2.frame) + CGRectGetMinY(labelName2.frame) + 5, 50.0, 30.0f)];
-//        [labelAddr setBackgroundColor:[UIColor clearColor]];
-//        [labelAddr setText:@"地址"];
-//        
-//        [self.view addSubview:labelAddr];
+        
+        
+        
+        
+        UITableView *_tableView1 = [[UITableView alloc]initWithFrame:CGRectMake(0.0f, CGRectGetHeight(switchFree.frame) + CGRectGetMinY(switchFree.frame) + 5, 320.0f, 60)];
+        [_tableView1 setDataSource:self];
+        [_tableView1 setDelegate:self];
+        [_tableView1 setTag:102];
+//        [self.view addSubview:_tableView1];
+//        RELEASEOBJ(_tableView1);
+        
+        
+        
+        UILabel *labelAddr = [[UILabel alloc]initWithFrame:CGRectMake(10.0f, CGRectGetHeight(labelName2.frame) + CGRectGetMinY(labelName2.frame) + 5, 50.0, 30.0f)];
+        [labelAddr setBackgroundColor:[UIColor clearColor]];
+        [labelAddr setText:@"地址"];
+        
+        [self.view addSubview:labelAddr];
 //        RELEASEOBJ(labelAddr);
-//        
-//        UITextView *textView = [[UITextView alloc]initWithFrame:CGRectMake(40.0f, CGRectGetHeight(labelName2.frame) + CGRectGetMinY(labelName2.frame) + 5, 300.0f, 100.0f)];
-//        [textView setBackgroundColor:[UIColor grayColor]];
-//        
-////        [self.view addSubview:textView];
-////        RELEASEOBJ(textView);
-//        
-//        
-//        UIButton *btnEnter = [[UIButton alloc]initWithFrame:CGRectMake(10.0f, CGRectGetHeight(labelName2.frame) + CGRectGetMinY(labelName2.frame) + 5 + 40, 40.0f, 40.0f)];
-//        [btnEnter setBackgroundColor:[UIColor redColor]];
-//        [btnEnter addTarget:self action:@selector(doEnterAddr) forControlEvents:UIControlEventTouchUpInside];
+        
+        UITextView *textView = [[UITextView alloc]initWithFrame:CGRectMake(40.0f, CGRectGetHeight(labelName2.frame) + CGRectGetMinY(labelName2.frame) + 5, 300.0f, 100.0f)];
+        [textView setBackgroundColor:[UIColor grayColor]];
+        
+//        [self.view addSubview:textView];
+//        RELEASEOBJ(textView);
+        
+        
+        UIButton *btnEnter = [[UIButton alloc]initWithFrame:CGRectMake(10.0f, CGRectGetHeight(labelName2.frame) + CGRectGetMinY(labelName2.frame) + 5 + 40, 40.0f, 40.0f)];
+        [btnEnter setBackgroundColor:[UIColor redColor]];
+        [btnEnter addTarget:self action:@selector(doEnterAddr) forControlEvents:UIControlEventTouchUpInside];
 //        [self.view addSubview:btnEnter];
 //        RELEASEOBJ(btnEnter);
-//        
-//        
-//        UIButton *btnMakeSuerOrder = [[UIButton alloc]initWithFrame:CGRectMake(10.0f, CGRectGetHeight(textView.frame) + CGRectGetMinY(textView.frame) + 5 + 40, 40.0f, 40.0f)];
+//
+//
+        UIImage *i = [UIImage imageNamed:@"组 5.png"];
+        UIButton *btnMakeSuerOrder = [[UIButton alloc]initWithFrame:CGRectMake((320 - i.size.width/2)/2, self.view.frame.size.height - 100, i.size.width/2, i.size.height/2)];
 //        [btnMakeSuerOrder setBackgroundColor:[UIColor redColor]];
-//        [btnEnter addTarget:self action:@selector(dobtnMakeSuerOrder) forControlEvents:UIControlEventTouchUpInside];
+        [btnMakeSuerOrder addTarget:self action:@selector(dobtnMakeSuerOrder) forControlEvents:UIControlEventTouchUpInside];
+        [btnMakeSuerOrder setImage:i forState:UIControlStateNormal];
 //        [btnEnter setTitle:@"提交订单" forState:UIControlStateNormal];
-//        [self.view addSubview:btnMakeSuerOrder];
-//        RELEASEOBJ(btnMakeSuerOrder);
+        [self.view addSubview:btnMakeSuerOrder];
+        RELEASEOBJ(btnMakeSuerOrder);
         
         
 
@@ -207,6 +209,11 @@
     
 }
 
+-(void)dobtnMakeSuerOrder{
+
+
+
+}
 
 -(void)doSwith:(id)sender{
 
