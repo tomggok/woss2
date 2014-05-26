@@ -201,7 +201,7 @@ DEF_SIGNAL(TOUCHBUTTON)
 //        
 //        [scrollView setContentSize:CGSizeMake(320.0f, CGRectGetHeight(btnPeople.frame) + CGRectGetMinY(btnPeople.frame) + 20 )];
         
-        [self creatTopBatView];
+       
         
         [self creatBowwon2];
         [self creatBowwonView];
@@ -347,20 +347,34 @@ static NSString *cellName = @"cellName";//
 
 
 -(void)creatTopBatView{
-    UIView *viewBar = [[UIView alloc]initWithFrame:CGRectMake(0.0f, self.headHeight, 320.0f, 40.0f)];
-    [viewBar setTag:1000];
-    [viewBar setBackgroundColor:[UIColor redColor]];
-    [self.view addSubview:viewBar];
     
-    float offset = 320/3;
-    for (int i = 0; i < 3; i++) {
+    UIView *viewB = [self.view viewWithTag:1000];
+    
+    if (!viewB) {
         
-        UIButton *btnTouch = [[UIButton alloc]initWithFrame:CGRectMake(i * offset, 0.0f, offset, 40)];
-        [btnTouch setTag:i + 10];
-        [btnTouch setTitle:[self getTitle:i] forState:UIControlStateNormal];
-        [btnTouch addTarget:self action:@selector(doSelect:) forControlEvents:UIControlEventTouchUpInside];
-        [viewBar addSubview:btnTouch];
-        RELEASE(btnTouch);
+        UIView *viewBar = [[UIView alloc]initWithFrame:CGRectMake(0.0f, self.headHeight, 320.0f, 40.0f)];
+        [viewBar setTag:1000];
+        [viewBar setBackgroundColor:[UIColor redColor]];
+        [self.view addSubview:viewBar];
+        
+        float offset = 320/3;
+        for (int i = 0; i < 3; i++) {
+            
+            UIButton *btnTouch = [[UIButton alloc]initWithFrame:CGRectMake(i * offset, 0.0f, offset, 40)];
+            [btnTouch setTag:i + 10];
+            [btnTouch setTitle:[self getTitle:i] forState:UIControlStateNormal];
+            [btnTouch addTarget:self action:@selector(doSelect:) forControlEvents:UIControlEventTouchUpInside];
+            [viewBar addSubview:btnTouch];
+            RELEASE(btnTouch);
+        }
+
+    }else if (viewB.hidden){
+    
+        [viewB setHidden:NO];
+    
+    }else{
+    
+        [viewB setHidden:YES];
     }
     
 
@@ -748,6 +762,11 @@ static NSString *cellName = @"cellName";//
 {
     if ([signal is:[DYBBaseViewController BACKBUTTON]])
     {
+        
+        NSLog(@"oo");
+        
+         [self creatTopBatView];
+        
 //        DYBUITabbarViewController *dync = [DYBUITabbarViewController sharedInstace];
 //        [dync scrollMainView:1];
     }else if ([signal is:[DYBBaseViewController NEXTSTEPBUTTON]]){
@@ -782,6 +801,7 @@ static NSString *cellName = @"cellName";//
                     tabelViewList = [[MagicUITableView alloc]initWithFrame:CGRectMake(0.0f, self.headHeight + 120, 320.0f, self.view.frame.size.height - self.headHeight-200)];
                     
                     [self.view addSubview:tabelViewList];
+                    NSLog(@"tableview --- %@",tabelViewList);
                     RELEASE(tabelViewList)
 
                 }else{

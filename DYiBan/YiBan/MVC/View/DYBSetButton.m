@@ -9,8 +9,9 @@
 #import "DYBSetButton.h"
 
 @implementation DYBSetButton
+
 DEF_SIGNAL(SWITCHBTN);
-@synthesize textLabel = _textLabel,switchButton = _switchButton,arrowImv = _arrowImv;
+@synthesize textLabel = _textLabel,switchButton = _switchButton,arrowImv = _arrowImv,sender;
 
 
 - (void)dealloc {

@@ -7,8 +7,9 @@
 //
 
 #import "DYBBaseViewController.h"
+#import "WOSShoppDetailTableViewCell.h"
 
-@interface WOShopDetailViewController : DYBBaseViewController
+@interface WOShopDetailViewController : DYBBaseViewController<WOSShoppDetailTableViewCellDelegate>
 
 @property (nonatomic,retain)NSDictionary *dictInfo;
 AS_SIGNAL(BTNONE);

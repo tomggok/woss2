@@ -19,4 +19,6 @@
 @property (strong, nonatomic) UIWindow *window;
 @property (nonatomic, retain)MagicNavigationController *navi;
 @property (nonatomic, retain)UIButton *btnOrder;
+@property (nonatomic, retain) NSMutableArray *arrayOrderList;
+
 @end

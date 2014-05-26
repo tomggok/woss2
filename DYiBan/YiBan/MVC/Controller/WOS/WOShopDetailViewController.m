@@ -77,7 +77,7 @@ DEF_SIGNAL(BTNTWO);
     }
     else if ([signal is:[MagicViewController CREATE_VIEWS]]) {
         
-        [self.rightButton setHiddenYES];
+        [self.rightButton setHidden:YES];
         
         arrayFoodList = [[NSMutableArray alloc]init];
 //        [self creatTopView];
@@ -642,7 +642,7 @@ static NSString *cellName = @"cellName";
         NSDictionary *dictInfoFood = [arrayFoodList objectAtIndex:indexPath.row];
         [cell creatCell:dictInfoFood];
         DLogInfo(@"%d", indexPath.section);
-        
+        cell.delegate = self;
         [cell creatCell:[arrayFoodList objectAtIndex:indexPath.row]];
         [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
         [signal setReturnValue:cell];
@@ -746,6 +746,39 @@ static NSString *cellName = @"cellName";
     
 }
 
+-(void)shareOrderView:(NSDictionary *)dict{
+
+    
+    AppDelegate *appD = appDelegate;
+    
+    UIView *viewBtn = [appD.window viewWithTag:80800];
+     [appD.arrayOrderList addObject:dict];
+    if (!appD.btnOrder) {
+        UIImage *image = [UIImage imageNamed:@"点餐园"];
+        
+        appD.btnOrder = [[UIButton alloc]initWithFrame:CGRectMake(100.0f, 200.0f, image.size.width/2, image.size.height/2)];
+        [appD.btnOrder   setBackgroundColor:[UIColor clearColor]];
+        [appD.btnOrder setImage:[UIImage imageNamed:@"点餐园"] forState:UIControlStateNormal];
+
+        [appD.btnOrder  addTarget:appD action:@selector(doTouch) forControlEvents:UIControlEventTouchUpInside];
+        [appD.btnOrder setTag:80800];
+        [self.view.window addSubview:appD.btnOrder ];
+        RELEASE(appD.btnOrder )
+        
+        
+        UIPanGestureRecognizer *panRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:appD action:@selector(handlePanFrom:)];
+        [panRecognizer setMaximumNumberOfTouches:1];
+        [panRecognizer setDelaysTouchesBegan:TRUE];
+        [panRecognizer setDelaysTouchesEnded:TRUE];
+        [panRecognizer setCancelsTouchesInView:TRUE];
+        [appD.btnOrder  addGestureRecognizer:panRecognizer];
+    }
+    
+    if (viewBtn) {
+        [viewBtn setHidden:NO];
+    }
+
+}
 
 - (void)dealloc
 {

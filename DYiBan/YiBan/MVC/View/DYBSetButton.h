@@ -13,6 +13,7 @@
 @property (nonatomic, retain)MagicUILabel *textLabel;
 @property (nonatomic, retain)DYBSwitchButton *switchButton;
 @property (nonatomic, retain)MagicUIImageView *arrowImv;
+@property (nonatomic, retain)id sender;
 AS_SIGNAL(SWITCHBTN);//选择switch
 - (CGFloat)getOrginx;
 - (CGFloat)getOrginy;

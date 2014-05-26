@@ -15,6 +15,7 @@
 @interface WOSFoodDetailViewController (){
 
     NSMutableArray *arrayAddorder;
+    NSDictionary *dictDeatil;
 }
 
 @end
@@ -62,6 +63,7 @@
         
         [self.view setBackgroundColor:[UIColor clearColor]];
         
+//        dictDeatil = [[NSDictionary alloc]init];
         
         MagicRequest *request = [DYBHttpMethod wosFoodInfo_foodIndex:_dictInfo sAlert:YES receive:self];
         [request setTag:3];
@@ -137,22 +139,19 @@
 }
 
 -(void)addRisgin{
-//    WOSMakeSureOrderListViewController *make = [[WOSMakeSureOrderListViewController alloc]init];
-//    
-//    
-//    [self.drNavigationController pushViewController:make animated:YES];
-//    RELEASE(make);
-    
+
     AppDelegate *appD = appDelegate;
-    
+    [appD.arrayOrderList addObject:dictDeatil];
     UIView *viewBtn = [appD.window viewWithTag:80800];
     
     if (!appD.btnOrder) {
         
         
         appD.btnOrder = [[UIButton alloc]initWithFrame:CGRectMake(100.0f, 200.0f, 60.0, 60.0)];
-        [appD.btnOrder   setBackgroundColor:[UIColor redColor]];
+        [appD.btnOrder   setBackgroundColor:[UIColor clearColor]];
         [appD.btnOrder  addTarget:appD action:@selector(doTouch) forControlEvents:UIControlEventTouchUpInside];
+        [appD.btnOrder setImage:[UIImage imageNamed:@"点餐园"] forState:UIControlStateNormal];
+
         [appD.btnOrder setTag:80800];
         [self.view.window addSubview:appD.btnOrder ];
         RELEASE(appD.btnOrder )
@@ -168,16 +167,8 @@
     
     if (viewBtn) {
         [viewBtn setHidden:NO];
+        
     }
-    
-    
-//   
-//    WOSMakeSureOrderListViewController *makeSure = [[WOSMakeSureOrderListViewController alloc]init];
-//    
-//    makeSure.arrayAddInfo = arrayAddorder;
-////    makeSure.dictInfo = _dictInfo;
-//    [self.drNavigationController pushViewController:makeSure animated:YES];
-//    RELEASE(makeSure);
 
 }
 
@@ -228,6 +219,7 @@
                 BOOL result = [[dict objectForKey:@"result"] boolValue];
                 if (!result) {
                     [self creatView:dict];
+                    dictDeatil = [[NSDictionary alloc]initWithDictionary:dict];
                     arrayAddorder = [[NSMutableArray alloc]initWithObjects:dict, nil];
 //                    dictResult = [[NSDictionary alloc]initWithDictionary:dict];
                     

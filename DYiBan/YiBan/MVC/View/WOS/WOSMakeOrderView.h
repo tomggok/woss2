@@ -9,5 +9,11 @@
 #import <UIKit/UIKit.h>
 
 @interface WOSMakeOrderView : DYBBaseView<UITableViewDataSource,UITableViewDelegate>
+
 @property (nonatomic,retain)UINavigationController *nav;
+@property (nonatomic,retain)NSMutableArray *arrayResult;
+
+
+
+- (id)initWithFrame:(CGRect)frame arrayWithData:(NSMutableArray *)array;
 @end

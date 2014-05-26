@@ -13,5 +13,5 @@
 
 
 
--(void)creatCell:(NSDictionary *)dict;
+-(void)creatCell:(NSArray *)dict1;
 @end

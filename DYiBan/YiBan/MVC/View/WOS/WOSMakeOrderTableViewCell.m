@@ -38,12 +38,13 @@
 
 
 
--(void)creatCell:(NSDictionary *)dict{
+-(void)creatCell:(NSArray *)dict1{
 
+    NSDictionary *dict = [dict1 objectAtIndex:0];
     
     WOSCalculateOrder *calculateView  = [[WOSCalculateOrder alloc]initWithFrame:CGRectMake( 120, 5.0f, 100.0f, 20.0f)];
-//    calculateView.name = order.name;
-//    calculateView.lableMid.text = [NSString stringWithFormat:@"%d",order.num];
+    calculateView.name = [dict objectForKey:@"foodName"];
+    calculateView.lableMid.text = [NSString stringWithFormat:@"%d",[dict1 count]];
     [self addSubview:calculateView];
     RELEASE(calculateView);
 

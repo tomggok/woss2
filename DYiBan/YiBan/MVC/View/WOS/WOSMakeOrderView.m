@@ -12,14 +12,21 @@
 #import "WOSPayViewController.h"
 
 
-@implementation WOSMakeOrderView
-@synthesize nav;
+@implementation WOSMakeOrderView{
 
-- (id)initWithFrame:(CGRect)frame
+    NSMutableDictionary *dictOrder;
+
+}
+@synthesize nav,arrayResult;
+
+- (id)initWithFrame:(CGRect)frame arrayWithData:(NSMutableArray *)array
 {
     self = [super initWithFrame:frame];
     if (self) {
         // Initialization code
+        self.arrayResult = array;
+        dictOrder = [[NSMutableDictionary alloc]init];
+        [self getData]; //处理数据
         [self creatView];
     }
     return self;
@@ -47,7 +54,7 @@
     UIView *view = [[UIView alloc]initWithFrame:CGRectMake(0.0F, 305/2, 320.0F, self.frame.size.height - 305/2)];
     [view setBackgroundColor:[UIColor whiteColor]];
     [self addSubview:view];
-    
+    RELEASE(view);
     
     UILabel *labelName = [[UILabel alloc]initWithFrame:CGRectMake(0.0f, 0.0f, 200.0f, 30.0f)];
     [labelName setCenter:CGPointMake(160.0f, 54/2)];
@@ -79,7 +86,7 @@
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
 
 
-    return 4;
+    return [dictOrder allKeys].count;
     
 }
 
@@ -103,14 +110,39 @@
             [view removeFromSuperview];
         }
     }
-
-    [cell creatCell:nil];
+    NSArray *array  = [dictOrder allValues];
+    
+    [cell creatCell:[array objectAtIndex:indexPath.row]];
     return cell;
     
     
 
 }
 
+
+-(void)getData{
+
+
+    for (NSDictionary *dic in arrayResult) {
+        
+        NSString *index = [dic objectForKey:@"foodIndex"];
+        NSMutableArray *arrayTemp = [dictOrder objectForKey:index];
+        if (!arrayTemp  ) { //不存在
+           
+            NSMutableArray *array = [[NSMutableArray alloc]init];
+            [array addObject:dic];
+            [dictOrder setValue:array forKey:index];
+            RELEASE(array);
+       
+        }else{ //已经有了，
+        
+            [arrayTemp addObject:dic];
+            [dictOrder setValue:arrayTemp forKey:index];
+        }
+        
+    }
+
+}
 -(void)doMake{
 
     

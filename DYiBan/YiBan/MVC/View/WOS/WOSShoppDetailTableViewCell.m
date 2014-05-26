@@ -8,7 +8,13 @@
 
 #import "WOSShoppDetailTableViewCell.h"
 #import "WOSStarView.h"
+#import "DYBSetButton.h"
+
+
+
+
 @implementation WOSShoppDetailTableViewCell
+@synthesize delegate;
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
@@ -50,17 +56,23 @@
     
     
     UIImage *image = [UIImage imageNamed:@"加入"];
-    UIButton *btn = [[UIButton alloc]initWithFrame:CGRectMake(510/2, 10.0f, 107/2, 60/2)];
+    DYBSetButton *btn = [[DYBSetButton alloc]initWithFrame:CGRectMake(510/2, 10.0f, 107/2, 60/2)];
     [btn setImage:image forState:UIControlStateNormal];
-    [btn addTarget:self action:@selector(doAdd) forControlEvents:UIControlEventTouchUpInside];
+    btn.sender = dict;
+    [btn addTarget:self action:@selector(doAdd:) forControlEvents:UIControlEventTouchUpInside];
     [self.contentView addSubview:btn];
     RELEASE(btn);
 
 }
 
--(void)doAdd{
-
-
+-(void)doAdd:(id)sender{
+    
+    DYBSetButton *btn = (DYBSetButton *)sender;
+    
+    if ([delegate respondsToSelector:@selector(shareOrderView:)]) {
+        [delegate shareOrderView:btn.sender];
+    }
+    
 
 }
 

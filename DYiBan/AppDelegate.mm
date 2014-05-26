@@ -35,7 +35,7 @@
     CGPoint ptBegin;
 }
 @synthesize window = _window;
-@synthesize navi = _navi,btnOrder = _btnOrder;
+@synthesize navi = _navi,btnOrder = _btnOrder,arrayOrderList = _arrayOrderList;
 - (void)dealloc
 {
     [_window release];
@@ -46,6 +46,7 @@
 {
     self.window = [[[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]] autorelease];
     
+    self.arrayOrderList = [[NSMutableArray alloc]init];
     /**IOS7
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
     self.window.clipsToBounds =YES;
@@ -281,7 +282,7 @@
         
         [self.window setRootViewController:naviGroup];
 //    }
-    
+   
 }
 
 - (void)startBegin {
@@ -412,7 +413,7 @@
     
     MagicViewController *vc = [self.navi topStackViewController];
     
-    WOSMakeOrderView *orderView = [[WOSMakeOrderView alloc]initWithFrame:CGRectMake(0.0f, 0, 320.0f, self.window.frame.size.height - 305/2)];
+    WOSMakeOrderView *orderView = [[WOSMakeOrderView alloc]initWithFrame:CGRectMake(0.0f, 0, 320.0f, self.window.frame.size.height - 305/2) arrayWithData:self.arrayOrderList];
     orderView.nav = vc.drNavigationController;
     [vc.view addSubview:orderView];
     RELEASEOBJ(orderView);
