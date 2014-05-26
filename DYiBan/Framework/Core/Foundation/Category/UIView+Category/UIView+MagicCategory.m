@@ -193,25 +193,25 @@ static char c_v_expandGestureArea;
 //在父视图的位置
 -(void)changePosInSuperViewWithAlignment:(NSUInteger)Alignment
 {
-    switch (Alignment) {
-        case 0://左右居中
-        {
-            [self setFrame:CGRectMake(self.superview.frame.size.width/2-self.frame.size.width/2, self.frame.origin.y, self.frame.size.width, self.frame.size.height)];
-        }
-            break;
-        case 1://上下居中
-        {
-            [self setFrame:CGRectMake(self.frame.origin.x, self.superview.frame.size.height/2-self.frame.size.height/2, self.frame.size.width, self.frame.size.height)];
-        }
-            break;
-        case 2://中心
-        {
-            [self setFrame:CGRectMake(self.superview.frame.size.width/2-self.frame.size.width/2, self.superview.frame.size.height/2-self.frame.size.height/2, self.frame.size.width, self.frame.size.height)];
-        }
-            break;
-        default:
-            break;
-    }
+//    switch (Alignment) {
+//        case 0://左右居中
+//        {
+//            [self setFrame:CGRectMake(self.superview.frame.size.width/2-self.frame.size.width/2, self.frame.origin.y, self.frame.size.width, self.frame.size.height)];
+//        }
+//            break;
+//        case 1://上下居中
+//        {
+//            [self setFrame:CGRectMake(self.frame.origin.x, self.superview.frame.size.height/2-self.frame.size.height/2, self.frame.size.width, self.frame.size.height)];
+//        }
+//            break;
+//        case 2://中心
+//        {
+//            [self setFrame:CGRectMake(self.superview.frame.size.width/2-self.frame.size.width/2, self.superview.frame.size.height/2-self.frame.size.height/2, self.frame.size.width, self.frame.size.height)];
+//        }
+//            break;
+//        default:
+//            break;
+//    }
     
 }
 

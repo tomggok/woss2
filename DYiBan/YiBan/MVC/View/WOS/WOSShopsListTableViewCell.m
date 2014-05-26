@@ -33,7 +33,7 @@
 
 -(void)creatCell:(NSDictionary *)dict{
 
-    UIImageView *imageViewIcon = [[UIImageView alloc]initWithFrame:CGRectMake(10.0f, 10.0f, 30.0f, 30.0f)];
+    UIImageView *imageViewIcon = [[UIImageView alloc]initWithFrame:CGRectMake(20.0f, 10.0f, 30.0f, 30.0f)];
       NSURL *url = [NSURL URLWithString:[DYBShareinstaceDelegate addIPImage:[dict objectForKey:@"imgUrl"] ]];
     [imageViewIcon setImageWithURL:url];
 //    [imageViewIcon setBackgroundColor:[UIColor redColor]];

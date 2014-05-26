@@ -32,14 +32,14 @@
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated
 {
     [super setSelected:selected animated:animated];
-
+    
     // Configure the view for the selected state
 }
 
 
 
 -(void)creatCell:(NSArray *)dict1{
-
+    
     NSDictionary *dict = [dict1 objectAtIndex:0];
     
     WOSCalculateOrder *calculateView  = [[WOSCalculateOrder alloc]initWithFrame:CGRectMake( 20, 5.0f, 300.0f, 40.0f) name:[dict objectForKey:@"foodName"]];
@@ -49,7 +49,7 @@
     calculateView.lableMid.text = [NSString stringWithFormat:@"%d",[dict1 count]];
     [self addSubview:calculateView];
     RELEASE(calculateView);
-
+    
 }
 
 @end

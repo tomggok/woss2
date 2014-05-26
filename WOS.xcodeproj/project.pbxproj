@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		18002F5B191FC558000E8484 /* WOSRegisterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 18002F5A191FC558000E8484 /* WOSRegisterViewController.m */; };
 		1802955118C8C373008BFAF8 /* WOSTellMSGViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1802955018C8C373008BFAF8 /* WOSTellMSGViewController.m */; };
+		18A169011933B5D600F44059 /* WOSMakeOrderTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 18A169001933B5D600F44059 /* WOSMakeOrderTableViewCell.m */; };
+		18A169041933B65500F44059 /* WOSMakeSurePayTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 18A169031933B65500F44059 /* WOSMakeSurePayTableViewCell.m */; };
 		18BB95C918BF7716009A0DC2 /* WOSFoodDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 18BB95C818BF7715009A0DC2 /* WOSFoodDetailViewController.m */; };
 		18CEA0C81928A4500061EF85 /* WOSAdrrDrtailView.m in Sources */ = {isa = PBXBuildFile; fileRef = 18CEA0C71928A4500061EF85 /* WOSAdrrDrtailView.m */; };
 		18CEA0CB192912F20061EF85 /* WOSOrderDetailTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 18CEA0CA192912F20061EF85 /* WOSOrderDetailTableViewCell.m */; };
@@ -16,7 +18,6 @@
 		18CEA0D1192BC0C90061EF85 /* WOSMakeOrderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 18CEA0D0192BC0C90061EF85 /* WOSMakeOrderView.m */; };
 		18F8FB0C1902AA7400C0A3BD /* WOSShopsListTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 18F8FB0B1902AA7400C0A3BD /* WOSShopsListTableViewCell.m */; };
 		18F8FB0F1902B04200C0A3BD /* WOSShopDetail1ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 18F8FB0E1902B04200C0A3BD /* WOSShopDetail1ViewController.m */; };
-		285EC6F6192DEA9500C6277F /* WOSMakeOrderTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 285EC6F5192DEA9500C6277F /* WOSMakeOrderTableViewCell.m */; };
 		285EC6F9192DF2A800C6277F /* WOSPayViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 285EC6F8192DF2A800C6277F /* WOSPayViewController.m */; };
 		285EC6FC192DF57300C6277F /* WOSPayTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 285EC6FB192DF57300C6277F /* WOSPayTableViewCell.m */; };
 		28B80BD1191619DF007EF5C5 /* 加入订单.png in Resources */ = {isa = PBXBuildFile; fileRef = 28B80B0D191619DF007EF5C5 /* 加入订单.png */; };
@@ -1467,6 +1468,10 @@
 		18002F5A191FC558000E8484 /* WOSRegisterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WOSRegisterViewController.m; sourceTree = "<group>"; };
 		1802954F18C8C373008BFAF8 /* WOSTellMSGViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WOSTellMSGViewController.h; sourceTree = "<group>"; };
 		1802955018C8C373008BFAF8 /* WOSTellMSGViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WOSTellMSGViewController.m; sourceTree = "<group>"; };
+		18A168FF1933B5D600F44059 /* WOSMakeOrderTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WOSMakeOrderTableViewCell.h; sourceTree = "<group>"; };
+		18A169001933B5D600F44059 /* WOSMakeOrderTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WOSMakeOrderTableViewCell.m; sourceTree = "<group>"; };
+		18A169021933B65500F44059 /* WOSMakeSurePayTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WOSMakeSurePayTableViewCell.h; sourceTree = "<group>"; };
+		18A169031933B65500F44059 /* WOSMakeSurePayTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WOSMakeSurePayTableViewCell.m; sourceTree = "<group>"; };
 		18BB95C718BF7715009A0DC2 /* WOSFoodDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WOSFoodDetailViewController.h; sourceTree = "<group>"; };
 		18BB95C818BF7715009A0DC2 /* WOSFoodDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WOSFoodDetailViewController.m; sourceTree = "<group>"; };
 		18CEA0C61928A4500061EF85 /* WOSAdrrDrtailView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WOSAdrrDrtailView.h; sourceTree = "<group>"; };
@@ -1481,8 +1486,6 @@
 		18F8FB0B1902AA7400C0A3BD /* WOSShopsListTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WOSShopsListTableViewCell.m; sourceTree = "<group>"; };
 		18F8FB0D1902B04200C0A3BD /* WOSShopDetail1ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WOSShopDetail1ViewController.h; sourceTree = "<group>"; };
 		18F8FB0E1902B04200C0A3BD /* WOSShopDetail1ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WOSShopDetail1ViewController.m; sourceTree = "<group>"; };
-		285EC6F4192DEA9500C6277F /* WOSMakeOrderTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WOSMakeOrderTableViewCell.h; sourceTree = "<group>"; };
-		285EC6F5192DEA9500C6277F /* WOSMakeOrderTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WOSMakeOrderTableViewCell.m; sourceTree = "<group>"; };
 		285EC6F7192DF2A800C6277F /* WOSPayViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WOSPayViewController.h; sourceTree = "<group>"; };
 		285EC6F8192DF2A800C6277F /* WOSPayViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WOSPayViewController.m; sourceTree = "<group>"; };
 		285EC6FA192DF57300C6277F /* WOSPayTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WOSPayTableViewCell.h; sourceTree = "<group>"; };
@@ -5037,10 +5040,12 @@
 				18CEA0CD192BB62E0061EF85 /* WOSShoppDetailTableViewCell.m */,
 				18CEA0CF192BC0C90061EF85 /* WOSMakeOrderView.h */,
 				18CEA0D0192BC0C90061EF85 /* WOSMakeOrderView.m */,
-				285EC6F4192DEA9500C6277F /* WOSMakeOrderTableViewCell.h */,
-				285EC6F5192DEA9500C6277F /* WOSMakeOrderTableViewCell.m */,
 				285EC6FA192DF57300C6277F /* WOSPayTableViewCell.h */,
 				285EC6FB192DF57300C6277F /* WOSPayTableViewCell.m */,
+				18A168FF1933B5D600F44059 /* WOSMakeOrderTableViewCell.h */,
+				18A169001933B5D600F44059 /* WOSMakeOrderTableViewCell.m */,
+				18A169021933B65500F44059 /* WOSMakeSurePayTableViewCell.h */,
+				18A169031933B65500F44059 /* WOSMakeSurePayTableViewCell.m */,
 			);
 			path = WOS;
 			sourceTree = "<group>";
@@ -7738,6 +7743,7 @@
 				B5C6629918A89BFF00C5A26C /* ASIDownloadCache.m in Sources */,
 				B58CB11B1829CF6A00F73D66 /* DYBCheckMultiImageViewController.m in Sources */,
 				B58CB11C1829CF6A00F73D66 /* DYBDynamicDetailViewController.m in Sources */,
+				18A169011933B5D600F44059 /* WOSMakeOrderTableViewCell.m in Sources */,
 				B58CB11D1829CF6A00F73D66 /* DYBDynamicViewController.m in Sources */,
 				B58CB11E1829CF6A00F73D66 /* DYBMapLocationViewController.m in Sources */,
 				B58CB11F1829CF6A00F73D66 /* DYBAssetCollectionViewController.m in Sources */,
@@ -7850,6 +7856,7 @@
 				B58CB1731829CF6A00F73D66 /* eclasses.m in Sources */,
 				B5C662C018A89BFF00C5A26C /* NSArray+MagicCategory.m in Sources */,
 				B58CB1741829CF6A00F73D66 /* EmployInfo.m in Sources */,
+				18A169041933B65500F44059 /* WOSMakeSurePayTableViewCell.m in Sources */,
 				B58CB1751829CF6A00F73D66 /* ext.m in Sources */,
 				B58CB1761829CF6A00F73D66 /* follow_list.m in Sources */,
 				B58CB1771829CF6A00F73D66 /* friend_data.m in Sources */,
@@ -8164,7 +8171,6 @@
 				B5C662F018A89BFF00C5A26C /* Magic_UINavigationBar.m in Sources */,
 				B5C662AD18A89BFF00C5A26C /* MBProgressHUD.m in Sources */,
 				B5E1A022187BEDD6006AC130 /* WOSClassifyCell.m in Sources */,
-				285EC6F6192DEA9500C6277F /* WOSMakeOrderTableViewCell.m in Sources */,
 				B5360836187E9CDC00284362 /* WOSOrderCAICell.m in Sources */,
 				B5A782B3187F82B6007FEAE8 /* WOSThinkYouLikeViewController.m in Sources */,
 				B5C662EE18A89BFF00C5A26C /* Magic_UILabel.m in Sources */,

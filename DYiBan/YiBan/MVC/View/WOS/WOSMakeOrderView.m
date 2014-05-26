@@ -113,10 +113,7 @@
     for (int i = 0; i < appd.arrayOrderList.count; i++) {
         
         NSDictionary *dict = [appd.arrayOrderList objectAtIndex:i];
-
-            data = data + [[dict objectForKey:@"foodPrice"] floatValue];
-
-        
+        data = data + [[dict objectForKey:@"foodPrice"] floatValue];
     }
     return data;
 }
@@ -194,14 +191,14 @@
     UIView *viewBtn = [appd.window viewWithTag:80800];
     
     if (viewBtn) {
-        [viewBtn setHidden:NO];
+        [viewBtn setHidden:YES];
     }
    
     
 
     WOSPayViewController *pagVC = [[WOSPayViewController alloc]init];
     [nav pushViewController:pagVC animated:YES];
-    RELEASEOBJ(nav);
+    RELEASE(pagVC);
     
 //    [self removeFromSuperview];
     

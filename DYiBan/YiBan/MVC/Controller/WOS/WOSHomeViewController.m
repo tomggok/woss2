@@ -770,11 +770,11 @@ static NSString *cellName = @"cellName";//
 //        DYBUITabbarViewController *dync = [DYBUITabbarViewController sharedInstace];
 //        [dync scrollMainView:1];
     }else if ([signal is:[DYBBaseViewController NEXTSTEPBUTTON]]){
-        
-        WOSPersonInfoViewController *person = [[WOSPersonInfoViewController alloc]init];
-        [self.drNavigationController pushViewController:person animated:YES];
-        RELEASE(person);
-        
+//        
+//        WOSPersonInfoViewController *person = [[WOSPersonInfoViewController alloc]init];
+//        [self.drNavigationController pushViewController:person animated:YES];
+//        RELEASE(person);
+//        
         
     }
     
