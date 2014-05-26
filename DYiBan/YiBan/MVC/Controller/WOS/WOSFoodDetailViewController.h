@@ -10,4 +10,6 @@
 
 @interface WOSFoodDetailViewController : DYBBaseViewController
 @property(nonatomic,retain)NSString *dictInfo;
+
+@property (nonatomic,retain)NSDictionary *dictShop;
 @end

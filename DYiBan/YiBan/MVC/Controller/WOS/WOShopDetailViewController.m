@@ -654,6 +654,7 @@ static NSString *cellName = @"cellName";
         
         WOSFoodDetailViewController *foodDetail = [[WOSFoodDetailViewController alloc]init];
         [foodDetail setDictInfo:[[arrayFoodList objectAtIndex:indexPath.row] objectForKey:@"foodIndex"]];
+        foodDetail.dictShop = [arrayFoodList objectAtIndex:indexPath.row];
         [self.drNavigationController pushViewController:foodDetail animated:YES];
         RELEASE(foodDetail);
         
@@ -750,6 +751,16 @@ static NSString *cellName = @"cellName";
 
     
     AppDelegate *appD = appDelegate;
+    
+    NSString *stringShopName = [[NSUserDefaults standardUserDefaults]objectForKey:@"shopname"];
+    if (![stringShopName isEqualToString:[dictResult objectForKey:@"kitchenName"]] && stringShopName) {
+        UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"" message:@"购物车中已经有一家饭店" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:nil, nil];
+        [alert show];
+        return;
+        
+    }
+    [[NSUserDefaults standardUserDefaults]setValue:[dictResult objectForKey:@"kitchenName"] forKey:@"shopname"];
+    
     
     UIView *viewBtn = [appD.window viewWithTag:80800];
      [appD.arrayOrderList addObject:dict];

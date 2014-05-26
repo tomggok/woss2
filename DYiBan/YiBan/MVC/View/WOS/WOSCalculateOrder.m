@@ -19,13 +19,14 @@
 
 DEF_SIGNAL(DOREDUCE);
 DEF_SIGNAL(DOADD);
-@synthesize name;
-- (id)initWithFrame:(CGRect)frame
+@synthesize name,dict;
+- (id)initWithFrame:(CGRect)frame name:(NSString *)_name
 {
     self = [super initWithFrame:frame];
     if (self) {
         // Initialization code
-        [self setFrame:CGRectMake(CGRectGetMinX(frame), CGRectGetMinY(frame), 120, 40)];
+        self.name = _name;
+        [self setFrame:CGRectMake(CGRectGetMinX(frame), CGRectGetMinY(frame), 320, 40)];
         [self creatView];
     }
     return self;
@@ -33,13 +34,19 @@ DEF_SIGNAL(DOADD);
 
 -(void)creatView{
 
-    UIView *view  = [[UIView alloc]initWithFrame:CGRectMake(0.0f, 0.0f, 120.0f, 40.0f)];
+    UIView *view  = [[UIView alloc]initWithFrame:CGRectMake(0.0f, 0.0f, 220.0f, 40.0f)];
     [view setBackgroundColor:[UIColor clearColor]];
     [self addSubview:view];
     RELEASE(view);
     
-    UIImage *image1 = [UIImage imageNamed:@"number_substract"];
-    UIButton *btnLeft = [[UIButton alloc]initWithFrame:CGRectMake(0.0f, 0.0f, image1.size.width/2, image1.size.height/2)];
+    UILabel *labelName = [[UILabel alloc]initWithFrame:CGRectMake(0.0f, 0.0f, 100.0f, 30.0f)];
+    [labelName setText:name];
+    [labelName setBackgroundColor:[UIColor clearColor]];
+    [self addSubview:labelName];
+    RELEASE(labelName);
+    
+    UIImage *image1 = [UIImage imageNamed:@"jaihao"];
+    UIButton *btnLeft = [[UIButton alloc]initWithFrame:CGRectMake(120.0f, 0.0f, image1.size.width/2, image1.size.height/2)];
     [btnLeft setImage:image1 forState:UIControlStateNormal];
     [btnLeft setImage:[UIImage imageNamed:@""] forState:UIControlStateDisabled];
     [btnLeft setTitle:@"-" forState:UIControlStateNormal];
@@ -51,20 +58,19 @@ DEF_SIGNAL(DOADD);
     
     
     UIImage *imageLabel = [UIImage imageNamed:@"number"];
-    UIImageView *imageViewMid = [[UIImageView alloc]initWithFrame:CGRectMake(CGRectGetWidth(btnLeft.frame), 0, imageLabel.size.width/2, imageLabel.size.height/2)];
-    [imageViewMid setImage:imageLabel];
-    [view addSubview:imageViewMid];
-    RELEASE(imageLabel)
+    UIImageView *imageViewMid = [[UIImageView alloc]initWithFrame:CGRectMake(CGRectGetWidth(btnLeft.frame)+ CGRectGetMinX(btnLeft.frame), 0, imageLabel.size.width/2, imageLabel.size.height/2)];
+////    [imageViewMid setImage:imageLabel];
+//    [view addSubview:imageViewMid];
+//    RELEASE(imageLabel)
     
-    lableMid = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, imageLabel.size.width/2, imageLabel.size.height/2)];
+    lableMid = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetWidth(btnLeft.frame)+ CGRectGetMinX(btnLeft.frame), 0, imageLabel.size.width/2, imageLabel.size.height/2)];
     [lableMid setText:@"0"];
     [lableMid setTextAlignment:NSTextAlignmentCenter];
     [lableMid setBackgroundColor:[UIColor clearColor]];
-   
-    [imageViewMid addSubview:lableMid];
+    [view addSubview:lableMid];
     RELEASE(lableMid);
     
-    UIImage *image2 = [UIImage imageNamed:@"number_substract_add"];
+    UIImage *image2 = [UIImage imageNamed:@"jianhao"];
     UIButton *btnRight = [[UIButton alloc]initWithFrame:CGRectMake(CGRectGetWidth(imageViewMid.frame) + CGRectGetMinX(imageViewMid.frame), 0.0f, image2.size.width/2, image2.size.height/2)];
     [btnRight setImage:image2 forState:UIControlStateNormal];
     [btnRight setTitle:@"+" forState:UIControlStateNormal];
@@ -86,6 +92,18 @@ DEF_SIGNAL(DOADD);
     }else{
         
         numFood --;
+        AppDelegate *appd = appDelegate;
+        
+        for (int i = 0; i < appd.arrayOrderList.count; i++) {
+            
+            NSDictionary *dictt = [appd.arrayOrderList objectAtIndex:i];
+            if ([[[dictt objectForKey:@"foodIndex"] stringValue] isEqualToString:[[dict objectForKey:@"foodIndex"] stringValue]]) {
+                
+                [appd.arrayOrderList removeObjectAtIndex:i];
+                break;
+            }
+            
+        }
     }
     
     lableMid.text = [NSString stringWithFormat:@"%d",numFood];
@@ -97,6 +115,10 @@ DEF_SIGNAL(DOADD);
     int numFood = [lableMid.text integerValue];
     numFood ++;
     lableMid.text = [NSString stringWithFormat:@"%d",numFood];
+    
+    AppDelegate *appd = appDelegate;
+    [appd.arrayOrderList addObject:dict];
+
     
     [self sendViewSignal:[WOSCalculateOrder DOADD] withObject:name from:self target:self.superview];
 

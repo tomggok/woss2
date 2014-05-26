@@ -14,4 +14,7 @@ AS_SIGNAL(DOADD)
 AS_SIGNAL(DOREDUCE)
 @property(nonatomic,retain)UILabel *lableMid;
 @property(nonatomic,retain)NSString *name;
+@property(nonatomic,retain)NSDictionary *dict;
+
+- (id)initWithFrame:(CGRect)frame name:(NSString *)_name;
 @end

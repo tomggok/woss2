@@ -21,7 +21,7 @@
 @end
 
 @implementation WOSFoodDetailViewController
-@synthesize dictInfo = _dictInfo;
+@synthesize dictInfo = _dictInfo,dictShop;
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -140,6 +140,14 @@
 
 -(void)addRisgin{
 
+    NSString *stringShopName = [[NSUserDefaults standardUserDefaults]objectForKey:@"shopname"];
+    if (![stringShopName isEqualToString:[dictShop objectForKey:@"kitchenName"]] && stringShopName) {
+        UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"" message:@"购物车中已经有一家饭店" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:nil, nil];
+        [alert show];
+        return;
+        
+    }
+    [[NSUserDefaults standardUserDefaults]setValue:[dictShop objectForKey:@"kitchenName"] forKey:@"shopname"];
     AppDelegate *appD = appDelegate;
     [appD.arrayOrderList addObject:dictDeatil];
     UIView *viewBtn = [appD.window viewWithTag:80800];

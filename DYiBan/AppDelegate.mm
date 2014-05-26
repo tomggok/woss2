@@ -413,7 +413,7 @@
     
     MagicViewController *vc = [self.navi topStackViewController];
     
-    WOSMakeOrderView *orderView = [[WOSMakeOrderView alloc]initWithFrame:CGRectMake(0.0f, 0, 320.0f, self.window.frame.size.height - 305/2) arrayWithData:self.arrayOrderList];
+    WOSMakeOrderView *orderView = [[WOSMakeOrderView alloc]initWithFrame:CGRectMake(0.0f, 0, 320.0f, self.window.frame.size.height ) arrayWithData:self.arrayOrderList];
     orderView.nav = vc.drNavigationController;
     [vc.view addSubview:orderView];
     RELEASEOBJ(orderView);

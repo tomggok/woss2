@@ -31,8 +31,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "825"
             endingLineNumber = "825"
-            landmarkName = "@implementation WOSHomeViewController"
-            landmarkType = "3">
+            landmarkName = "-handleRequest:receiveObj:"
+            landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -202,11 +202,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "DYiBan/YiBan/MVC/Controller/WOS/WOShopDetailViewController.m"
-            timestampString = "422722614.340594"
+            timestampString = "422814623.287121"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "691"
-            endingLineNumber = "691"
+            startingLineNumber = "692"
+            endingLineNumber = "692"
             landmarkName = "-handleRequest:receiveObj:"
             landmarkType = "5">
          </BreakpointContent>
@@ -234,19 +234,19 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "DYiBan/YiBan/MVC/Controller/WOS/WOSFoodDetailViewController.m"
-            timestampString = "422098024.339552"
+            timestampString = "422814623.287121"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "194"
-            endingLineNumber = "194"
-            landmarkName = "@implementation WOSFoodDetailViewController"
-            landmarkType = "3">
+            startingLineNumber = "202"
+            endingLineNumber = "202"
+            landmarkName = "-handleRequest:receiveObj:"
+            landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "DYiBan/YiBan/MVC/Controller/WOS/WOSFoodDetailViewController.m"
@@ -282,11 +282,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "DYiBan/YiBan/MVC/Controller/WOS/WOSFoodDetailViewController.m"
-            timestampString = "422098024.339552"
+            timestampString = "422814623.287121"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "145"
-            endingLineNumber = "145"
+            startingLineNumber = "153"
+            endingLineNumber = "153"
             landmarkName = "-addRisgin"
             landmarkType = "5">
          </BreakpointContent>
@@ -314,11 +314,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "DYiBan/YiBan/MVC/Controller/WOS/WOSFoodDetailViewController.m"
-            timestampString = "422098024.339552"
+            timestampString = "422814623.287121"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "199"
-            endingLineNumber = "199"
+            startingLineNumber = "207"
+            endingLineNumber = "207"
             landmarkName = "-handleRequest:receiveObj:"
             landmarkType = "5">
          </BreakpointContent>
@@ -384,22 +384,6 @@
             startingLineNumber = "490"
             endingLineNumber = "490"
             landmarkName = "-gettitle2:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "DYiBan/YiBan/MVC/Controller/WOS/WOSHomeViewController.m"
-            timestampString = "422726250.734236"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "610"
-            endingLineNumber = "610"
-            landmarkName = "-doSelectBowwon:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -655,8 +639,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "415"
             endingLineNumber = "415"
-            landmarkName = "-creatBowwon2"
-            landmarkType = "5">
+            landmarkName = "@implementation WOSHomeViewController"
+            landmarkType = "3">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -671,7 +655,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "528"
             endingLineNumber = "528"
-            landmarkName = "-creatBowwonView"
+            landmarkName = "-doSelect:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -687,39 +671,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "521"
             endingLineNumber = "521"
-            landmarkName = "-creatBowwonView"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "DYiBan/YiBan/MVC/View/WOS/WOSShopsListTableViewCell.m"
-            timestampString = "422727063.18643"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "38"
-            endingLineNumber = "38"
-            landmarkName = "-creatCell:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "DYiBan/YiBan/MVC/View/WOS/WOSShopsListTableViewCell.m"
-            timestampString = "422727764.458685"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "72"
-            endingLineNumber = "72"
-            landmarkName = "-creatCell:"
+            landmarkName = "-doSelect:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -736,6 +688,118 @@
             startingLineNumber = "600"
             endingLineNumber = "600"
             landmarkName = "-handleViewSignal_DYBBaseViewController:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "DYiBan/YiBan/MVC/View/WOS/WOSMakeOrderView.m"
+            timestampString = "422817716.771552"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "40"
+            endingLineNumber = "40"
+            landmarkName = "-creatView"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "DYiBan/YiBan/MVC/Controller/WOS/WOShopDetailViewController.m"
+            timestampString = "422814065.371635"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "543"
+            endingLineNumber = "543"
+            landmarkName = "-doTouchFood:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "DYiBan/YiBan/MVC/Controller/WOS/WOShopDetailViewController.m"
+            timestampString = "422814165.533284"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "501"
+            endingLineNumber = "501"
+            landmarkName = "-creatPicBar:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "DYiBan/YiBan/MVC/View/WOS/WOSMakeOrderView.m"
+            timestampString = "422817716.771552"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "91"
+            endingLineNumber = "91"
+            landmarkName = "-creatView"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "DYiBan/YiBan/MVC/View/WOS/WOSMakeOrderView.m"
+            timestampString = "422817711.698809"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "163"
+            endingLineNumber = "163"
+            landmarkName = "-handleViewSignal_WOSCalculateOrder:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "DYiBan/YiBan/MVC/View/WOS/WOSMakeOrderView.m"
+            timestampString = "422817774.656106"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "115"
+            endingLineNumber = "115"
+            landmarkName = "-getPrice"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "DYiBan/YiBan/MVC/View/WOS/WOSCalculateOrder.m"
+            timestampString = "422817820.886274"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "99"
+            endingLineNumber = "99"
+            landmarkName = "-minusFood"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
