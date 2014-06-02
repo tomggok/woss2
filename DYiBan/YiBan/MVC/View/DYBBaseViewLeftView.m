@@ -69,13 +69,18 @@ DEF_SIGNAL(SELECTBUTTON)//选择按钮
         RELEASE(imageViewBG);
         
 
-        UIImageView *imageViewIcon = [[UIImageView alloc]initWithFrame:CGRectMake((320 - 40 - 60)/2 - 20, 70.0f, 60.0f, 60.0f)];
-        [imageViewIcon setImage:[UIImage imageNamed:@"log"]];
+        UIImageView *imageViewIcon = [[UIImageView alloc]initWithFrame:CGRectMake((320 - 60 - 80)/2 - 20, 54/2, 80.0f, 80.0f)];
+        [imageViewIcon setImage:[UIImage imageNamed:@"60pt"]];
         [self addSubview:imageViewIcon];
         [imageViewIcon release];
         
+        [imageViewIcon.layer setMasksToBounds:YES];
+        [imageViewIcon.layer setCornerRadius:40.0f];
+//        [imageViewIcon.layer SET];
+        
+        
         UIImage *image1 = [UIImage imageNamed:@"vip"];
-        UIButton *btnSaveMenoy = [[UIButton alloc]initWithFrame:CGRectMake(10.0f, CGRectGetHeight(imageViewIcon.frame) + CGRectGetMinY(imageViewIcon.frame) + 40, image1.size.width/2, image1.size.height/2)];
+        UIButton *btnSaveMenoy = [[UIButton alloc]initWithFrame:CGRectMake(10.0f, CGRectGetHeight(imageViewIcon.frame) + CGRectGetMinY(imageViewIcon.frame) + 30, image1.size.width/2, image1.size.height/2)];
         [btnSaveMenoy setTag:10];
         [btnSaveMenoy setImage:[UIImage imageNamed:@"vip"] forState:UIControlStateNormal];
         [btnSaveMenoy addTarget:self action:@selector(goOrder:) forControlEvents:UIControlEventTouchUpInside];
@@ -83,7 +88,7 @@ DEF_SIGNAL(SELECTBUTTON)//选择按钮
         RELEASE(btnSaveMenoy)
         
         
-        UIButton *btnMammageOrder = [[UIButton alloc]initWithFrame:CGRectMake(10.0f, CGRectGetHeight(btnSaveMenoy.frame) + CGRectGetMinY(btnSaveMenoy.frame) + 40, image1.size.width/2, image1.size.height/2)];
+        UIButton *btnMammageOrder = [[UIButton alloc]initWithFrame:CGRectMake(10.0f, CGRectGetHeight(btnSaveMenoy.frame) + CGRectGetMinY(btnSaveMenoy.frame) + 20, image1.size.width/2, image1.size.height/2)];
         [btnMammageOrder setImage:[UIImage imageNamed:@"订单管理"] forState:UIControlStateNormal];
         [btnMammageOrder setTag:11];
         [btnMammageOrder addTarget:self action:@selector(goOrder:) forControlEvents:UIControlEventTouchUpInside];
@@ -91,27 +96,30 @@ DEF_SIGNAL(SELECTBUTTON)//选择按钮
         RELEASE(btnMammageOrder)
         
         
-        UIButton *btnMammageAddr = [[UIButton alloc]initWithFrame:CGRectMake(10.0f, CGRectGetHeight(btnMammageOrder.frame) + CGRectGetMinY(btnMammageOrder.frame)  , image1.size.width/2, image1.size.height/2)];
+        UIButton *btnMammageAddr = [[UIButton alloc]initWithFrame:CGRectMake(10.0f, CGRectGetHeight(btnMammageOrder.frame) + CGRectGetMinY(btnMammageOrder.frame)+ 20  , image1.size.width/2, 40)];
         [btnMammageAddr setTag:12];
         [btnMammageAddr setTitle:@"地址管理" forState:UIControlStateNormal];
+        [btnMammageAddr setTitleColor:[UIColor colorWithRed:159.0f/255 green:159.0f/255 blue:159.0f/255 alpha:1.0f] forState:UIControlStateNormal];
 //        [btnMammageAddr setImage:[UIImage imageNamed:@""] forState:UIControlStateNormal];
         [btnMammageAddr addTarget:self action:@selector(goOrder:) forControlEvents:UIControlEventTouchUpInside];
         [self addSubview:btnMammageAddr];
         RELEASE(btnMammageAddr)
         
         
-        UIButton *btnMammageCol = [[UIButton alloc]initWithFrame:CGRectMake(10.0f, CGRectGetHeight(btnMammageAddr.frame) + CGRectGetMinY(btnMammageAddr.frame) +0, image1.size.width/2, image1.size.height/2)];
+        UIButton *btnMammageCol = [[UIButton alloc]initWithFrame:CGRectMake(10.0f, CGRectGetHeight(btnMammageAddr.frame) + CGRectGetMinY(btnMammageAddr.frame) +0, image1.size.width/2, 40)];
         [btnMammageCol setTitle:@"收藏夹" forState:UIControlStateNormal];
         //        [btnMammageAddr setImage:[UIImage imageNamed:@""] forState:UIControlStateNormal];'
         [btnMammageCol setTag:13];
-
+        [btnMammageCol setBackgroundColor:[UIColor clearColor]];
+        [btnMammageCol setTitleColor:[UIColor colorWithRed:159.0f/255 green:159.0f/255 blue:159.0f/255 alpha:1.0f] forState:UIControlStateNormal];
         [btnMammageCol addTarget:self action:@selector(goOrder:) forControlEvents:UIControlEventTouchUpInside];
         [self addSubview:btnMammageCol];
         RELEASE(btnMammageCol)
         
-        UIButton *btnMammageSetting = [[UIButton alloc]initWithFrame:CGRectMake(10.0f, CGRectGetHeight(btnMammageCol.frame) + CGRectGetMinY(btnMammageCol.frame) + 0, image1.size.width/2, image1.size.height/2)];
+        UIButton *btnMammageSetting = [[UIButton alloc]initWithFrame:CGRectMake(10.0f, CGRectGetHeight(btnMammageCol.frame) + CGRectGetMinY(btnMammageCol.frame) + 0, image1.size.width/2, 40)];
         [btnMammageSetting setTag:14];
-        [btnMammageSetting setTitle:@"设置" forState:UIControlStateNormal];
+        [btnMammageSetting setTitle:@"软件设置" forState:UIControlStateNormal];
+        [btnMammageSetting setTitleColor:[UIColor colorWithRed:159.0f/255 green:159.0f/255 blue:159.0f/255 alpha:1.0f] forState:UIControlStateNormal];
         //        [btnMammageAddr setImage:[UIImage imageNamed:@""] forState:UIControlStateNormal];
         [btnMammageSetting addTarget:self action:@selector(goOrder:) forControlEvents:UIControlEventTouchUpInside];
         [self addSubview:btnMammageSetting];

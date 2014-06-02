@@ -9,6 +9,9 @@
 /* Begin PBXBuildFile section */
 		18002F5B191FC558000E8484 /* WOSRegisterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 18002F5A191FC558000E8484 /* WOSRegisterViewController.m */; };
 		1802955118C8C373008BFAF8 /* WOSTellMSGViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1802955018C8C373008BFAF8 /* WOSTellMSGViewController.m */; };
+		1831C879193CBC9400ECE7C4 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1831C877193CBC9400ECE7C4 /* Default-568h@2x.png */; };
+		1831C87A193CBC9400ECE7C4 /* Default~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 1831C878193CBC9400ECE7C4 /* Default~iphone.png */; };
+		1831C87C193CBD2E00ECE7C4 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 1831C87B193CBD2E00ECE7C4 /* Default.png */; };
 		18A169011933B5D600F44059 /* WOSMakeOrderTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 18A169001933B5D600F44059 /* WOSMakeOrderTableViewCell.m */; };
 		18A169041933B65500F44059 /* WOSMakeSurePayTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 18A169031933B65500F44059 /* WOSMakeSurePayTableViewCell.m */; };
 		18A1690D1933BF9D00F44059 /* 组 5.png in Resources */ = {isa = PBXBuildFile; fileRef = 18A169051933BF9D00F44059 /* 组 5.png */; };
@@ -19,6 +22,7 @@
 		18A169121933BF9D00F44059 /* 图层 11.png in Resources */ = {isa = PBXBuildFile; fileRef = 18A1690A1933BF9D00F44059 /* 图层 11.png */; };
 		18A169131933BF9D00F44059 /* 椭圆 3.png in Resources */ = {isa = PBXBuildFile; fileRef = 18A1690B1933BF9D00F44059 /* 椭圆 3.png */; };
 		18A169141933BF9D00F44059 /* 顶栏.png in Resources */ = {isa = PBXBuildFile; fileRef = 18A1690C1933BF9D00F44059 /* 顶栏.png */; };
+		18B81C7E1939CECE00DA858B /* WOSPayCardTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 18B81C7D1939CECE00DA858B /* WOSPayCardTableViewCell.m */; };
 		18BB95C918BF7716009A0DC2 /* WOSFoodDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 18BB95C818BF7715009A0DC2 /* WOSFoodDetailViewController.m */; };
 		18CEA0C81928A4500061EF85 /* WOSAdrrDrtailView.m in Sources */ = {isa = PBXBuildFile; fileRef = 18CEA0C71928A4500061EF85 /* WOSAdrrDrtailView.m */; };
 		18CEA0CB192912F20061EF85 /* WOSOrderDetailTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 18CEA0CA192912F20061EF85 /* WOSOrderDetailTableViewCell.m */; };
@@ -260,12 +264,10 @@
 		B529F0AE187B8D6500F9060D /* line.png in Resources */ = {isa = PBXBuildFile; fileRef = B529F08B187B8D6500F9060D /* line.png */; };
 		B529F0AF187B8D6500F9060D /* input_bg.png in Resources */ = {isa = PBXBuildFile; fileRef = B529F08C187B8D6500F9060D /* input_bg.png */; };
 		B529F0B0187B8D6500F9060D /* button 2.png in Resources */ = {isa = PBXBuildFile; fileRef = B529F08D187B8D6500F9060D /* button 2.png */; };
-		B529F0B3187B996C00F9060D /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B529F0B2187B996C00F9060D /* Default-568h@2x.png */; };
 		B535D0D41863DDFF00285D0B /* WOSTouchStar.m in Sources */ = {isa = PBXBuildFile; fileRef = B535D0D31863DDFF00285D0B /* WOSTouchStar.m */; };
 		B535D0D91864154000285D0B /* 011.png in Resources */ = {isa = PBXBuildFile; fileRef = B535D0D61864154000285D0B /* 011.png */; };
 		B535D0DA1864154000285D0B /* 021.png in Resources */ = {isa = PBXBuildFile; fileRef = B535D0D71864154000285D0B /* 021.png */; };
 		B535D0DB1864154000285D0B /* 031.png in Resources */ = {isa = PBXBuildFile; fileRef = B535D0D81864154000285D0B /* 031.png */; };
-		B535D0DD1864227A00285D0B /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B535D0DC1864227900285D0B /* Default@2x.png */; };
 		B5360831187E99EB00284362 /* list 2.png in Resources */ = {isa = PBXBuildFile; fileRef = B536082E187E99EA00284362 /* list 2.png */; };
 		B5360832187E99EB00284362 /* jian.png in Resources */ = {isa = PBXBuildFile; fileRef = B536082F187E99EA00284362 /* jian.png */; };
 		B5360833187E99EB00284362 /* line_bg.png in Resources */ = {isa = PBXBuildFile; fileRef = B5360830187E99EA00284362 /* line_bg.png */; };
@@ -562,8 +564,6 @@
 		B58CB45E1829CF6B00F73D66 /* DYBCustomInputView.m in Sources */ = {isa = PBXBuildFile; fileRef = B58CB05C1829CF6A00F73D66 /* DYBCustomInputView.m */; };
 		B58CB45F1829CF6B00F73D66 /* DYBImageUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = B58CB05E1829CF6A00F73D66 /* DYBImageUtil.m */; };
 		B58CB4641829CF7F00F73D66 /* Default-568h in Resources */ = {isa = PBXBuildFile; fileRef = B58CB4601829CF7F00F73D66 /* Default-568h */; };
-		B58CB4661829CF7F00F73D66 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = B58CB4621829CF7F00F73D66 /* Default.png */; };
-		B58CB4671829CF7F00F73D66 /* Default@2.png in Resources */ = {isa = PBXBuildFile; fileRef = B58CB4631829CF7F00F73D66 /* Default@2.png */; };
 		B58FAFB4182762AC00B01560 /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B58FAFB3182762AC00B01560 /* AssetsLibrary.framework */; };
 		B59274FA1846F1AC008BE897 /* Cell1.m in Sources */ = {isa = PBXBuildFile; fileRef = B59274F51846F1AC008BE897 /* Cell1.m */; };
 		B59274FC1846F1AC008BE897 /* Cell2.m in Sources */ = {isa = PBXBuildFile; fileRef = B59274F81846F1AC008BE897 /* Cell2.m */; };
@@ -1476,6 +1476,9 @@
 		18002F5A191FC558000E8484 /* WOSRegisterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WOSRegisterViewController.m; sourceTree = "<group>"; };
 		1802954F18C8C373008BFAF8 /* WOSTellMSGViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WOSTellMSGViewController.h; sourceTree = "<group>"; };
 		1802955018C8C373008BFAF8 /* WOSTellMSGViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WOSTellMSGViewController.m; sourceTree = "<group>"; };
+		1831C877193CBC9400ECE7C4 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
+		1831C878193CBC9400ECE7C4 /* Default~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default~iphone.png"; sourceTree = "<group>"; };
+		1831C87B193CBD2E00ECE7C4 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
 		18A168FF1933B5D600F44059 /* WOSMakeOrderTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WOSMakeOrderTableViewCell.h; sourceTree = "<group>"; };
 		18A169001933B5D600F44059 /* WOSMakeOrderTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WOSMakeOrderTableViewCell.m; sourceTree = "<group>"; };
 		18A169021933B65500F44059 /* WOSMakeSurePayTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WOSMakeSurePayTableViewCell.h; sourceTree = "<group>"; };
@@ -1488,6 +1491,8 @@
 		18A1690A1933BF9D00F44059 /* 图层 11.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "图层 11.png"; sourceTree = "<group>"; };
 		18A1690B1933BF9D00F44059 /* 椭圆 3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "椭圆 3.png"; sourceTree = "<group>"; };
 		18A1690C1933BF9D00F44059 /* 顶栏.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "顶栏.png"; sourceTree = "<group>"; };
+		18B81C7C1939CECE00DA858B /* WOSPayCardTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WOSPayCardTableViewCell.h; sourceTree = "<group>"; };
+		18B81C7D1939CECE00DA858B /* WOSPayCardTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WOSPayCardTableViewCell.m; sourceTree = "<group>"; };
 		18BB95C718BF7715009A0DC2 /* WOSFoodDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WOSFoodDetailViewController.h; sourceTree = "<group>"; };
 		18BB95C818BF7715009A0DC2 /* WOSFoodDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WOSFoodDetailViewController.m; sourceTree = "<group>"; };
 		18CEA0C61928A4500061EF85 /* WOSAdrrDrtailView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WOSAdrrDrtailView.h; sourceTree = "<group>"; };
@@ -1822,13 +1827,11 @@
 		B529F08B187B8D6500F9060D /* line.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = line.png; sourceTree = "<group>"; };
 		B529F08C187B8D6500F9060D /* input_bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = input_bg.png; sourceTree = "<group>"; };
 		B529F08D187B8D6500F9060D /* button 2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "button 2.png"; sourceTree = "<group>"; };
-		B529F0B2187B996C00F9060D /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		B535D0D21863DDFF00285D0B /* WOSTouchStar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WOSTouchStar.h; sourceTree = "<group>"; };
 		B535D0D31863DDFF00285D0B /* WOSTouchStar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WOSTouchStar.m; sourceTree = "<group>"; };
 		B535D0D61864154000285D0B /* 011.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 011.png; sourceTree = "<group>"; };
 		B535D0D71864154000285D0B /* 021.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 021.png; sourceTree = "<group>"; };
 		B535D0D81864154000285D0B /* 031.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 031.png; sourceTree = "<group>"; };
-		B535D0DC1864227900285D0B /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
 		B536082E187E99EA00284362 /* list 2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "list 2.png"; sourceTree = "<group>"; };
 		B536082F187E99EA00284362 /* jian.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = jian.png; sourceTree = "<group>"; };
 		B5360830187E99EA00284362 /* line_bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = line_bg.png; sourceTree = "<group>"; };
@@ -2444,8 +2447,6 @@
 		B58CB05E1829CF6A00F73D66 /* DYBImageUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DYBImageUtil.m; sourceTree = "<group>"; };
 		B58CB05F1829CF6A00F73D66 /* DYBParameter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DYBParameter.h; sourceTree = "<group>"; };
 		B58CB4601829CF7F00F73D66 /* Default-568h */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Default-568h"; sourceTree = SOURCE_ROOT; };
-		B58CB4621829CF7F00F73D66 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = SOURCE_ROOT; };
-		B58CB4631829CF7F00F73D66 /* Default@2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2.png"; sourceTree = SOURCE_ROOT; };
 		B58FAFB3182762AC00B01560 /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
 		B59274F41846F1AC008BE897 /* Cell1.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Cell1.h; sourceTree = "<group>"; };
 		B59274F51846F1AC008BE897 /* Cell1.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Cell1.m; sourceTree = "<group>"; };
@@ -5070,6 +5071,8 @@
 				18A169001933B5D600F44059 /* WOSMakeOrderTableViewCell.m */,
 				18A169021933B65500F44059 /* WOSMakeSurePayTableViewCell.h */,
 				18A169031933B65500F44059 /* WOSMakeSurePayTableViewCell.m */,
+				18B81C7C1939CECE00DA858B /* WOSPayCardTableViewCell.h */,
+				18B81C7D1939CECE00DA858B /* WOSPayCardTableViewCell.m */,
 			);
 			path = WOS;
 			sourceTree = "<group>";
@@ -6635,9 +6638,7 @@
 		C942204C17A89E430054E5BC = {
 			isa = PBXGroup;
 			children = (
-				B529F0B2187B996C00F9060D /* Default-568h@2x.png */,
 				B5A2B354186A8A7100774D94 /* CoreLocation.framework */,
-				B535D0DC1864227900285D0B /* Default@2x.png */,
 				B5D9DC931834AFB0002B1C74 /* AudioToolbox.framework */,
 				B5D9DC911834AFA4002B1C74 /* CoreAudio.framework */,
 				B58FAFB3182762AC00B01560 /* AssetsLibrary.framework */,
@@ -6685,10 +6686,11 @@
 		C942205E17A89E430054E5BC /* WOS */ = {
 			isa = PBXGroup;
 			children = (
+				1831C87B193CBD2E00ECE7C4 /* Default.png */,
+				1831C877193CBC9400ECE7C4 /* Default-568h@2x.png */,
+				1831C878193CBC9400ECE7C4 /* Default~iphone.png */,
 				B5C6616118A89BFF00C5A26C /* Framework */,
 				B58CB4601829CF7F00F73D66 /* Default-568h */,
-				B58CB4621829CF7F00F73D66 /* Default.png */,
-				B58CB4631829CF7F00F73D66 /* Default@2.png */,
 				B58CAA481829CF6700F73D66 /* area.plist */,
 				B58CAA491829CF6700F73D66 /* DYBConfigDef.h */,
 				B58CAB7F1829CF6700F73D66 /* WOS */,
@@ -6774,8 +6776,6 @@
 				C9281FA317BE00B400D34868 /* emoji.plist in Resources */,
 				B58CB0601829CF6A00F73D66 /* area.plist in Resources */,
 				B58CB4641829CF7F00F73D66 /* Default-568h in Resources */,
-				B58CB4661829CF7F00F73D66 /* Default.png in Resources */,
-				B58CB4671829CF7F00F73D66 /* Default@2.png in Resources */,
 				B5AA8A7618334A7D00825E4B /* TxtModel.html in Resources */,
 				28B80BF8191619DF007EF5C5 /* 地址管理.png in Resources */,
 				B5949FB3183E0573007904F6 /* 2tabs_left_def.png in Resources */,
@@ -6805,6 +6805,7 @@
 				B5949FC8183E0573007904F6 /* btn_addnote_def.png in Resources */,
 				B5949FC9183E0573007904F6 /* btn_back.png in Resources */,
 				B5949FCA183E0573007904F6 /* btn_back_def.png in Resources */,
+				1831C87C193CBD2E00ECE7C4 /* Default.png in Resources */,
 				B5949FCB183E0573007904F6 /* btn_back_hlt.png in Resources */,
 				B5949FCC183E0573007904F6 /* btn_call_no_def.png in Resources */,
 				B5949FCD183E0573007904F6 /* btn_call_no_high.png in Resources */,
@@ -6997,6 +6998,7 @@
 				B594A055183E0573007904F6 /* icon_offline_corner.png in Resources */,
 				B594A056183E0573007904F6 /* icon_others.png in Resources */,
 				B594A057183E0573007904F6 /* icon_photo.png in Resources */,
+				1831C879193CBC9400ECE7C4 /* Default-568h@2x.png in Resources */,
 				B594A058183E0573007904F6 /* icon_tm.png in Resources */,
 				B594A059183E0573007904F6 /* icon_video.png in Resources */,
 				B594A05A183E0573007904F6 /* slide_more.png in Resources */,
@@ -7244,6 +7246,7 @@
 				B594A124183E0573007904F6 /* 26.png in Resources */,
 				B594A125183E0573007904F6 /* 27.png in Resources */,
 				B5C6632518A89BFF00C5A26C /* sr_refresh@2X.png in Resources */,
+				1831C87A193CBC9400ECE7C4 /* Default~iphone.png in Resources */,
 				B594A126183E0573007904F6 /* 28.png in Resources */,
 				B594A127183E0573007904F6 /* 29.png in Resources */,
 				B594A128183E0573007904F6 /* 3.png in Resources */,
@@ -7667,7 +7670,6 @@
 				B535D0DA1864154000285D0B /* 021.png in Resources */,
 				B535D0DB1864154000285D0B /* 031.png in Resources */,
 				28B80BE9191619DF007EF5C5 /* xuaian.png in Resources */,
-				B535D0DD1864227A00285D0B /* Default@2x.png in Resources */,
 				B5C6631518A89BFF00C5A26C /* 1016.png in Resources */,
 				B5A2B38F186AA61800774D94 /* JingDianMapCell.xib in Resources */,
 				B5A2B390186AA61800774D94 /* MapViewController.xib in Resources */,
@@ -7716,7 +7718,6 @@
 				B529F0AE187B8D6500F9060D /* line.png in Resources */,
 				B529F0AF187B8D6500F9060D /* input_bg.png in Resources */,
 				B529F0B0187B8D6500F9060D /* button 2.png in Resources */,
-				B529F0B3187B996C00F9060D /* Default-568h@2x.png in Resources */,
 				B5360831187E99EB00284362 /* list 2.png in Resources */,
 				B5360832187E99EB00284362 /* jian.png in Resources */,
 				B5360833187E99EB00284362 /* line_bg.png in Resources */,
@@ -7865,6 +7866,7 @@
 				B5C662D818A89BFF00C5A26C /* UIView+Animations.m in Sources */,
 				B58CB1611829CF6A00F73D66 /* charts_list.m in Sources */,
 				B5C662C418A89BFF00C5A26C /* NSObject+Magic_Notification.m in Sources */,
+				18B81C7E1939CECE00DA858B /* WOSPayCardTableViewCell.m in Sources */,
 				B58CB1621829CF6A00F73D66 /* charts_total_all.m in Sources */,
 				B58CB1631829CF6A00F73D66 /* chat.m in Sources */,
 				B58CB1641829CF6A00F73D66 /* CheckVersionModel.m in Sources */,

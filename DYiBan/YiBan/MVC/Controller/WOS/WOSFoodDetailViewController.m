@@ -148,6 +148,7 @@
         
     }
     [[NSUserDefaults standardUserDefaults]setValue:[dictShop objectForKey:@"kitchenName"] forKey:@"shopname"];
+     [[NSUserDefaults standardUserDefaults]setValue:[dictShop objectForKey:@"kitchenIndex"] forKey:@"kitchenIndex"];
     AppDelegate *appD = appDelegate;
     [appD.arrayOrderList addObject:dictDeatil];
     UIView *viewBtn = [appD.window viewWithTag:80800];

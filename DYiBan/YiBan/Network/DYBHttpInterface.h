@@ -503,4 +503,9 @@
 
 //order/info.do
 + (NSMutableDictionary *)wosFoodInfo_orderinfo_userIndex :(NSString *)userIndex orderIndex  :(NSString *)orderIndex  ;
+
+
+//calculate.do
++ (NSMutableDictionary *)wosFoodInfo_calculate_userIndex:(NSString *)userIndex kitchenIndex:(NSString *)kitchenIndex foodIndexs:(NSString *)foodIndexs  countIndexs:(NSString *)countIndexs;
+
 @end

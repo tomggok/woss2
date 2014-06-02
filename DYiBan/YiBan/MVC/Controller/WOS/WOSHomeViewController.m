@@ -111,7 +111,7 @@ DEF_SIGNAL(TOUCHBUTTON)
         
         [self.rightButton setHidden:YES];
         
-        
+
       
         
         
@@ -232,7 +232,7 @@ static NSString *cellName = @"cellName";//
 
     if ([signal is:[MagicUITableView TABLENUMROWINSEC]])//numberOfRowsInSection
     {
-            NSNumber *s = [NSNumber numberWithInteger:arrayResult.count];
+            NSNumber *s = [NSNumber numberWithInteger:arrayShopList.count];
             [signal setReturnValue:s];
         
     }else if ([signal is:[MagicUITableView TABLENUMOFSEC]])//numberOfSectionsInTableView

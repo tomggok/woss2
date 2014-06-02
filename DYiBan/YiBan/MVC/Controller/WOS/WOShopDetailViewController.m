@@ -760,7 +760,8 @@ static NSString *cellName = @"cellName";
         
     }
     [[NSUserDefaults standardUserDefaults]setValue:[dictResult objectForKey:@"kitchenName"] forKey:@"shopname"];
-    
+
+    [[NSUserDefaults standardUserDefaults]setValue:[dictResult objectForKey:@"kitchenIndex"] forKey:@"kitchenIndex"];
     
     UIView *viewBtn = [appD.window viewWithTag:80800];
      [appD.arrayOrderList addObject:dict];

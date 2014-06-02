@@ -2150,4 +2150,17 @@
     return dict;
 
 }
+
++ (NSMutableDictionary *)wosFoodInfo_calculate_userIndex:(NSString *)userIndex kitchenIndex:(NSString *)kitchenIndex foodIndexs:(NSString *)foodIndexs  countIndexs:(NSString *)countIndexs{
+
+    NSMutableDictionary * dict = AUTORELEASE([[NSMutableDictionary alloc] init]);
+    [dict setValue:userIndex        forKey:@"userIndex"];
+    [dict setValue:kitchenIndex        forKey:@"kitchenIndex"];
+    
+    [dict setValue:countIndexs        forKey:@"countIndexs"];
+    [dict setValue:foodIndexs        forKey:@"foodIndexs"];
+    [dict setValue:@"calculate.do" forKey:INTERFACEDOACTION];
+    return dict;
+
+}
 @end

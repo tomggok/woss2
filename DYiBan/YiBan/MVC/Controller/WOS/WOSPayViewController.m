@@ -10,10 +10,15 @@
 #import "WOSPayTableViewCell.h"
 #import "APPDELEGATE.h"
 #import "WOSMakeSurePayTableViewCell.h"
+#import "JSONKit.h"
+#import "JSON.h"
+#import "WOSPayCardTableViewCell.h"
 
 @interface WOSPayViewController (){
     NSMutableDictionary *dictOrder;
     AppDelegate *appde;
+    NSArray *arrayCard;
+    UITableView *_tableView1;
 }
 
 @end
@@ -65,6 +70,8 @@
     else if ([signal is:[MagicViewController CREATE_VIEWS]]) {
           appde= appDelegate;
         [self.rightButton setHidden:YES];
+//        arrayCard = [[NSArray alloc]init];
+        
         dictOrder = [[NSMutableDictionary alloc]init];
         
         UILabel *labelName = [[UILabel alloc]initWithFrame:CGRectMake(10.0f, self.headHeight + 20, 250.0, 30.0f)];
@@ -93,9 +100,9 @@
 //        RELEASEOBJ(labelSave);
         
         
-        UILabel *labelTotal1 = [[UILabel alloc]initWithFrame:CGRectMake(270.0f, CGRectGetHeight(_tableView.frame) + CGRectGetMinY(_tableView.frame) + 5, 50.0, 30.0f)];
+        UILabel *labelTotal1 = [[UILabel alloc]initWithFrame:CGRectMake(250.0f, CGRectGetHeight(_tableView.frame) + CGRectGetMinY(_tableView.frame) + 5, 70.0, 30.0f)];
         [labelTotal1 setBackgroundColor:[UIColor clearColor]];
-        [labelTotal1 setText:@"128"];
+        [labelTotal1 setText:[NSString stringWithFormat:@"%.2f",[self getTotal]]];
         [self.view addSubview:labelTotal1];
 //        RELEASEOBJ(labelTotal1);
         
@@ -138,11 +145,12 @@
         
         
         
-        UITableView *_tableView1 = [[UITableView alloc]initWithFrame:CGRectMake(0.0f, CGRectGetHeight(switchFree.frame) + CGRectGetMinY(switchFree.frame) + 5, 320.0f, 60)];
+        _tableView1 = [[UITableView alloc]initWithFrame:CGRectMake(0.0f, CGRectGetHeight(switchFree.frame) + CGRectGetMinY(switchFree.frame) + 5, 320.0f, 90)];
         [_tableView1 setDataSource:self];
         [_tableView1 setDelegate:self];
+        [_tableView1 setBackgroundColor:[UIColor redColor]];
         [_tableView1 setTag:102];
-//        [self.view addSubview:_tableView1];
+        [self.view addSubview:_tableView1];
 //        RELEASEOBJ(_tableView1);
         
         
@@ -177,6 +185,9 @@
         [self.view addSubview:btnMakeSuerOrder];
         RELEASEOBJ(btnMakeSuerOrder);
         
+        
+        MagicRequest *request11 = [DYBHttpMethod wosKitchenInfo_medeals_userIndex:SHARED.userId kitchenIndex:nil sAlert:YES receive:self];
+        [request11 setTag:4];
         
 
 //        MagicUITableView *tabelViewList = [[MagicUITableView alloc]initWithFrame:CGRectMake(0.0f, self.headHeight, 320.0f, self.view.frame.size.height - self.headHeight)];
@@ -232,8 +243,13 @@
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     
+    if (tableView.tag == 101) {
+         return [dictOrder allKeys].count;
+    }else{
     
-    return [dictOrder allKeys].count;
+        return  arrayCard.count;
+    }
+   
     
 }
 
@@ -245,29 +261,65 @@
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     
-    static NSString *CellIdentifier = @"dd";
-    WOSMakeSurePayTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    if (cell == nil) {
-        cell = [[WOSMakeSurePayTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        cell.backgroundColor = [UIColor whiteColor];
-    }else {
+    if (tableView.tag == 101) {
         
-        for (UIView *view in [cell.contentView subviews]) {
-            [view removeFromSuperview];
+    
+        static NSString *CellIdentifier = @"dd";
+        WOSMakeSurePayTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+        if (cell == nil) {
+            cell = [[WOSMakeSurePayTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            cell.backgroundColor = [UIColor whiteColor];
+        }else {
+            
+            for (UIView *view in [cell.contentView subviews]) {
+                [view removeFromSuperview];
+            }
         }
+        
+        NSArray *array = [dictOrder allValues];
+        [cell creatCell:[array objectAtIndex:indexPath.row]];
+        return cell;
+        
+    }else if (tableView.tag == 102){
+    
+    
+        static NSString *CellIdentifier = @"ddw";
+        WOSPayCardTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+        if (cell == nil) {
+            cell = [[WOSPayCardTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            cell.backgroundColor = [UIColor whiteColor];
+        }else {
+            
+            for (UIView *view in [cell.contentView subviews]) {
+                [view removeFromSuperview];
+            }
+        }
+        
+        [cell ceatCell:[arrayCard objectAtIndex:indexPath.row]];
+        return cell;
+
+    
+    
     }
     
-    NSArray *array = [dictOrder allValues];
-    [cell creatCell:[array objectAtIndex:indexPath.row]];
-    return cell;
-    
-    
-    
+    return nil;
 }
 
 
+-(float )getTotal{
 
+    
+    float total = 0;
+    for (NSDictionary *dic in appde.arrayOrderList) {
+    
+      NSString *index = [dic objectForKey:@"foodPrice"];
+        total = total + [index floatValue];
+    }
+    return  total;
+
+}
 
 -(void)getData{
     
@@ -293,6 +345,69 @@
     }
     
 }
+
+
+
+
+#pragma mark- 只接受HTTP信号
+- (void)handleRequest:(MagicRequest *)request receiveObj:(id)receiveObj
+{
+    if ([request succeed])
+    {
+        //        JsonResponse *response = (JsonResponse *)receiveObj;
+        if (request.tag == 2) {
+            
+            
+            NSDictionary *dict = [request.responseString JSONValue];
+            
+            if (dict) {
+                BOOL result = [[dict objectForKey:@"result"] boolValue];
+                if (!result) {
+                    
+                    //                    _dictInfo = dict;
+                    //                    [DYBShareinstaceDelegate popViewText:@"收藏成功！" target:self hideTime:.5f isRelease:YES mode:MagicPOPALERTVIEWINDICATOR];
+                    //
+                }else{
+                    NSString *strMSG = [dict objectForKey:@"message"];
+                    
+                    [DYBShareinstaceDelegate popViewText:strMSG target:self hideTime:.5f isRelease:YES mode:MagicPOPALERTVIEWINDICATOR];
+                    
+                    
+                }
+            }
+        }else if(request.tag == 4){
+            
+            NSDictionary *dict = [request.responseString JSONValue];
+            
+            if (dict) {
+                
+                BOOL result = [[dict objectForKey:@"result"] boolValue];
+                if (!result) {
+//                    arrayCard = [dict iboΩ];
+                    arrayCard = [[NSArray alloc]initWithArray:[dict objectForKey:@"dealsList"]];
+                    [_tableView1 reloadData];
+                }
+                else{
+                    NSString *strMSG = [dict objectForKey:@"message"];
+                    
+                    [DYBShareinstaceDelegate popViewText:strMSG target:self hideTime:.5f isRelease:YES mode:MagicPOPALERTVIEWINDICATOR];
+                    
+                    
+                }
+            }
+            
+        } else{
+            NSDictionary *dict = [request.responseString JSONValue];
+            NSString *strMSG = [dict objectForKey:@"message"];
+            
+            [DYBShareinstaceDelegate popViewText:strMSG target:self hideTime:.5f isRelease:YES mode:MagicPOPALERTVIEWINDICATOR];
+            
+            
+        }
+    }
+}
+
+
 
 
 /*

@@ -22,7 +22,7 @@
 #import "DYBCommentMeViewController.h"
 #import "DYBEmployInfoViewController.h"
 #import "WOSMakeOrderView.h"
-
+#import "DYBUITabbarViewController.h"
 
 @implementation AppDelegate
 {
@@ -188,11 +188,13 @@
 //        MagicRequest *request = [DYBHttpMethod user_security_autologin:YES receive:self];
 //        [request setTag:1];
         
-        DYBUITabbarViewController *vc = [[DYBUITabbarViewController sharedInstace] init:[[_navi viewControllers] objectAtIndex:0]];
         
-        [_navi pushViewController:vc animated:NO];
         
-        SHARED.isLoginMethod = YES;
+//        DYBUITabbarViewController *vc = [[DYBUITabbarViewController sharedInstace] init:[[_navi viewControllers] objectAtIndex:0]];
+//        
+//        [_navi pushViewController:vc animated:NO];
+//        
+//        SHARED.isLoginMethod = YES;
     }
 }
 
@@ -275,11 +277,32 @@
 //        
 //        
 //    }else{
+    
+    
+//    DYBUITabbarViewController *vc = [[DYBUITabbarViewController sharedInstace] init:self];
+//    
+//    [self.drNavigationController pushViewController:vc animated:YES];
+    
+//        _navi = [MagicNavigationController stack:@"" firstViewClass:[DYBUITabbarViewController class]];
+    
+    
+    
+//    DYBUITabbarViewController *vc = [[DYBUITabbarViewController sharedInstace] init:nil];
+//    //加载左视图
+//    [[DYBUITabbarViewController sharedInstace] initLeftView];
+    
+    
+//     DYBUITabbarViewController *vc = [[DYBUITabbarViewController sharedInstace] init:[[_navi viewControllers] objectAtIndex:0]];
+    
         _navi = [MagicNavigationController stack:@"" firstViewClass:[WOSLogInViewController class]];
         [_navi setNavigationBarHidden:YES];
         
         MagicNaviGroupViewController *naviGroup = [MagicNaviGroupViewController naviStatckGroupWithFirstStack:_navi];
-        
+    
+         DYBUITabbarViewController *vc = [[DYBUITabbarViewController sharedInstace] init:[[_navi viewControllers] objectAtIndex:0]];
+    
+        [_navi pushViewController:vc animated:NO];
+    
         [self.window setRootViewController:naviGroup];
 //    }
    
