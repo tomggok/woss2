@@ -6750,6 +6750,11 @@
 			attributes = {
 				LastUpgradeCheck = 0460;
 				ORGANIZATIONNAME = ZzL;
+				TargetAttributes = {
+					C942205417A89E430054E5BC = {
+						DevelopmentTeam = WRHL46JH92;
+					};
+				};
 			};
 			buildConfigurationList = C942205017A89E430054E5BC /* Build configuration list for PBXProject "WOS" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -8302,8 +8307,8 @@
 		C942207317A89E430054E5BC /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Developer: zhou zhe (GNB5T4K9X8)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: zhou zhe (GNB5T4K9X8)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Qingtao Ren (FS8C526MC5)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Qingtao Ren (FS8C526MC5)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "DYiBan/WOS-Prefix.pch";
 				HEADER_SEARCH_PATHS = /System/Library/Frameworks/CoreTelephony.framework/Headers;
@@ -8318,8 +8323,8 @@
 				);
 				OTHER_LDFLAGS = "-licucore";
 				PRODUCT_NAME = WOS;
-				PROVISIONING_PROFILE = "FF41353E-52ED-428C-97BB-FE09FEC85B8C";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "FF41353E-52ED-428C-97BB-FE09FEC85B8C";
+				PROVISIONING_PROFILE = "4D7F2E7A-386E-4C68-89FC-5C60B2457AFE";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "4D7F2E7A-386E-4C68-89FC-5C60B2457AFE";
 				VALID_ARCHS = armv7;
 				WRAPPER_EXTENSION = app;
 			};
@@ -8328,8 +8333,8 @@
 		C942207417A89E430054E5BC /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Developer: zhou zhe (GNB5T4K9X8)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: zhou zhe (GNB5T4K9X8)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Qingtao Ren (FS8C526MC5)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Qingtao Ren (FS8C526MC5)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "DYiBan/WOS-Prefix.pch";
 				HEADER_SEARCH_PATHS = /System/Library/Frameworks/CoreTelephony.framework/Headers;
@@ -8344,8 +8349,8 @@
 				);
 				OTHER_LDFLAGS = "-licucore";
 				PRODUCT_NAME = WOS;
-				PROVISIONING_PROFILE = "FF41353E-52ED-428C-97BB-FE09FEC85B8C";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "FF41353E-52ED-428C-97BB-FE09FEC85B8C";
+				PROVISIONING_PROFILE = "4D7F2E7A-386E-4C68-89FC-5C60B2457AFE";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "4D7F2E7A-386E-4C68-89FC-5C60B2457AFE";
 				VALID_ARCHS = armv7;
 				WRAPPER_EXTENSION = app;
 			};
