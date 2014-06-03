@@ -22,7 +22,7 @@
 @end
 
 @implementation WOSMapViewController
-@synthesize iType,dictMap = _dictMap;
+@synthesize iType,dictMap = _dictMap,arrayXY;
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -91,57 +91,80 @@
 //        [_mapViewController.view setFrame:CGRectMake(0.0f, self.headHeight - 34 , 320.0f, self.view.bounds.size.height - self.headHeight)];
 //        [_mapViewController resetAnnitations:array];
         
-        for (int i = 0; i< 3; i ++) {
-            
-            UIButton *btn1 = [[UIButton alloc]initWithFrame:CGRectMake(0.0f + i*320/3 + i*1, self.headHeight, 320/3, 30)];
-            //            [btn1 setTitle:@"处理中" forState:UIControlStateNormal];
-            [btn1.titleLabel setFont:[UIFont systemFontOfSize:14]];
-            [btn1 setTitleColor:ColorGryWhite forState:UIControlStateNormal];
-            switch (i) {
-                case 0:
-                    [btn1 setTitle:@"我已吃过" forState:UIControlStateNormal];
-                    if (iType == 0) {
-                         [btn1 setTitleColor:ColorTextYellow forState:UIControlStateNormal];
-                    }
-                   
-                    break;
-                case 1:
-                    [btn1 setTitle:@"附近美食" forState:UIControlStateNormal];
-                    if (iType == 1) {
-                        [btn1 setTitleColor:ColorTextYellow forState:UIControlStateNormal];
-                    }
-                    break;
-                case 2:
-                    [btn1 setFrame:CGRectMake(0.0f + i*320/3 + i *0.5 , self.headHeight, 320/3, 30)];
-                    [btn1 setTitle:@"附近的人在吃" forState:UIControlStateNormal];
-                    if (iType == 2) {
-                        [btn1 setTitleColor:ColorTextYellow forState:UIControlStateNormal];
-                    }
-                    break;
-                    
-                default:
-                    break;
-            }
-            
-            
-            [btn1 setBackgroundColor:[UIColor blackColor]];
-            [btn1 addTarget:self action:@selector(doSelect:) forControlEvents:UIControlEventTouchUpInside];
-            [btn1 setTag:10 + i];
-            [self.view addSubview:btn1];
-            RELEASE(btn1);
-            
-            
-            if (iType == 3) {
-                [btn1 setHidden:YES];
-            }
+//        for (int i = 0; i< 3; i ++) {
+//            
+//            UIButton *btn1 = [[UIButton alloc]initWithFrame:CGRectMake(0.0f + i*320/3 + i*1, self.headHeight, 320/3, 30)];
+//            //            [btn1 setTitle:@"处理中" forState:UIControlStateNormal];
+//            [btn1.titleLabel setFont:[UIFont systemFontOfSize:14]];
+//            [btn1 setTitleColor:ColorGryWhite forState:UIControlStateNormal];
+//            switch (i) {
+//                case 0:
+//                    [btn1 setTitle:@"我已吃过" forState:UIControlStateNormal];
+//                    if (iType == 0) {
+//                         [btn1 setTitleColor:ColorTextYellow forState:UIControlStateNormal];
+//                    }
+//                   
+//                    break;
+//                case 1:
+//                    [btn1 setTitle:@"附近美食" forState:UIControlStateNormal];
+//                    if (iType == 1) {
+//                        [btn1 setTitleColor:ColorTextYellow forState:UIControlStateNormal];
+//                    }
+//                    break;
+//                case 2:
+//                    [btn1 setFrame:CGRectMake(0.0f + i*320/3 + i *0.5 , self.headHeight, 320/3, 30)];
+//                    [btn1 setTitle:@"附近的人在吃" forState:UIControlStateNormal];
+//                    if (iType == 2) {
+//                        [btn1 setTitleColor:ColorTextYellow forState:UIControlStateNormal];
+//                    }
+//                    break;
+//                    
+//                default:
+//                    break;
+//            }
+//            
+//            
+//            [btn1 setBackgroundColor:[UIColor blackColor]];
+//            [btn1 addTarget:self action:@selector(doSelect:) forControlEvents:UIControlEventTouchUpInside];
+//            [btn1 setTag:10 + i];
+//            [self.view addSubview:btn1];
+//            RELEASE(btn1);
+//            
+//            
+//            if (iType == 3) {
+//                [btn1 setHidden:YES];
+//            }
 //            116.354583,39.982453
             
           
             
-        }
+//        }
         
-        MagicRequest *request = [DYBHttpMethod wosMapList_userIndex:SHARED.userId gps:@"116.354583,39.982453" radius:@"10000" type:[NSString stringWithFormat:@"%d",iType + 1] sAlert:YES receive:self];
-        [request setTag:3];
+//        MagicRequest *request = [DYBHttpMethod wosMapList_userIndex:SHARED.userId gps:@"116.354583,39.982453" radius:@"10000" type:[NSString stringWithFormat:@"%d",iType + 1] sAlert:YES receive:self];
+//        [request setTag:3];
+        
+        
+        
+        
+        
+        
+        
+        MapViewController*   _mapViewController = [[MapViewController alloc] initWithFrame:CGRectMake(0.0f, self.headHeight + 30 , 320.0f, self.view.bounds.size.height - self.headHeight)];
+        _mapViewController.delegate = self;
+        [self.view addSubview:_mapViewController];
+        [_mapViewController resetAnnitations:arrayXY];
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
     }
     
     

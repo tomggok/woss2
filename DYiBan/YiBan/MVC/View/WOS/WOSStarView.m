@@ -22,12 +22,12 @@
 
 -(void)creatStar:(int)num{
 
-    UIImage *imageS = [UIImage imageNamed:@"22_06"];
+    UIImage *imageS = [UIImage imageNamed:@"饭店评分星星"];
     
     for (int i = 0; i < num; i++) {
         UIImageView *imageViewGood3 = [[UIImageView alloc]initWithFrame:CGRectMake(imageS.size.width/2 * i, 0,imageS.size.width/2, imageS.size.height/2)];
         [imageViewGood3 setBackgroundColor:[UIColor clearColor]];
-        [imageViewGood3 setImage:[UIImage imageNamed:@"22_06"]];
+        [imageViewGood3 setImage:[UIImage imageNamed:@"饭店评分星星"]];
         [self addSubview:imageViewGood3];
         RELEASE(imageViewGood3);
     }
@@ -37,8 +37,8 @@
         UIImageView *imageViewGood3 = [[UIImageView alloc]initWithFrame:CGRectMake(imageS.size.width/2 * (num+ j), 0,imageS.size.width/2, imageS.size.height/2)];
         [imageViewGood3 setBackgroundColor:[UIColor clearColor]];
         [imageViewGood3 setImage:[UIImage imageNamed:@"22_07"]];
-        [self addSubview:imageViewGood3];
-        RELEASE(imageViewGood3);
+//        [self addSubview:imageViewGood3];
+//        RELEASE(imageViewGood3);
     }
 
 }

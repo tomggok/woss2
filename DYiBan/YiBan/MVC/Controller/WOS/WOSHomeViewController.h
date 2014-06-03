@@ -9,7 +9,8 @@
 #import "DYBBaseViewController.h"
 #import "SGFocusImageItem.h"
 #import "SGFocusImageFrame.h"
-@interface WOSHomeViewController : DYBBaseViewController<SGFocusImageFrameDelegate>
+#import "MapViewController.h"
+@interface WOSHomeViewController : DYBBaseViewController<SGFocusImageFrameDelegate,MapViewControllerDidSelectDelegate>
 
 AS_SIGNAL(TOUCHBUTTON)
 @end

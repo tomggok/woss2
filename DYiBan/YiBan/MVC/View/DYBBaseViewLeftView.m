@@ -99,7 +99,7 @@ DEF_SIGNAL(SELECTBUTTON)//选择按钮
         UIButton *btnMammageAddr = [[UIButton alloc]initWithFrame:CGRectMake(10.0f, CGRectGetHeight(btnMammageOrder.frame) + CGRectGetMinY(btnMammageOrder.frame)+ 20  , image1.size.width/2, 40)];
         [btnMammageAddr setTag:12];
         [btnMammageAddr setTitle:@"地址管理" forState:UIControlStateNormal];
-        [btnMammageAddr setTitleColor:[UIColor colorWithRed:159.0f/255 green:159.0f/255 blue:159.0f/255 alpha:1.0f] forState:UIControlStateNormal];
+         [btnMammageAddr setTitleColor:[UIColor colorWithRed:159.0f/255 green:159.0f/255 blue:159.0f/255 alpha:1.0f] forState:UIControlStateNormal];
 //        [btnMammageAddr setImage:[UIImage imageNamed:@""] forState:UIControlStateNormal];
         [btnMammageAddr addTarget:self action:@selector(goOrder:) forControlEvents:UIControlEventTouchUpInside];
         [self addSubview:btnMammageAddr];
@@ -111,7 +111,7 @@ DEF_SIGNAL(SELECTBUTTON)//选择按钮
         //        [btnMammageAddr setImage:[UIImage imageNamed:@""] forState:UIControlStateNormal];'
         [btnMammageCol setTag:13];
         [btnMammageCol setBackgroundColor:[UIColor clearColor]];
-        [btnMammageCol setTitleColor:[UIColor colorWithRed:159.0f/255 green:159.0f/255 blue:159.0f/255 alpha:1.0f] forState:UIControlStateNormal];
+         [btnMammageCol setTitleColor:[UIColor colorWithRed:159.0f/255 green:159.0f/255 blue:159.0f/255 alpha:1.0f] forState:UIControlStateNormal];
         [btnMammageCol addTarget:self action:@selector(goOrder:) forControlEvents:UIControlEventTouchUpInside];
         [self addSubview:btnMammageCol];
         RELEASE(btnMammageCol)

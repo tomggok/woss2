@@ -33,52 +33,78 @@
 
 -(void)creatCell:(NSDictionary *)dict{
 
-    UIImageView *imageViewIcon = [[UIImageView alloc]initWithFrame:CGRectMake(20.0f, 10.0f, 30.0f, 30.0f)];
-      NSURL *url = [NSURL URLWithString:[DYBShareinstaceDelegate addIPImage:[dict objectForKey:@"imgUrl"] ]];
-    [imageViewIcon setImageWithURL:url];
+//    UIImageView *imageViewIcon = [[UIImageView alloc]initWithFrame:CGRectMake(10.0f, 10.0f, 50.0f, 50.0f)];
+//      NSURL *url = [NSURL URLWithString:[DYBShareinstaceDelegate addIPImage:[dict objectForKey:@"imgUrl"] ]];
+//    [imageViewIcon setImageWithURL:url];
 //    [imageViewIcon setBackgroundColor:[UIColor redColor]];
+//    [self addSubview:imageViewIcon];
+//    RELEASE(imageViewIcon);
+    
+    
+    UILabel *imageViewIcon = [[UILabel alloc]initWithFrame:CGRectMake(10.0f, 10.0f, 50.0f, 50.0f)];
+    [imageViewIcon setBackgroundColor:[UIColor colorWithRed:255.0f/255 green:91.0f/255 blue:91.0f/255 alpha:1.0f]];
+    [imageViewIcon setTextAlignment:NSTextAlignmentCenter];
+    [imageViewIcon setTextColor:[UIColor whiteColor]];
+    [imageViewIcon.layer setCornerRadius:10.0f];
+    [imageViewIcon.layer setBorderWidth:0.0f];
+    [imageViewIcon.layer setMasksToBounds:YES];
+    
+    [imageViewIcon setText:[[dict objectForKey:@"kitchenName"] substringToIndex:1]];
     [self addSubview:imageViewIcon];
-    RELEASE(imageViewIcon);
     
-    UILabel *labelName = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetMinX(imageViewIcon.frame) + 10 + CGRectGetWidth(imageViewIcon.frame), 10.0f, 150.0f, 20.0f)];
-    
+    UILabel *labelName = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetMinX(imageViewIcon.frame) + 10 + CGRectGetWidth(imageViewIcon.frame), 10.0f, 120.0f, 20.0f)];
+    [labelName setBackgroundColor:[UIColor clearColor]];
+    [labelName setFont:[UIFont systemFontOfSize:16.0f]];
     [labelName setText:[dict objectForKey:@"kitchenName"]];
     [self addSubview:labelName];
     RELEASE(labelName);
     
     
-    UIImageView *imageViewIndexHui = [[UIImageView alloc]initWithFrame:CGRectMake(CGRectGetMinX(labelName.frame)+ CGRectGetWidth(labelName.frame),  10, 20.0f, 20.0f)];
-    [imageViewIndexHui setBackgroundColor:[UIColor redColor]];
-//      NSURL *url = [NSURL URLWithString:[DYBShareinstaceDelegate addIPImage:[dict objectForKey:@"imgUrl"]]];
-//    [imageViewIndexHui setImageWithURL:url];
-    [self addSubview:imageViewIndexHui];
-    RELEASE(imageViewIndexHui);
     
-    UIImageView *imageViewIndexchuan = [[UIImageView alloc]initWithFrame:CGRectMake(CGRectGetMinX(labelName.frame), 20 + 10, 20.0f, 20.0f)];
-    [imageViewIndexchuan setBackgroundColor:[UIColor redColor]];
+  
+    
+    
+    UIImage *imagehui = [UIImage imageNamed:@"优惠小图标"];
+    UIImageView *imageViewIndexHui = [[UIImageView alloc]initWithFrame:CGRectMake(370/2,  10, imagehui.size.width/2, imagehui.size.height/2)];
+    [imageViewIndexHui setImage:imagehui];
+    [imageViewIndexHui setBackgroundColor:[UIColor clearColor]];
+//    if ([[dict objectForKey:@"hasDiscount"] boolValue]) {
+        [self addSubview:imageViewIndexHui];
+        RELEASE(imageViewIndexHui);
+
+//    }
+    
+     UIImage *imageType = [UIImage imageNamed:@"川菜小图标"];
+    UIImageView *imageViewIndexchuan = [[UIImageView alloc]initWithFrame:CGRectMake(CGRectGetMinX(labelName.frame), 20 + 10, imageType.size.width/2, imageType.size.height/2)];
+    [imageViewIndexchuan setImage:imageType];
+    
+    [imageViewIndexchuan setBackgroundColor:[UIColor clearColor]];
     [self addSubview:imageViewIndexchuan];
     RELEASE(imageViewIndexchuan);
     
-    WOSStarView *start = [[WOSStarView alloc]initWithFrame:CGRectMake(CGRectGetMinX(imageViewIndexchuan.frame) + 10, CGRectGetMinY(imageViewIndexchuan.frame), 100.0f, 20.0f) num:[[dict objectForKey:@"starLevel"] intValue]];
+    WOSStarView *start = [[WOSStarView alloc]initWithFrame:CGRectMake(CGRectGetMinX(imageViewIndexchuan.frame) + CGRectGetWidth(imageViewIndexchuan.frame) + 10, CGRectGetMinY(imageViewIndexchuan.frame), 100.0f, 20.0f) num:[[dict objectForKey:@"starLevel"] intValue]];
     [self addSubview:start];
     RELEASE(start);
     
     
-    UILabel *labelNameDistance = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetMinX(imageViewIcon.frame) + 10, 10.0f + CGRectGetMinY(start.frame), 150.0f, 20.0f)];
+    UILabel *labelNameDistance = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetMinX(imageViewIcon.frame) + CGRectGetWidth(imageViewIcon.frame) + 10, 15.0f + CGRectGetMinY(start.frame), 120.0f, 20.0f)];
     double lat = 100;
     double lon = 34;
     NSString *gps = [dict objectForKey:@"gps"];
     NSArray *arrayGPS = [gps componentsSeparatedByString:@","];
     double tt = [DYBShareinstaceDelegate getDsitance_lat_a:lat lng_a:lon lat_b:[[arrayGPS objectAtIndex:0] doubleValue] lng_b:[[arrayGPS objectAtIndex:1] doubleValue]];
-    
+    [labelNameDistance setFont:[UIFont systemFontOfSize:12.0f]];
+    [labelNameDistance setTextColor:[UIColor colorWithRed:159.0f/255 green:159.0f/255 blue:159.0f/255 alpha:1.0f]];
     [labelNameDistance setText:[NSString stringWithFormat:@"距离我%@",[self getDistance:tt] ]];
     [self addSubview:labelNameDistance];
     RELEASE(labelNameDistance);
+      [labelNameDistance setBackgroundColor:[UIColor clearColor]];
     
-    
-    UILabel *labelFree = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetMinX(labelNameDistance.frame) + 10 +CGRectGetWidth(labelNameDistance.frame), 10.0f + CGRectGetMinY(start.frame), 150.0f, 20.0f)];
-    
-    [labelFree setText:[NSString stringWithFormat:@"%@",[dict objectForKey:@"pricePU"]]];
+    UILabel *labelFree = [[UILabel alloc]initWithFrame:CGRectMake(370/2, 15.0f + CGRectGetMinY(start.frame), 120.0f, 20.0f)];
+    [labelFree setFont:[UIFont systemFontOfSize:12.0f]];
+    [labelFree setTextColor:[UIColor colorWithRed:159.0f/255 green:159.0f/255 blue:159.0f/255 alpha:1.0f]];
+    [labelFree setBackgroundColor:[UIColor clearColor]];
+    [labelFree setText:[NSString stringWithFormat:@"%@元起送",[dict objectForKey:@"pricePU"]]];
     [self addSubview:labelFree];
     RELEASE(labelFree);
     

@@ -401,9 +401,12 @@
                
                 SHARED.userId = [dict objectForKey:@"userIndex"]; //设置userid 全局变量
                 
-                DYBUITabbarViewController *vc = [[DYBUITabbarViewController sharedInstace] init:self];
                 
-                [self.drNavigationController pushViewController:vc animated:YES];
+                [self.drNavigationController popViewControllerAnimated:YES];
+                
+//                DYBUITabbarViewController *vc = [[DYBUITabbarViewController sharedInstace] init:self];
+//                
+//                [self.drNavigationController pushViewController:vc animated:YES];
                 
             }else{
                 NSString *strMSG = [dict objectForKey:@"message"];

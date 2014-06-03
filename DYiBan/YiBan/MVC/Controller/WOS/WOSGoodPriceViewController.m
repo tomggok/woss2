@@ -227,6 +227,10 @@
 
 -(void)doSelect:(id)sender{
     
+    
+    
+    
+    
     UIButton *btn = (UIButton *)sender;
     for (int i = 10; i < 13; i++) {
         
@@ -256,6 +260,11 @@
         [self.headview setTitle:@"热门推荐"];
     }
     
+    
+      UIView *viewB = [self.view viewWithTag:1000];
+    if (viewB) {
+        [viewB setHidden:YES];
+    }
     
 }
 

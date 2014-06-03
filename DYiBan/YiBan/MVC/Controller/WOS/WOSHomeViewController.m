@@ -32,6 +32,13 @@
     MagicUISearchBar *searchBar;
     MagicUITableView *tabelViewList;
     NSMutableArray *arrayShopList;
+    
+    UIButton *btnLeft;
+    UIButton *rightBtn;
+    
+    MapViewController*   _mapViewController;
+    
+    BOOL bMap;
 }
 
 @end
@@ -69,8 +76,19 @@ DEF_SIGNAL(TOUCHBUTTON)
     if ([signal is:[MagicViewController LAYOUT_VIEWS]])
     {
 
-        [self setButtonImage:self.rightButton setImage:@"account"];
+        if (!btnLeft) {
+            
+            
+        }
+        
+       
 
+        
+        [self setButtonImage:self.rightButton setImage:@"地图1.png"];
+        [self.rightButton setHidden:YES];
+        [self.leftButton setHidden:YES];
+        
+        
         [self.headview setTitleColor:[UIColor colorWithRed:193.0f/255 green:193.0f/255 blue:193.0f/255 alpha:1.0f]];
         [self.headview setBackgroundColor:[UIColor colorWithRed:40.0f/255 green:191.0f/255 blue:140.0f/255 alpha:1.0f]];
         [self.view setBackgroundColor:ColorBG];
@@ -93,8 +111,10 @@ DEF_SIGNAL(TOUCHBUTTON)
     }
     else if ([signal is:[MagicViewController CREATE_VIEWS]]) {
         
-//        arrayShopList = [[NSMutableArray alloc]init];
+        bMap = NO;
         
+        [self.headview setHidden:YES];
+        [self.view bringSubviewToFront:btnLeft];
         
         MagicRequest *request = [DYBHttpMethod wosKitchenInfo_activityList_count:@"4" sAlert:YES receive:self];
         [request setTag:3];
@@ -111,109 +131,36 @@ DEF_SIGNAL(TOUCHBUTTON)
         
         [self.rightButton setHidden:YES];
         
-
-      
-        
-        
-//        [self.view setBackgroundColor:[UIColor clearColor]];
-        
-//        [self creatBanner];
-        
-//         UIImage *image = [UIImage imageNamed:@"flash.png"];
-//        
-//        UIImage *imageGoodFood = [UIImage imageNamed:@"list.png"];
-//        UIButton *btnGoodFood = [[UIButton alloc]initWithFrame:CGRectMake((320 - imageGoodFood.size.width/2)/2, 45 + image.size.height/2 , imageGoodFood.size.width/2, imageGoodFood.size.height/2)];
-////        [btnGoodFood setTitle:@"美食大全" forState:UIControlStateNormal];
-//        [btnGoodFood addTarget:self action:@selector(goodFood) forControlEvents:UIControlEventTouchUpInside];
-//        [btnGoodFood setImage:imageGoodFood forState:UIControlStateNormal];
-//        [btnGoodFood setImage:imageGoodFood forState:UIControlStateHighlighted];
-//        [scrollView addSubview:btnGoodFood];
-//        RELEASE(btnGoodFood);
-//                
-//        
-//        UIImage *imageGoodPrice = [UIImage imageNamed:@"discount"];
-//        UIButton *btnGoodPrice = [[UIButton alloc]initWithFrame:CGRectMake(8, CGRectGetHeight(btnGoodFood.frame) + CGRectGetMinY(btnGoodFood.frame) + 5 , imageGoodPrice.size.width/2, imageGoodPrice.size.height/2)];
-//        //        [btnGoodFood setTitle:@"美食大全" forState:UIControlStateNormal];
-//        [btnGoodPrice setImage:imageGoodPrice forState:UIControlStateNormal];
-//        [btnGoodPrice setImage:imageGoodPrice forState:UIControlStateHighlighted];
-//        [btnGoodPrice addTarget:self action:@selector(goodPrice) forControlEvents:UIControlEventTouchUpInside];
-//        [scrollView addSubview:btnGoodPrice];
-//        RELEASE(btnGoodPrice);
-//        
-//        
-//        UIImage *imageGoodMap = [UIImage imageNamed:@"map"];
-//        UIButton *btnGoodMap = [[UIButton alloc]initWithFrame:CGRectMake( CGRectGetWidth(btnGoodPrice.frame) + 8 + 7, CGRectGetHeight(btnGoodFood.frame) + CGRectGetMinY(btnGoodFood.frame) + 5 , imageGoodMap.size.width/2, imageGoodMap.size.height/2)];
-//        //        [btnGoodFood setTitle:@"美食大全" forState:UIControlStateNormal];
-//        [btnGoodMap addTarget:self action:@selector(mapViewController) forControlEvents:UIControlEventTouchUpInside];
-//
-//        [btnGoodMap setImage:imageGoodMap forState:UIControlStateNormal];
-//        [btnGoodMap setImage:imageGoodMap forState:UIControlStateHighlighted];
-//        [scrollView addSubview:btnGoodMap];
-//        RELEASE(btnGoodMap);
-//        
-//        UIImage *imageGoodTuiJian = [UIImage imageNamed:@"recommend"];
-//        UIButton *btnGoodTuiJian = [[UIButton alloc]initWithFrame:CGRectMake( CGRectGetWidth(btnGoodPrice.frame) + 8 + 7, CGRectGetHeight(btnGoodMap.frame) + CGRectGetMinY(btnGoodMap.frame) + 5 , imageGoodTuiJian.size.width/2, imageGoodTuiJian.size.height/2)];
-//        //        [btnGoodFood setTitle:@"美食大全" forState:UIControlStateNormal];
-//        [btnGoodTuiJian setImage:imageGoodTuiJian forState:UIControlStateNormal];
-//        [btnGoodTuiJian setImage:imageGoodTuiJian forState:UIControlStateHighlighted];
-//        [scrollView addSubview:btnGoodTuiJian];
-//        RELEASE(btnGoodTuiJian);
-//        
-//        
-//        UIImage *imageGoodSearch = [UIImage imageNamed:@"search"];
-//        UIButton *btnGoodSearch = [[UIButton alloc]initWithFrame:CGRectMake( CGRectGetWidth(btnGoodPrice.frame) + 8 + 7 + CGRectGetWidth(btnGoodTuiJian.frame) + 5 + 3  , CGRectGetHeight(btnGoodMap.frame) + CGRectGetMinY(btnGoodMap.frame) + 5 , imageGoodSearch.size.width/2, imageGoodSearch.size.height/2)];
-//        [btnGoodSearch addTarget:self action:@selector(searchFood) forControlEvents:UIControlEventTouchUpInside];
-//        //        [btnGoodFood setTitle:@"美食大全" forState:UIControlStateNormal];
-//        [btnGoodSearch setImage:imageGoodSearch forState:UIControlStateNormal];
-//        [btnGoodSearch setImage:imageGoodSearch forState:UIControlStateHighlighted];
-//        [scrollView addSubview:btnGoodSearch];
-//        RELEASE(btnGoodSearch);
-//        
-//        
-//        UIImage *imageYouLike = [UIImage imageNamed:@"guess"];
-//        UIButton *btnYouLike = [[UIButton alloc]initWithFrame:CGRectMake( 8 , CGRectGetHeight(btnGoodPrice.frame) + CGRectGetMinY(btnGoodPrice.frame) + 5 , imageYouLike.size.width/2, imageYouLike.size.height/2)];
-//        //        [btnGoodFood setTitle:@"美食大全" forState:UIControlStateNormal];
-//        [btnYouLike addTarget:self action:@selector(youlike) forControlEvents:UIControlEventTouchUpInside];
-//        [btnYouLike setImage:imageYouLike forState:UIControlStateNormal];
-//        [btnYouLike setImage:imageYouLike forState:UIControlStateHighlighted];
-//        [scrollView addSubview:btnYouLike];
-//        RELEASE(btnYouLike);
-//        
-//        UIImage *imageNear = [UIImage imageNamed:@"nearby"];
-//        UIButton *btnNear = [[UIButton alloc]initWithFrame:CGRectMake( 8  , CGRectGetHeight(btnYouLike.frame) + CGRectGetMinY(btnYouLike.frame) + 5 , imageNear.size.width/2, imageNear.size.height/2)];
-//        //        [btnGoodFood setTitle:@"美食大全" forState:UIControlStateNormal];
-//        [btnNear addTarget:self action:@selector(nearby) forControlEvents:UIControlEventTouchUpInside];
-//
-//        [btnNear setImage:imageNear forState:UIControlStateNormal];
-//        [btnNear setImage:imageNear forState:UIControlStateHighlighted];
-//        [scrollView addSubview:btnNear];
-//        RELEASE(btnNear);
-//        
-//        UIImage *imagePeople = [UIImage imageNamed:@"nearbypeople"];
-//        UIButton *btnPeople = [[UIButton alloc]initWithFrame:CGRectMake( CGRectGetWidth(btnGoodPrice.frame) + 8 + 7  , CGRectGetHeight(btnGoodSearch.frame) + CGRectGetMinY(btnGoodSearch.frame) + 5 , imagePeople.size.width/2, imagePeople.size.height/2)];
-//        //        [btnGoodFood setTitle:@"美食大全" forState:UIControlStateNormal];
-//        [btnPeople addTarget:self action:@selector(nearbyPeople) forControlEvents:UIControlEventTouchUpInside];
-//        [btnPeople setImage:imagePeople forState:UIControlStateNormal];
-//        [btnPeople setImage:imagePeople forState:UIControlStateHighlighted];
-//        [scrollView addSubview:btnPeople];
-//        RELEASE(btnPeople);
-//        
-//        
-//        [scrollView setContentSize:CGSizeMake(320.0f, CGRectGetHeight(btnPeople.frame) + CGRectGetMinY(btnPeople.frame) + 20 )];
-        
-       
-        
         [self creatBowwon2];
         [self creatBowwonView];
         
-//        UIView *view11 = [[UIView alloc]initWithFrame:CGRectMake(0.0f, self.view.frame.size.height - 210, 320.0f, 40)];
-//        [view11 setBackgroundColor:[UIColor redColor]];
-//        [self.view addSubview:view11];
         
     }
     
     
-    else if ([signal is:[MagicViewController DID_APPEAR]]) {
+    else if ([signal is:[MagicViewController WILL_APPEAR]]) {
+        
+        if (!btnLeft) {
+            
+            btnLeft = [[UIButton alloc]initWithFrame:CGRectMake(10.0f, 20.0f, 40.0f, 40.0f)];
+            [btnLeft setTitle:@"美食" forState:UIControlStateNormal];
+            [btnLeft addTarget:self action:@selector(doLeft) forControlEvents:UIControlEventTouchUpInside];
+            [btnLeft setBackgroundColor:[UIColor clearColor]];
+            [self.view addSubview:btnLeft];
+            RELEASE(btnLeft);
+
+        }
+        
+        if (!rightBtn) {
+            
+            UIImage *image = [UIImage imageNamed:@"地图1"];
+            rightBtn = [[UIButton alloc]initWithFrame:CGRectMake(240, 20, image.size.width/2, image.size.height/2)];
+            [rightBtn setImage:[UIImage imageNamed:@"地图1.png"] forState:UIControlStateNormal];
+            [rightBtn addTarget:self action:@selector(doRight) forControlEvents:UIControlEventTouchUpInside];
+            [self.view addSubview:rightBtn];
+            RELEASE(rightBtn);
+        }
+        
         
         DLogInfo(@"rrr");
     } else if ([signal is:[MagicViewController DID_DISAPPEAR]]){
@@ -222,6 +169,19 @@ DEF_SIGNAL(TOUCHBUTTON)
     }
 }
 
+-(void)doLeft{
+
+    [self creatTopBatView ];
+
+
+
+}
+
+-(void)doRight{
+
+    [self mapViewController];
+
+}
 
 #pragma mark- 接受tbv信号
 
@@ -281,6 +241,7 @@ static NSString *cellName = @"cellName";//
         
         WOSShopsListTableViewCell *cell = [[WOSShopsListTableViewCell alloc]init];
         [cell creatCell:[arrayShopList objectAtIndex:indexPath.row]];
+        [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
         [signal setReturnValue:cell];
         
     }else if ([signal is:[MagicUITableView TABLEDIDSELECT]])//选中cell
@@ -354,7 +315,8 @@ static NSString *cellName = @"cellName";//
         
         UIView *viewBar = [[UIView alloc]initWithFrame:CGRectMake(0.0f, self.headHeight, 320.0f, 40.0f)];
         [viewBar setTag:1000];
-        [viewBar setBackgroundColor:[UIColor redColor]];
+        [viewBar setBackgroundColor:[UIColor colorWithRed:40.0f/255 green:191.0f/255 blue:140.0f/255 alpha:1.0f]];
+        [viewBar setAlpha:0.6];
         [self.view addSubview:viewBar];
         
         float offset = 320/3;
@@ -522,6 +484,8 @@ static NSString *cellName = @"cellName";//
             
             
         }
+        
+        [viewBar setHidden:YES];
         
     }
 
@@ -721,11 +685,40 @@ static NSString *cellName = @"cellName";//
 
 -(void)mapViewController{
 
-    WOSMapViewController *map = [[WOSMapViewController alloc]init];
-    map.iType = 0;
-    [self.drNavigationController pushViewController:map animated:YES];
-    RELEASE(map);
+//    WOSMapViewController *map = [[WOSMapViewController alloc]init];
+//    map.iType = 0;
+//    map.arrayXY = arrayShopList;
+//    [self.view addSubview:map.view];
+    
+    bMap = !bMap;
+    if (bMap) {
+        [_mapViewController setHidden:NO];
+        [rightBtn setImage:[UIImage imageNamed:@"qiehuandituanjian"] forState:UIControlStateNormal];
+    }else{
+        [_mapViewController setHidden:YES];
+     [rightBtn setImage:[UIImage imageNamed:@"切换地图按键"] forState:UIControlStateNormal];
+    
+    }
+    
+   
+    [_mapViewController resetAnnitations:arrayShopList];
+
+    
+    
+//    [self.drNavigationController pushViewController:map animated:YES];
+//    RELEASE(map);
 }
+- (void)customMKMapViewDidSelectedWithInfo:(id)info
+{
+    NSLog(@"%@",info);
+    
+    WOShopDetailViewController *detail = [[WOShopDetailViewController alloc]init];
+    detail.dictInfo = info;
+    [self.drNavigationController pushViewController:detail animated:YES];
+    RELEASE(detail);
+    
+}
+
 
 -(void)youlike{
     WOSThinkYouLikeViewController *like = [[WOSThinkYouLikeViewController alloc]init];
@@ -799,10 +792,16 @@ static NSString *cellName = @"cellName";//
                     arrayShopList = [[NSMutableArray alloc]initWithArray: [dict objectForKey:@"kitchenList"]];
 //                    [tabelViewList reloadData];
                     tabelViewList = [[MagicUITableView alloc]initWithFrame:CGRectMake(0.0f, self.headHeight + 120, 320.0f, self.view.frame.size.height - self.headHeight-200)];
-                    
-                    [self.view addSubview:tabelViewList];
+                    [self.view insertSubview:tabelViewList atIndex:1];
+//                    [self.view addSubview:tabelViewList];
                     NSLog(@"tableview --- %@",tabelViewList);
                     RELEASE(tabelViewList)
+                    
+                    _mapViewController = [[MapViewController alloc] initWithFrame:CGRectMake(0.0f, self.headHeight + 0 , 320.0f, self.view.bounds.size.height - self.headHeight)];
+                    _mapViewController.delegate = self;
+                    [_mapViewController setHidden:YES];
+                    [self.view insertSubview:_mapViewController atIndex:2];
+//                    [self.view addSubview:_mapViewController];
 
                 }else{
                     NSString *strMSG = [dict objectForKey:@"message"];

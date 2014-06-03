@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		18002F5B191FC558000E8484 /* WOSRegisterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 18002F5A191FC558000E8484 /* WOSRegisterViewController.m */; };
 		1802955118C8C373008BFAF8 /* WOSTellMSGViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1802955018C8C373008BFAF8 /* WOSTellMSGViewController.m */; };
+		18301202193E2EAC00BA6FCF /* WOSMapView.m in Sources */ = {isa = PBXBuildFile; fileRef = 18301201193E2EAC00BA6FCF /* WOSMapView.m */; };
 		1831C879193CBC9400ECE7C4 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1831C877193CBC9400ECE7C4 /* Default-568h@2x.png */; };
 		1831C87A193CBC9400ECE7C4 /* Default~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 1831C878193CBC9400ECE7C4 /* Default~iphone.png */; };
 		1831C87C193CBD2E00ECE7C4 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 1831C87B193CBD2E00ECE7C4 /* Default.png */; };
@@ -89,7 +90,7 @@
 		28B80C09191619DF007EF5C5 /* 隐藏密码.png in Resources */ = {isa = PBXBuildFile; fileRef = 28B80B4A191619DF007EF5C5 /* 隐藏密码.png */; };
 		28B80C0A191619DF007EF5C5 /* 顶栏.png in Resources */ = {isa = PBXBuildFile; fileRef = 28B80B4B191619DF007EF5C5 /* 顶栏.png */; };
 		28B80C0B191619DF007EF5C5 /* ？.png in Resources */ = {isa = PBXBuildFile; fileRef = 28B80B4C191619DF007EF5C5 /* ？.png */; };
-		28B80C0C191619DF007EF5C5 /*  .png in Resources */ = {isa = PBXBuildFile; fileRef = 28B80B4E191619DF007EF5C5 /*  .png */; };
+		28B80C0C191619DF007EF5C5 /* 地图1.png in Resources */ = {isa = PBXBuildFile; fileRef = 28B80B4E191619DF007EF5C5 /* 地图1.png */; };
 		28B80C0E191619DF007EF5C5 /* 低栏.png in Resources */ = {isa = PBXBuildFile; fileRef = 28B80B50191619DF007EF5C5 /* 低栏.png */; };
 		28B80C0F191619DF007EF5C5 /* 低栏选项展开.png in Resources */ = {isa = PBXBuildFile; fileRef = 28B80B51191619DF007EF5C5 /* 低栏选项展开.png */; };
 		28B80C10191619DF007EF5C5 /* 展开搜索底子.png in Resources */ = {isa = PBXBuildFile; fileRef = 28B80B52191619DF007EF5C5 /* 展开搜索底子.png */; };
@@ -1476,6 +1477,8 @@
 		18002F5A191FC558000E8484 /* WOSRegisterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WOSRegisterViewController.m; sourceTree = "<group>"; };
 		1802954F18C8C373008BFAF8 /* WOSTellMSGViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WOSTellMSGViewController.h; sourceTree = "<group>"; };
 		1802955018C8C373008BFAF8 /* WOSTellMSGViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WOSTellMSGViewController.m; sourceTree = "<group>"; };
+		18301200193E2EAC00BA6FCF /* WOSMapView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WOSMapView.h; sourceTree = "<group>"; };
+		18301201193E2EAC00BA6FCF /* WOSMapView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WOSMapView.m; sourceTree = "<group>"; };
 		1831C877193CBC9400ECE7C4 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		1831C878193CBC9400ECE7C4 /* Default~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default~iphone.png"; sourceTree = "<group>"; };
 		1831C87B193CBD2E00ECE7C4 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
@@ -1568,7 +1571,7 @@
 		28B80B4A191619DF007EF5C5 /* 隐藏密码.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "隐藏密码.png"; sourceTree = "<group>"; };
 		28B80B4B191619DF007EF5C5 /* 顶栏.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "顶栏.png"; sourceTree = "<group>"; };
 		28B80B4C191619DF007EF5C5 /* ？.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "？.png"; sourceTree = "<group>"; };
-		28B80B4E191619DF007EF5C5 /*  .png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = " .png"; sourceTree = "<group>"; };
+		28B80B4E191619DF007EF5C5 /* 地图1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "地图1.png"; sourceTree = "<group>"; };
 		28B80B50191619DF007EF5C5 /* 低栏.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "低栏.png"; sourceTree = "<group>"; };
 		28B80B51191619DF007EF5C5 /* 低栏选项展开.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "低栏选项展开.png"; sourceTree = "<group>"; };
 		28B80B52191619DF007EF5C5 /* 展开搜索底子.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "展开搜索底子.png"; sourceTree = "<group>"; };
@@ -3686,7 +3689,7 @@
 		28B80B4D191619DF007EF5C5 /* 第一屏列表 */ = {
 			isa = PBXGroup;
 			children = (
-				28B80B4E191619DF007EF5C5 /*  .png */,
+				28B80B4E191619DF007EF5C5 /* 地图1.png */,
 				28B80B50191619DF007EF5C5 /* 低栏.png */,
 				28B80B51191619DF007EF5C5 /* 低栏选项展开.png */,
 				28B80B52191619DF007EF5C5 /* 展开搜索底子.png */,
@@ -5073,6 +5076,8 @@
 				18A169031933B65500F44059 /* WOSMakeSurePayTableViewCell.m */,
 				18B81C7C1939CECE00DA858B /* WOSPayCardTableViewCell.h */,
 				18B81C7D1939CECE00DA858B /* WOSPayCardTableViewCell.m */,
+				18301200193E2EAC00BA6FCF /* WOSMapView.h */,
+				18301201193E2EAC00BA6FCF /* WOSMapView.m */,
 			);
 			path = WOS;
 			sourceTree = "<group>";
@@ -7213,7 +7218,7 @@
 				B594A103183E0573007904F6 /* more_forward_def.png in Resources */,
 				B594A104183E0573007904F6 /* more_forward_press.png in Resources */,
 				B594A105183E0573007904F6 /* more_like_def.png in Resources */,
-				28B80C0C191619DF007EF5C5 /*  .png in Resources */,
+				28B80C0C191619DF007EF5C5 /* 地图1.png in Resources */,
 				B594A106183E0573007904F6 /* more_like_press.png in Resources */,
 				B594A107183E0573007904F6 /* more_slide_shadow.png in Resources */,
 				B594A108183E0573007904F6 /* quick_btn.png in Resources */,
@@ -8063,6 +8068,7 @@
 				B5C662BE18A89BFF00C5A26C /* AVAudioPlayer+MagicCategory.m in Sources */,
 				B5C662A918A89BFF00C5A26C /* Magic_JSONReflection.m in Sources */,
 				B5C662C618A89BFF00C5A26C /* NSObject+MagicTypeConversion.m in Sources */,
+				18301202193E2EAC00BA6FCF /* WOSMapView.m in Sources */,
 				B5C662F118A89BFF00C5A26C /* Magic_UIPopAlertView.m in Sources */,
 				B5F7FF2E18B20E9800BBA6B7 /* WOSSandMSGViewController.m in Sources */,
 				B58CB1EA1829CF6B00F73D66 /* DYBCustomLabel.m in Sources */,
@@ -8296,8 +8302,8 @@
 		C942207317A89E430054E5BC /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Developer: Qingtao Ren (FS8C526MC5)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Qingtao Ren (FS8C526MC5)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: zhou zhe (GNB5T4K9X8)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: zhou zhe (GNB5T4K9X8)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "DYiBan/WOS-Prefix.pch";
 				HEADER_SEARCH_PATHS = /System/Library/Frameworks/CoreTelephony.framework/Headers;
@@ -8312,8 +8318,8 @@
 				);
 				OTHER_LDFLAGS = "-licucore";
 				PRODUCT_NAME = WOS;
-				PROVISIONING_PROFILE = "67ADCEF3-8B9D-4C99-A551-60B854F8470C";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "67ADCEF3-8B9D-4C99-A551-60B854F8470C";
+				PROVISIONING_PROFILE = "FF41353E-52ED-428C-97BB-FE09FEC85B8C";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "FF41353E-52ED-428C-97BB-FE09FEC85B8C";
 				VALID_ARCHS = armv7;
 				WRAPPER_EXTENSION = app;
 			};
@@ -8322,8 +8328,8 @@
 		C942207417A89E430054E5BC /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Developer: Qingtao Ren (FS8C526MC5)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Qingtao Ren (FS8C526MC5)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: zhou zhe (GNB5T4K9X8)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: zhou zhe (GNB5T4K9X8)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "DYiBan/WOS-Prefix.pch";
 				HEADER_SEARCH_PATHS = /System/Library/Frameworks/CoreTelephony.framework/Headers;
@@ -8338,8 +8344,8 @@
 				);
 				OTHER_LDFLAGS = "-licucore";
 				PRODUCT_NAME = WOS;
-				PROVISIONING_PROFILE = "67ADCEF3-8B9D-4C99-A551-60B854F8470C";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "67ADCEF3-8B9D-4C99-A551-60B854F8470C";
+				PROVISIONING_PROFILE = "FF41353E-52ED-428C-97BB-FE09FEC85B8C";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "FF41353E-52ED-428C-97BB-FE09FEC85B8C";
 				VALID_ARCHS = armv7;
 				WRAPPER_EXTENSION = app;
 			};

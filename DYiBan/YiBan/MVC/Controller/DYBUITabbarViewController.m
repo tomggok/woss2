@@ -41,6 +41,12 @@
 #import "WOSHomeViewController.h"
 #import "WOSOrderLostViewController.h"
 #import "WOSPersonInfoViewController.h"
+
+
+#import "WOSLogInViewController.h"
+
+
+
 @interface DYBUITabbarViewController ()
 {
     MagicUIThirdView *threeview;//三屏的view
@@ -699,6 +705,19 @@ MagicUIButton *hiddenView;
 //            [self addCardView];
         }
         else if (button.tag == 11) {
+            if (SHARED.userId == nil) {
+                
+                WOSLogInViewController *login = [[WOSLogInViewController alloc]init];
+                
+                [self.drNavigationController pushViewController:login animated:YES];
+                
+                return;
+            }
+            
+            
+            
+            
+            
             //订单管理
             WOSOrderLostViewController *download = [[[WOSOrderLostViewController alloc] init] autorelease];
             
@@ -710,6 +729,17 @@ MagicUIButton *hiddenView;
             
 //            [self addBankView];
         }else if (button.tag == 12) {
+            
+            
+            
+            if (SHARED.userId == nil) {
+                
+                WOSLogInViewController *login = [[WOSLogInViewController alloc]init];
+                
+                [self.drNavigationController pushViewController:login animated:YES];
+                
+                return;
+            }
             //地址管理
 //            [self initNotesCon];
             WOSAddrViewController *myNotesVc = [[[WOSAddrViewController alloc] init] autorelease];
@@ -721,6 +751,15 @@ MagicUIButton *hiddenView;
 
         }else if (button.tag==13){
             
+            if (SHARED.userId == nil) {
+                
+                WOSLogInViewController *login = [[WOSLogInViewController alloc]init];
+                
+                [self.drNavigationController pushViewController:login animated:YES];
+                
+                return;
+            }
+            
             WOSCollectViewController *card = [[WOSCollectViewController alloc]init];
             [card setVc:_vc];
             [self.drNavigationController pushViewController:card animated:YES];
@@ -728,6 +767,14 @@ MagicUIButton *hiddenView;
 
         }else if (button.tag == 14){
         
+            if (SHARED.userId == nil) {
+                
+                WOSLogInViewController *login = [[WOSLogInViewController alloc]init];
+                
+                [self.drNavigationController pushViewController:login animated:YES];
+                
+                return;
+            }
             
             DYBSettingViewController *settingVC = [[[DYBSettingViewController alloc] init] autorelease];
             [settingVC setVc:_vc];

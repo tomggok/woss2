@@ -20,6 +20,9 @@
 #import "UIImageView+WebCache.h"
 #import "WOSFoodDetailViewController.h"
 #import "WOSShoppDetailTableViewCell.h"
+#import "WOSLogInViewController.h"
+
+
 
 @interface WOShopDetailViewController (){
 
@@ -485,12 +488,18 @@ DEF_SIGNAL(BTNTWO);
     WOSMapViewController *map = [[WOSMapViewController alloc]init];
     map.iType = 3;
     NSString *pgs = [dictResult objectForKey:@"gps"];
-    NSArray *arrayGPS = [pgs componentsSeparatedByString:@","];
-    NSDictionary *dict = [NSDictionary dictionaryWithObjectsAndKeys:[arrayGPS objectAtIndex:1],@"latitude",[arrayGPS objectAtIndex:0],@"longitude",nil];
-    map.dictMap = dict;
-    [self.drNavigationController pushViewController:map animated:YES];
+//    NSArray *arrayGPS = [pgs componentsSeparatedByString:@","];
+    NSDictionary *dict = [NSDictionary dictionaryWithObjectsAndKeys:pgs,@"gps",nil];
+//    map.dictMap = dict;
+    
+    NSMutableArray *array = [[NSMutableArray alloc]init];
+    [array addObject:dictResult];
+    map.arrayXY = array;
+    
+    [self.view addSubview:map.view];
+//    [self.drNavigationController pushViewController:map animated:YES];
     RELEASE(map);
-
+    RELEASE(array);
 
 }
 
@@ -741,6 +750,17 @@ static NSString *cellName = @"cellName";
     }
 }
 -(void)doColloct{
+    
+    
+    if (SHARED.userId == nil) {
+        
+        WOSLogInViewController *login = [[WOSLogInViewController alloc]init];
+        
+        [self.drNavigationController pushViewController:login animated:YES];
+        
+        return;
+    }
+    
     
     MagicRequest *request = [DYBHttpMethod wosKitchenInfo_favorite_userIndex:SHARED.userId kitchenIndex:[_dictInfo objectForKey:@"kitchenIndex"] sAlert:YES receive:self];
     [request setTag:2];
