@@ -1733,6 +1733,17 @@
     return dre;
 
 }
+
++ (MagicRequest *)wosFoodInfo_calculate_userIndex:(NSString *)userIndex kitchenIndex:(NSString *)kitchenIndex foodIndexs:(NSString *)foodIndexs  countIndexs:(NSString *)countIndexs sAlert:(BOOL)isAlert receive:(id)receive{
+
+    NSMutableDictionary *dict = [DYBHttpInterface wosFoodInfo_calculate_userIndex:userIndex kitchenIndex:kitchenIndex foodIndexs:foodIndexs countIndexs:countIndexs];
+    DYBRequest *request = AUTORELEASE([[DYBRequest alloc] init]);
+    MagicRequest *dre = [request DYBGET:dict isAlert:isAlert receive:receive];
+    return dre;
+
+
+}
+
 @end
 
 

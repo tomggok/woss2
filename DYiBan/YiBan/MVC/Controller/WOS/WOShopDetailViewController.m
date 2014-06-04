@@ -486,18 +486,27 @@ DEF_SIGNAL(BTNTWO);
 
 
     WOSMapViewController *map = [[WOSMapViewController alloc]init];
-    map.iType = 3;
-    NSString *pgs = [dictResult objectForKey:@"gps"];
+//    map.iType = 3;
+//    NSString *pgs = [dictResult objectForKey:@"gps"];
 //    NSArray *arrayGPS = [pgs componentsSeparatedByString:@","];
-    NSDictionary *dict = [NSDictionary dictionaryWithObjectsAndKeys:pgs,@"gps",nil];
+//    NSDictionary *dict = [NSDictionary dictionaryWithObjectsAndKeys:pgs,@"gps",nil];
 //    map.dictMap = dict;
     
     NSMutableArray *array = [[NSMutableArray alloc]init];
     [array addObject:dictResult];
+//    [dictResult retain];
     map.arrayXY = array;
     
-    [self.view addSubview:map.view];
-//    [self.drNavigationController pushViewController:map animated:YES];
+//    [self.view addSubview:map.view];
+    
+    
+    
+//    MapViewController*   _mapViewController = [[MapViewController alloc] initWithFrame:CGRectMake(0.0f, self.headHeight + 30 , 320.0f, self.view.bounds.size.height - self.headHeight)];
+////    _mapViewController.delegate = self;
+//    [self.view addSubview:_mapViewController];
+//    [_mapViewController resetAnnitations:array];
+    
+    [self.drNavigationController pushViewController:map animated:YES];
     RELEASE(map);
     RELEASE(array);
 

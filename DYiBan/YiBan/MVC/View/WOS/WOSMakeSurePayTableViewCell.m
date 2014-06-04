@@ -43,6 +43,8 @@
     [labelPrece setBackgroundColor:[UIColor clearColor]];
     NSString *stringPrice = [dd objectForKey:@"foodPrice"];
     [labelPrece setText:[NSString stringWithFormat:@"%.2f",[stringPrice floatValue] * dict.count]];
+    [labelPrece setTextColor:[UIColor colorWithRed:40.0f/255 green:191.0f/255 blue:140.0f/255 alpha:1.0f]];
+
     [self addSubview:labelPrece];
     RELEASE(labelPrece)
     

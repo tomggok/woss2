@@ -478,5 +478,5 @@
 
 + (MagicRequest *)wosFoodInfo_orderinfo_userIndex :(NSString *)userIndex orderIndex  :(NSString *)orderIndex sAlert:(BOOL)isAlert receive:(id)receive;
 
-
++ (MagicRequest *)wosFoodInfo_calculate_userIndex:(NSString *)userIndex kitchenIndex:(NSString *)kitchenIndex foodIndexs:(NSString *)foodIndexs  countIndexs:(NSString *)countIndexs sAlert:(BOOL)isAlert receive:(id)receive;
 @end

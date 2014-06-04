@@ -149,7 +149,7 @@
         
         
         
-        MapViewController*   _mapViewController = [[MapViewController alloc] initWithFrame:CGRectMake(0.0f, self.headHeight + 30 , 320.0f, self.view.bounds.size.height - self.headHeight)];
+        MapViewController*   _mapViewController = [[MapViewController alloc] initWithFrame:CGRectMake(0.0f, self.headHeight + 0 , 320.0f, self.view.bounds.size.height - self.headHeight)];
         _mapViewController.delegate = self;
         [self.view addSubview:_mapViewController];
         [_mapViewController resetAnnitations:arrayXY];

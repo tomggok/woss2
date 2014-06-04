@@ -13,6 +13,8 @@
 #import "JSONKit.h"
 #import "JSON.h"
 #import "WOSPayCardTableViewCell.h"
+#import "WOSLogInViewController.h"
+
 
 @interface WOSPayViewController (){
     NSMutableDictionary *dictOrder;
@@ -72,6 +74,11 @@
         [self.rightButton setHidden:YES];
 //        arrayCard = [[NSArray alloc]init];
         
+        UIScrollView *scrollView = [[UIScrollView alloc]initWithFrame:CGRectMake(0.0f, 0.0f, 320.0f, self.view.frame.size.height)];
+        [self.view addSubview:scrollView];
+        RELEASE(scrollView);
+        
+        
         dictOrder = [[NSMutableDictionary alloc]init];
         
         UILabel *labelName = [[UILabel alloc]initWithFrame:CGRectMake(10.0f, self.headHeight + 20, 250.0, 30.0f)];
@@ -79,7 +86,7 @@
         NSString *strName = [[NSUserDefaults standardUserDefaults]objectForKey:@"shopname"];
         [labelName setText:strName];
         
-        [labelName setTextColor:[UIColor colorWithRed:97.0f/255 green:97.0f/255 blue:97.0f/255 alpha:1.0]];
+        [labelName setTextColor:[UIColor colorWithRed:40.0f/255 green:191.0f/255 blue:140.0f/255 alpha:1.0f]];
         [self.view addSubview:labelName];
         RELEASEOBJ(labelName);
         
@@ -89,57 +96,60 @@
         [_tableView setDataSource:self];
         [_tableView setDelegate:self];
         [_tableView setTag:101];
-        [self.view addSubview:_tableView];
+        [scrollView addSubview:_tableView];
 //        RELEASEOBJ(_tableView);
         
         
-        UILabel *labelSave = [[UILabel alloc]initWithFrame:CGRectMake(20.0f, CGRectGetHeight(_tableView.frame) + CGRectGetMinY(_tableView.frame) + 5,60, 30.0f)];
+        UILabel *labelSave = [[UILabel alloc]initWithFrame:CGRectMake(20.0f, CGRectGetHeight(_tableView.frame) + CGRectGetMinY(_tableView.frame) + 0,60, 20.0f)];
         [labelSave setBackgroundColor:[UIColor clearColor]];
         [labelSave setText:@"优惠"];
-        [self.view addSubview:labelSave];
+        [scrollView addSubview:labelSave];
 //        RELEASEOBJ(labelSave);
         
         
-        UILabel *labelTotal1 = [[UILabel alloc]initWithFrame:CGRectMake(250.0f, CGRectGetHeight(_tableView.frame) + CGRectGetMinY(_tableView.frame) + 5, 70.0, 30.0f)];
+        UILabel *labelTotal1 = [[UILabel alloc]initWithFrame:CGRectMake(250.0f, CGRectGetHeight(_tableView.frame) + CGRectGetMinY(_tableView.frame) , 70.0, 20.0f)];
         [labelTotal1 setBackgroundColor:[UIColor clearColor]];
+        [labelTotal1 setTextColor:[UIColor colorWithRed:40.0f/255 green:191.0f/255 blue:140.0f/255 alpha:1.0f]];
+
         [labelTotal1 setText:[NSString stringWithFormat:@"%.2f",[self getTotal]]];
-        [self.view addSubview:labelTotal1];
+        [scrollView addSubview:labelTotal1];
 //        RELEASEOBJ(labelTotal1);
         
         
         
-        UILabel *labelSaveNum = [[UILabel alloc]initWithFrame:CGRectMake(250.0f,CGRectGetHeight(labelTotal1.frame) + CGRectGetMinY(labelTotal1.frame) + 5, 250.0, 30.0f)];
+        UILabel *labelSaveNum = [[UILabel alloc]initWithFrame:CGRectMake(250.0f,CGRectGetHeight(labelTotal1.frame) + CGRectGetMinY(labelTotal1.frame) , 250.0, 20.0f)];
         [labelSaveNum setBackgroundColor:[UIColor clearColor]];
         [labelSaveNum setText:@"10"];
-        [self.view addSubview:labelSaveNum];
+        [scrollView addSubview:labelSaveNum];
 //        RELEASEOBJ(labelSaveNum);
         
         
-        UILabel *labelSave2 = [[UILabel alloc]initWithFrame:CGRectMake(10.0f, CGRectGetHeight(labelSaveNum.frame) + CGRectGetMinY(labelSaveNum.frame) + 5, 250.0, 30.0f)];
+        UILabel *labelSave2 = [[UILabel alloc]initWithFrame:CGRectMake(10.0f, CGRectGetHeight(labelSaveNum.frame) + CGRectGetMinY(labelSaveNum.frame) , 250.0, 20.0f)];
         [labelSave2 setBackgroundColor:[UIColor clearColor]];
         [labelSave2 setText:@"总计"];
-        [self.view addSubview:labelSave2];
+        [scrollView addSubview:labelSave2];
 //        RELEASEOBJ(labelSave2);
         
         
-        UILabel *labelName2 = [[UILabel alloc]initWithFrame:CGRectMake(270.0f, CGRectGetHeight(labelSaveNum.frame) + CGRectGetMinY(labelSaveNum.frame) + 5, 250.0, 30.0f)];
+        UILabel *labelName2 = [[UILabel alloc]initWithFrame:CGRectMake(270.0f, CGRectGetHeight(labelSaveNum.frame) + CGRectGetMinY(labelSaveNum.frame) , 250.0, 20.0f)];
         [labelName2 setBackgroundColor:[UIColor clearColor]];
         [labelName2 setText:@"110"];
-        
-        [labelName2 setTextColor:[UIColor colorWithRed:97.0f/255 green:97.0f/255 blue:97.0f/255 alpha:1.0]];
-        [self.view addSubview:labelName2];
+        [labelName2 setTextColor:[UIColor colorWithRed:40.0f/255 green:191.0f/255 blue:140.0f/255 alpha:1.0f]];
+
+//        [labelName2 setTextColor:[UIColor colorWithRed:97.0f/255 green:97.0f/255 blue:97.0f/255 alpha:1.0]];
+        [scrollView addSubview:labelName2];
 //        RELEASEOBJ(labelName2);
 
-        UILabel *labelUserFree = [[UILabel alloc]initWithFrame:CGRectMake(10.0f, CGRectGetHeight(labelName2.frame) + CGRectGetMinY(labelName2.frame) + 5, 250.0, 30.0f)];
+        UILabel *labelUserFree = [[UILabel alloc]initWithFrame:CGRectMake(10.0f, CGRectGetHeight(labelName2.frame) + CGRectGetMinY(labelName2.frame) , 250.0, 20.0f)];
         [labelUserFree setBackgroundColor:[UIColor clearColor]];
         [labelUserFree setText:@"使用优惠券"];
  
-        [self.view addSubview:labelUserFree];
+        [scrollView addSubview:labelUserFree];
 //        RELEASEOBJ(labelUserFree);
         
         UISwitch *switchFree = [[UISwitch alloc]initWithFrame:CGRectMake(270.0f, CGRectGetHeight(labelName2.frame) + CGRectGetMinY(labelName2.frame) + 5, 50.0f, 30.0f)];
         [switchFree addTarget:self action:@selector(doSwith:) forControlEvents:UIControlEventTouchUpInside];
-        [self.view addSubview:switchFree];
+        [scrollView addSubview:switchFree];
 //        RELEASEOBJ(switchFree);
         
         
@@ -148,9 +158,9 @@
         _tableView1 = [[UITableView alloc]initWithFrame:CGRectMake(0.0f, CGRectGetHeight(switchFree.frame) + CGRectGetMinY(switchFree.frame) + 5, 320.0f, 90)];
         [_tableView1 setDataSource:self];
         [_tableView1 setDelegate:self];
-        [_tableView1 setBackgroundColor:[UIColor redColor]];
+        [_tableView1 setBackgroundColor:[UIColor whiteColor]];
         [_tableView1 setTag:102];
-        [self.view addSubview:_tableView1];
+        [scrollView addSubview:_tableView1];
 //        RELEASEOBJ(_tableView1);
         
         
@@ -159,7 +169,7 @@
         [labelAddr setBackgroundColor:[UIColor clearColor]];
         [labelAddr setText:@"地址"];
         
-        [self.view addSubview:labelAddr];
+        [scrollView addSubview:labelAddr];
 //        RELEASEOBJ(labelAddr);
         
         UITextView *textView = [[UITextView alloc]initWithFrame:CGRectMake(40.0f, CGRectGetHeight(labelName2.frame) + CGRectGetMinY(labelName2.frame) + 5, 300.0f, 100.0f)];
@@ -182,11 +192,18 @@
         [btnMakeSuerOrder addTarget:self action:@selector(dobtnMakeSuerOrder) forControlEvents:UIControlEventTouchUpInside];
         [btnMakeSuerOrder setImage:i forState:UIControlStateNormal];
 //        [btnEnter setTitle:@"提交订单" forState:UIControlStateNormal];
-        [self.view addSubview:btnMakeSuerOrder];
+        [scrollView addSubview:btnMakeSuerOrder];
         RELEASEOBJ(btnMakeSuerOrder);
         
+        [scrollView setFrame:CGRectMake(0.0f, 0.0, 320.0f, CGRectGetHeight(btnMakeSuerOrder.frame) + CGRectGetMinY(btnMakeSuerOrder.frame) + 50 + 200)];
         
-        MagicRequest *request11 = [DYBHttpMethod wosKitchenInfo_medeals_userIndex:SHARED.userId kitchenIndex:nil sAlert:YES receive:self];
+        [scrollView setContentSize:CGSizeMake(320.0f, self.view.window.frame.size.height)];
+        
+        NSString *index = [[NSUserDefaults standardUserDefaults]objectForKey:@"kitchenIndex"];
+    
+        
+               
+        MagicRequest *request11 = [DYBHttpMethod wosKitchenInfo_medeals_userIndex:SHARED.userId kitchenIndex:index sAlert:YES receive:self];
         [request11 setTag:4];
         
 
@@ -228,6 +245,16 @@
 
 -(void)doSwith:(id)sender{
 
+    NSString *index = [[NSUserDefaults standardUserDefaults]objectForKey:@"kitchenIndex"];
+
+    
+//    MagicRequest *request = [DYBHttpMethod wosFoodInfo_calculate_userIndex:SHARED.userId kitchenIndex:index foodIndexs:<#(NSString *)#> countIndexs:<#(NSString *)#> sAlert:<#(BOOL)#> receive:<#(id)#>];
+//                                 [request setTag:3];
+    
+    
+
+    
+    
 
     UISwitch *s = (UISwitch *)sender;
     if (s.on) {

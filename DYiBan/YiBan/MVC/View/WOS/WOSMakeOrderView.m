@@ -10,6 +10,7 @@
 #import "WOSMakeOrderTableViewCell.h"
 #import "AppDelegate.h"
 #import "WOSPayViewController.h"
+#import "WOSLogInViewController.h"
 
 
 @implementation WOSMakeOrderView{
@@ -194,7 +195,16 @@
         [viewBtn setHidden:YES];
     }
    
+    if (SHARED.userId == nil) {
+        
+        WOSLogInViewController *login = [[WOSLogInViewController alloc]init];
+        
+        [nav pushViewController:login animated:YES];
+        
+        return;
+    }
     
+
 
     WOSPayViewController *pagVC = [[WOSPayViewController alloc]init];
     [nav pushViewController:pagVC animated:YES];
